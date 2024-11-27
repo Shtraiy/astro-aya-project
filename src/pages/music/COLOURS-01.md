@@ -1,8 +1,7 @@
 ---
 title: COLOURS.01
 date: 2024-05-11 12:16:46
-tags: 
-  - 音乐
+# layout: ../../layouts/MusicLayout.astro
 ---
 <div id="albums">
     <div id="Endorfin.">
