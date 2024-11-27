@@ -1,12 +1,8 @@
 ---
-title: pgp
-date: 2020-12-27 13:38:04
-categories: 
-- PGP
-tags: 
-- PGP
-- 公钥
-- 加密
+title: "PGP"
+pubDatetime: 2020-12-27 13:38:04
+tags: ["pgp"]
+layout: ../../layouts/PGPLayout.astro
 ---
 
 # 个人公钥

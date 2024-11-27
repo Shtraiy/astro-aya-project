@@ -46,4 +46,4 @@ title: "About"
 
 # 关于PGP
 
-[个人PGP公钥](/pgp/pgp.md)
+[个人PGP公钥](/pgp/pgp.html)

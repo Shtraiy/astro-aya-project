@@ -87,57 +87,57 @@ title: "Links"
     h1 {
         margin:0 auto;
         background: linear-gradient(#03c2fc,#e01da9);
-                    -webkit-background-clip: text;
+        -webkit-background-clip: text;
         color: transparent;
-               font-size: 2rem;
-               line-height: 2rem;
+        font-size: 2rem;
+        line-height: 2rem;
     }
     h2 {
         margin:0 auto;
         background: linear-gradient(#14f7f0,#fa14bd);
-                    -webkit-background-clip: text;
+        -webkit-background-clip: text;
         color: transparent;
-               font-size: 1.5rem;
+        font-size: 1.5rem;
     }
 
     .link {
-    display: inline-block;
-    padding: 8px 14px 8px 14px;
-    border-radius: 10px;
-    border: 0.5px solid rgba(0,0,0,0.3);
-    margin-right: -4px;
-    margin-bottom: 5px;
-    .avater {
-      display: inline-flex;
-      border-radius: 50%;
-      width: 72px;
-      height: 72px;
-      margin: 0;
-      vertical-align: middle;
-    }
-    .content {
-        float: right;
-        flex-direction: column;
-        display: flex;
-        margin: 8px 8px 8px 8px;
-        height: 50%;
-        .name {
-            position: relative;
-            display: inline;
+        display: inline-block;
+        padding: 8px 14px 8px 14px;
+        border-radius: 10px;
+        border: 0.5px solid rgba(0,0,0,0.3);
+        margin-right: -4px;
+        margin-bottom: 5px;
+        .avater {
+            display: inline-flex;
+            border-radius: 50%;
+            width: 72px;
+            height: 72px;
             margin: 0;
-            text-decoration: none;
-            font-size: 21px;
-            font-color: #555555;
+            vertical-align: middle;
         }
-        .description {
-            position: relative;
-            text-decoration: none;
-            font-size: 13px;
-      }
+        .content {
+            float: right;
+            flex-direction: column;
+            display: flex;
+            margin: 8px 8px 8px 8px;
+            height: 50%;
+            .name {
+                position: relative;
+                display: inline;
+                margin: 0;
+                text-decoration: none;
+                font-size: 21px;
+                font-color: #555555;
+            }
+            .description {
+                position: relative;
+                text-decoration: none;
+                font-size: 13px;
+            }
+        }
     }
-  }
-  .link:hover {
-    box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
+    .link:hover {
+        box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
   }
 }
 </style>
