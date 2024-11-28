@@ -1,8 +1,8 @@
 ---
-title: Proud Echoes
 date: 2024-05-11 10:32:46
 tags: 
   - 音乐
+layout: ../../layouts/MusicLayout.astro
 ---
 <div id="albums">
     <div id="Sennzai">
@@ -64,38 +64,3 @@ tags:
     </div>
 </div>
 
-<div id="back-bottom">
-    <a href="/posts/resalia的音乐藏馆/">
-    <div class="link">
-      <div class="content">
-        点此返回
-      </div>
-    </div>
-    </a>
-</div>
-
-<style>
-  #back-bottom {
-    text-align:center;
-    .link {
-      display: inline-block;
-      padding: 8px 14px 8px 14px;
-      border: 0.5px solid rgba(0,0,0,0.3);
-      border-radius: 40px;
-      margin-right: -4px;
-      margin-bottom: 5px;
-    }
-    .content {
-      float: right;
-      display: flex;
-      margin: 8px 8px 8px 8px;
-      height: 50%;
-      background: linear-gradient(#f52fa9,#3191d6);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .link:hover {
-      box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
-    }
-  }
-</style>

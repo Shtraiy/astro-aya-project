@@ -13,7 +13,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </h3>
   </div>
   <div class="cd">
-    <a href="/music/Piece-of-Cipher/Piece-of-Cipher.html">
+    <a href="/music/Piece-of-Cipher/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/Piece-of-Cipher+.png"><img>
@@ -26,7 +26,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
   <div class="cd">
-    <a href="/music/REVERSUS/REVERSUS.html">
+    <a href="/music/REVERSUS/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/REVERSUS.jpg"><img>
@@ -39,7 +39,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
   <div class="cd">
-    <a href="/music/SWANSONG/SWANSONG.html">
+    <a href="/music/SWANSONG/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/SWANSONG.jpg"><img>
@@ -58,7 +58,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </h3>
   </div>
   <div class="cd">
-    <a href="/music/Proud-Echoes/Proud-Echoes.html">
+    <a href="/music/Proud-Echoes/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/Proud-Echoes.jpg"><img>
@@ -77,7 +77,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </h3>
   </div>
   <div class="cd">
-    <a href="/music/COLOURS-01/COLOURS-01.html">
+    <a href="/music/COLOURS-01/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/COLOURS.01.jpg"><img>
@@ -90,7 +90,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
   <div class="cd">
-    <a href="/music/COLOURS-02/COLOURS-02.html">
+    <a href="/music/COLOURS-02/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/COLOURS.02.jpg"><img>
@@ -103,7 +103,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
   <div class="cd">
-    <a href="/music/COLOURS-03/COLOURS-03.html">
+    <a href="/music/COLOURS-03/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/COLOURS.03.jpg"><img>
@@ -116,7 +116,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
   <div class="cd">
-    <a href="/music/COLOURS-04/COLOURS-04.html">
+    <a href="/music/COLOURS-04/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/COLOURS.04.jpg"><img>
@@ -135,7 +135,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </h3>
   </div>
   <div class="cd">
-    <a href="/music/やっぱり雨は降るんだね/やっぱり雨は降るんだね.html">
+    <a href="/music/やっぱり雨は降るんだね/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/やっぱり雨は降るんだね.jpg"><img>
@@ -154,7 +154,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </h3>
   </div>
   <div class="cd">
-    <a href="/music/ガールズブルー・ハッピーサッド/ガールズブルー・ハッピーサッド.html">
+    <a href="/music/ガールズブルー・ハッピーサッド/index.html">
       <div class="info">
         <div class="circle">
           <img class="avater" src="/images/ガールズブルー・ハッピーサッド.jpg"><img>
