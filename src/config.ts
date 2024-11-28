@@ -154,7 +154,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "PGP",
-    href: "/pgp/pgp.html",
+    href: "/pgp/pgp/index.html",
     linkTitle: `${SITE.title} on PGP`,
     active: true,
   },

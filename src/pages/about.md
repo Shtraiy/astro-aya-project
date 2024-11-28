@@ -47,4 +47,4 @@ layout: ../layouts/AboutLayout.astro
 
 # 关于PGP
 
-[个人PGP公钥](/pgp/pgp.html)
+[个人PGP公钥](/pgp/pgp/index.html)
