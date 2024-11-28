@@ -1,7 +1,7 @@
 ---
-title: "PGP"
 pubDatetime: 2020-12-27 13:38:04
-tags: ["pgp"]
+tags: 
+  - pgp
 layout: ../../layouts/PGPLayout.astro
 ---
 

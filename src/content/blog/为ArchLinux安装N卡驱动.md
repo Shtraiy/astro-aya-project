@@ -1,6 +1,10 @@
 ---
 title: 为ArchLinux安装N卡驱动
-tags: ["Linux", "系统", "折腾"]
+tags: 
+  - Linux
+  - 系统
+  - 折腾
+  - 笔记
 pubDatetime: 2022-07-26 08:17:50
 description: "本文记录了一些站长在为ArchLinux安装N卡驱动遇到的情况"
 ---

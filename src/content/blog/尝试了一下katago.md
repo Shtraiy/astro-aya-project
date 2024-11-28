@@ -1,6 +1,8 @@
 ---
 title: 与Katago对弈
-tags: ["对弈", "下棋"]
+tags: 
+  - 休闲
+  - 下棋
 pubDatetime: 2021-07-12 18:15:03
 description: "本文记述了有关Katago AI的训练以及对弈"
 ---

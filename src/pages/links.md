@@ -1,6 +1,5 @@
 ---
 layout: ../layouts/LinksLayout.astro
-title: "Links"
 ---
 <div id="friends">
 

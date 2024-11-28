@@ -153,9 +153,15 @@ export const SOCIALS: SocialObjects = [
     active: false,
   },
   {
+    name: "PGP",
+    href: "/pgp/pgp.html",
+    linkTitle: `${SITE.title} on PGP`,
+    active: true,
+  },
+  {
     name: "Clock",
-    href: "https://github.com/satnaing/astro-paper",
+    href: "https://timer.wynio.pw/",
     linkTitle: `${SITE.title} on Clock`,
-    active: false,
+    active: true,
   },
 ];

@@ -1,6 +1,9 @@
 ---
 title: 开学两周了，买了一个iPad
-tags: ["iPad", "苹果", "日常"]
+tags: 
+  - ipad
+  - 笔记
+  - 休闲
 pubDatetime: 2024-03-21 19:43:40
 description: "本文记述了近期的事情"
 ---

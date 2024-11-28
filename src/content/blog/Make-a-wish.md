@@ -1,6 +1,8 @@
 ---
 title: Make a wish
-tags: ["祈愿"]
+tags: 
+  - 许愿
+  - 休闲
 description: "这是一个许愿贴"
 pubDatetime: 2021-01-30 11:51:18
 ---

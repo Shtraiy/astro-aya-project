@@ -2,7 +2,11 @@
 title: ArchLinux安装指南
 pubDatetime: 2021-01-26 12:23:19
 description: "本文旨在记录当时装系统的全套过程及供他人参考"
-tags: ["Linux", "系统", "折腾", "笔记"]
+tags: 
+  - Linux
+  - 系统
+  - 折腾
+  - 笔记
 ---
 # 先前有尝试过用VMware装Archlinux
 

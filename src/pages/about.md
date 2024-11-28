@@ -1,13 +1,14 @@
 ---
 layout: ../layouts/AboutLayout.astro
-title: "About"
 ---
 
 # 关于站长
 
+![Aitsuki Nakuru](/css/logo.png)
+
 目前在读大学生，有一点点前端的知识
 
-### 喜欢听歌，目前喜欢的音乐人及团体有
+### 喜欢听歌，目前喜欢的唱见及团体有
 
 + 藍月なくる
 + Sennzai

@@ -1,7 +1,9 @@
 ---
 title: 音乐藏馆
 pubDatetime: 2024-05-10 12:28:21
-tags: ["音乐"]
+tags: 
+  - 音乐
+  - 收藏
 description: "本文上传了一些站长珍藏的音乐"
 ---
 <div id="albums">

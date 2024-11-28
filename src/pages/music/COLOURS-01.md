@@ -1,7 +1,5 @@
 ---
-title: COLOURS.01
 date: 2024-05-11 12:16:46
-# layout: ../../layouts/MusicLayout.astro
 ---
 <div id="albums">
     <div id="Endorfin.">
@@ -78,7 +76,6 @@ date: 2024-05-11 12:16:46
     </div>
     </a>
 </div>
-
 
 <style>
   #back-bottom {
