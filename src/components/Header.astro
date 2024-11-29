@@ -2,6 +2,7 @@
 import { LOGO_IMAGE, SITE } from "@config";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
+import Reloaded from "./reloaded.jsx"
 
 export interface Props {
   activeNav?: "posts" | "archives" | "tags" |"links"| "about" | "search";
@@ -10,6 +11,8 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
+
+<Reloaded  client:load/>
 <header>
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
