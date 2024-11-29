@@ -15,7 +15,7 @@ export interface Props {
 const { frontmatter } = Astro.props;
 ---
 
-<Layout title={`${frontmatter.title} | ${SITE.title}`}>
+<Layout title={`Music | ${SITE.title}`}>
   <Reloaded  client:load/>
   <Header />
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
