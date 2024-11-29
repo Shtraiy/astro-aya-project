@@ -100,6 +100,8 @@ layout: ../layouts/LinksLayout.astro
     }
 
     .link {
+        font-size: 1.25rem;
+        line-height: 1.75;
         display: inline-block;
         padding: 8px 14px 8px 14px;
         border-radius: 10px;

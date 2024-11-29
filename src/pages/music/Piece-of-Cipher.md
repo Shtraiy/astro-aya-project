@@ -10,9 +10,9 @@ layout: ../../layouts/MusicLayout.astro
             <font color="#A7A7A7">『Piece of Cipher+』</font>
         </h3>
         <div>
-            <link rel="stylesheet" href="../js/APlayer.min.css">
+            <link rel="stylesheet" href="/js/APlayer.min.css">
             <div id="aplayer"></div>
-            <script src="../js/APlayer.min.js"></script>
+            <script src="/js/APlayer.min.js"></script>
         </div>
         <script>
             const ap = new APlayer({
