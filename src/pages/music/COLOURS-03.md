@@ -1,19 +1,13 @@
 ---
+title: 「COLOURS.03 “Redraw”」
 date: 2024-05-11 16:18:35
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: D02B27
 ---
 <div id="albums">
     <div id="Endorfin.">
-        <h3 style="text-align:center">
-            <font color="#D02B27">『COLOURS.03 “Redraw”』</font>
-        </h3>
-        <div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <div id="aplayer"></div>
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

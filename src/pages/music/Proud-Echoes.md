@@ -1,19 +1,13 @@
 ---
+title: 「Proud Echoes」
 date: 2024-05-11 10:32:46
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: d1061b
 ---
 <div id="albums">
     <div id="Sennzai">
-        <h3 style="text-align:center">
-            <font color="#d1061b">『Proud Echoes』</font>
-        </h3>
-        <div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <div id="aplayer"></div>
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

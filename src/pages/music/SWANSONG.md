@@ -1,19 +1,13 @@
 ---
+title: 「SWANSONG」
 date: 2024-05-15 10:16:21
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: 948D91
 ---
 <div id="albums">
-    <div>
-        <link rel="stylesheet" href="/js/APlayer.min.css">
-        <div id="aplayer"></div>
-        <script src="/js/APlayer.min.js"></script>
-    </div>
     <div id="ELECTROCUTICA">
-        <h3 style="text-align:center">
-            <font color="#948D91">『SWANSONG』</font>
-        </h3>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

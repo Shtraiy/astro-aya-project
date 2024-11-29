@@ -1,19 +1,13 @@
 ---
+title: 「Piece of Cipher+」
 date: 2024-05-15 09:54:44
 tags:
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: A7A7A7
 ---
 <div id="albums">
     <div id="ELECTROCUTICA">
-        <h3 style="text-align:center">
-            <font color="#A7A7A7">『Piece of Cipher+』</font>
-        </h3>
-        <div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <div id="aplayer"></div>
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

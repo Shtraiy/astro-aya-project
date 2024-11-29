@@ -1,19 +1,13 @@
 ---
+title: 「COLOURS.02 “Blurred Mind”」
 date: 2024-05-11 16:14:23
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: 1A469C
 ---
 <div id="albums">
     <div id="Endorfin.">
-        <h3 style="text-align:center">
-            <font color="#1A469C">『COLOURS.02 “Blurred Mind”』</font>
-        </h3>
-        <div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <div id="aplayer"></div>
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

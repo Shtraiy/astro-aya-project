@@ -1,19 +1,13 @@
 ---
+title: 「COLOURS.04 ”Yelling”」
 date: 2024-05-11 16:18:39
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: EDC95E
 ---
 <div id="albums">
     <div id="Endorfin.">
-        <h3 style="text-align:center">
-            <font color="#EDC95E">『COLOURS.04 ”Yelling”』</font>
-        </h3>
-        <div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <div id="aplayer"></div>
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),

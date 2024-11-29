@@ -30,7 +30,12 @@ const { frontmatter } = Astro.props;
   </div>
   <main id="main-content">
     <section id="music" class="prose mb-28 max-w-3xl prose-img:border-0">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
+    <div>
+        <h3 style="text-align:center"><font color={frontmatter.color} size="6px">{frontmatter.title}</font></h3>
+        <div id="aplayer"></div>
+        <link rel="stylesheet" href="/js/APlayer.min.css">
+        <script src="/js/APlayer.min.js" is:inline></script>
+    </div>
       <slot />
     </section>
   </main>

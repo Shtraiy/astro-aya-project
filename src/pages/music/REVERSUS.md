@@ -1,19 +1,13 @@
 ---
+title: 「REVERSUS」
 date: 2024-05-15 10:08:54
 tags: 
   - 音乐
 layout: ../../layouts/MusicLayout.astro
+color: 1C211D
 ---
 <div id="albums">
     <div id="ELECTROCUTICA">
-        <h3 style="text-align:center">
-            <font color="#1C211D">『REVERSUS』</font>
-        </h3>
-        <div>
-            <div id="aplayer"></div>
-            <link rel="stylesheet" href="/js/APlayer.min.css">
-            <script src="/js/APlayer.min.js"></script>
-        </div>
         <script>
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),
