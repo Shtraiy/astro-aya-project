@@ -5,13 +5,16 @@ tags:
   - 音乐
   - 收藏
 description: "本文上传了一些站长珍藏的音乐"
+featured: true 
 ---
 <div id="albums">
+
   <div id="ELECTROCUTICA">
     <h3>
       ELECTROCUTICA
     </h3>
   </div>
+
   <div class="cd">
     <a href="/music/Piece-of-Cipher/index.html">
       <div class="info">
@@ -22,7 +25,7 @@ description: "本文上传了一些站长珍藏的音乐"
     </a>
     <div class="content">
       <div class="name"><font color="#A7A7A7" size="3">『Piece of Cipher+』</font></div>
-      <div class="description"><font color="#A7A7A7">ELECTROCUTICA</font></div>
+      <div class="description"><font color="#A7A7A7" size="3">ELECTROCUTICA</font></div>
     </div>
   </div>
   <div class="cd">
@@ -52,11 +55,13 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
 
+
   <div id="Sennzai">
     <h3>
       Sennzai
     </h3>
   </div>
+
   <div class="cd">
     <a href="/music/Proud-Echoes/index.html">
       <div class="info">
@@ -71,11 +76,13 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
 
+
   <div id="Endorfin.">
     <h3>
       Endorfin.
     </h3>
   </div>
+
   <div class="cd">
     <a href="/music/COLOURS-01/index.html">
       <div class="info">
@@ -129,11 +136,13 @@ description: "本文上传了一些站长珍藏的音乐"
     </div>
   </div>
 
+
   <div id="ツユ">
     <h3>
       ツユ
     </h3>
   </div>
+
   <div class="cd">
     <a href="/music/やっぱり雨は降るんだね/index.html">
       <div class="info">
@@ -147,12 +156,28 @@ description: "本文上传了一些站长珍藏的音乐"
       <div class="description"><font color="#242D62">ツユ</font></div>
     </div>
   </div>
+  <div class="cd">
+    <a href="/music/アンダーメンタリティ/index.html">
+      <div class="info">
+        <div class="circle">
+          <img class="avater" src="/images/アンダーメンタリティ.jpg"><img>
+        </div>
+      </div>
+    </a>
+    <div class="content">
+      <div class="name"><font color="#DCA4C1" size="3">『やっぱり雨は降るんだね』</font></div>
+      <div class="description"><font color="#DCA4C1">ツユ</font></div>
+    </div>
+  </div>
+
+
 
   <div id="三月のパンタシア">
     <h3>
       三月のパンタシア
     </h3>
   </div>
+
   <div class="cd">
     <a href="/music/ガールズブルー・ハッピーサッド/index.html">
       <div class="info">
