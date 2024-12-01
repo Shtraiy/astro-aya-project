@@ -136,7 +136,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Steam",
-    href: "https://steamcommunity.com/id/Shtraiy/",
+    href: "https://steamcommunity.com/profiles/76561198322010097/",
     linkTitle: `${SITE.title} on Steam`,
     active: true,
   },
