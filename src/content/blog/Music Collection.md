@@ -8,6 +8,15 @@ description: "本文上传了一些站长珍藏的音乐"
 featured: true 
 ---
 <div id="albums">
+  <script>
+    // 使用 sessionStorage 检查是否已经刷新过
+    if (!sessionStorage.getItem('reloaded')) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('reloaded');
+    }
+  </script>
 
   <div id="ELECTROCUTICA">
     <h3>
