@@ -3,6 +3,7 @@ import { SITE } from "@config";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Layout from "./Layout.astro";
+import Reloaded from "../components/reloaded.jsx"
 
 export interface Props {
   frontmatter: {
@@ -17,6 +18,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <Layout title={`Music | ${SITE.title}`}>
+  <Reloaded  client:load/>
   <Header />
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
