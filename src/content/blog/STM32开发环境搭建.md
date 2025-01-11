@@ -1,11 +1,10 @@
 ---
-title: STM32开发环境搭建
+title: "最近将本站从Hexo移植到了Astro1234"
 tags: 
+  - 网页
   - 技术
-  - 单片机
-  - STM32
-pubDatetime: 2025-1-11 15:27:44
-description: "本文记载了STM32单片机的开发环境配置"
+description: "关于我将网站从Hexo移植到了Astro"
+pubDatetime: 2024-11-28 19:47:01
 ---
 # 本文记载了有关STM32单片机的Keil开发环境搭建过程
 
