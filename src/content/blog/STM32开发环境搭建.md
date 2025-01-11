@@ -1,9 +1,11 @@
 ---
-title: "2023迟来的新年礼物"
+title: STM32开发环境搭建
 tags: 
-  - 音乐
-description: "一份迟到的2023新年礼物"
-pubDatetime: 2023-01-10 10:40:01
+  - 技术
+  - 单片机
+  - STM32
+pubDatetime: 2025-1-11 15:27:44
+description: "本文记载了STM32单片机的开发环境配置"
 ---
 # 本文记载了有关STM32单片机的Keil开发环境搭建过程
 
