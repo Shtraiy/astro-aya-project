@@ -4,7 +4,7 @@ tags:
   - 技术
   - 单片机
   - STM32
-pubDatetime: 2025-1-11 15:27:00
+pubDatetime: 2025-1-11 15:27:44
 description: "本文记载了STM32单片机的开发环境配置"
 ---
 # 本文记载了有关STM32单片机的Keil开发环境搭建过程
