@@ -133,7 +133,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ```cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B build```
 
-这样会手动将配置工具以及compile_commands.json生成进build目录，避免生成到根目录
+这样会手动将配置工具以及compile_commands.json生成进build目录，避免生成到根目录，影响项目的结构
 
 执行完以上操作后就能够在nvim正常编写.c的代码了
 
