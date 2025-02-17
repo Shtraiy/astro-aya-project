@@ -3,7 +3,7 @@ import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
-import remarkCallouts from "remark-callouts";
+import { remarkAlert } from "remark-github-blockquote-alert";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
@@ -13,6 +13,7 @@ export default defineConfig({
   integrations: [
     tailwind({
       applyBaseStyles: false,
+      nesting: true,
     }),
     react(),
     sitemap(),
@@ -20,7 +21,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
-      remarkCallouts,
+      remarkAlert ,
       [
         remarkCollapse,
         {
