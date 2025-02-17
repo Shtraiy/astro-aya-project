@@ -3,6 +3,7 @@ import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
+import remarkCallouts from "remark-callouts";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
@@ -19,6 +20,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
+      remarkCallouts,
       [
         remarkCollapse,
         {
