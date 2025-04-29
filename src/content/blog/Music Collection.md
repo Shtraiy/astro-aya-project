@@ -144,6 +144,19 @@ featured: true
       <div class="description"><font color="#EDC95E">Endorfin.</font></div>
     </div>
   </div>
+    <div class="cd">
+    <a href="/music/Dream-Blue/index.html">
+      <div class="info">
+        <div class="circle">
+          <img class="avater" src="/images/Dream-Blue.jpg"><img>
+        </div>
+      </div>
+    </a>
+    <div class="content">
+      <div class="name"><font color="#2F82C4" size="3">『Dream-Blue』</font></div>
+      <div class="description"><font color="#2F82C4">Endorfin.</font></div>
+    </div>
+  </div>
 
 
   <div id="ツユ">
@@ -191,69 +204,3 @@ featured: true
       <div class="description"><font color="#326EAA">ツユ</font></div>
     </div>
   </div>
-
-
-  <div id="三月のパンタシア">
-    <h3>
-      三月のパンタシア
-    </h3>
-  </div>
-
-  <div class="cd">
-    <a href="/music/ガールズブルー・ハッピーサッド/index.html">
-      <div class="info">
-        <div class="circle">
-          <img class="avater" src="/images/ガールズブルー・ハッピーサッド.jpg"><img>
-        </div>
-      </div>
-    </a>
-    <div class="content">
-      <div class="name"><font color="#29B5C4" size="3">『ガールズブルー・ハッピーサッド』</font></div>
-      <div class="description"><font color="#29B5C4">三月のパンタシア</font></div>
-    </div>
-  </div>
-
-
-  <div id="明透">
-    <h3>
-      明透
-    </h3>
-  </div>
-
-  <div class="cd">
-    <a href="/music/twilight/index.html">
-      <div class="info">
-        <div class="circle">
-          <img class="avater" src="/images/twilight.jpg"><img>
-        </div>
-      </div>
-    </a>
-    <div class="content">
-      <div class="name"><font color="#DEB1DE" size="3">『twilight』</font></div>
-      <div class="description"><font color="#DEB1DE">明透</font></div>
-    </div>
-  </div>
-
-
-  <div id="DAZBEE">
-    <h3>
-      DAZBEE
-    </h3>
-  </div>
-
-  <div class="cd">
-    <a href="/music/眠らない夢/index.html">
-      <div class="info">
-        <div class="circle">
-          <img class="avater" src="/images/眠らない夢.jpg"><img>
-        </div>
-      </div>
-    </a>
-    <div class="content">
-      <div class="name"><font color="#8DB5B8" size="3">『眠らない夢』</font></div>
-      <div class="description"><font color="#8DB5B8">DAZBEE</font></div>
-    </div>
-  </div>
-</div>
-
-
