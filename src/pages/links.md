@@ -31,7 +31,7 @@ layout: ../layouts/LinksLayout.astro
 
 <a href="https://subilan.win">
 <div class="link" style="background-color: #009688">
-<img class="avater" src="https://fnmdp.oss-cn-beijing.aliyuncs.com/assets/avatar-big.jpg"></img>
+<img class="avater" src="https://subilan.win/avatar.jpg"></img>
 <div class="content">
 <span class="name" style="color: rgb(235, 171, 87)">Subilan's Blog</span>
 <span class="description" style="color: rgb(235, 171, 87)">Satellite yourself</span>
