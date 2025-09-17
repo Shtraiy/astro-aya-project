@@ -41,7 +41,7 @@ layout: ../layouts/LinksLayout.astro
 
 <a href="https://seamain.org">
 <div class="link">
-<img class="avater" src="https://jsd.cdn.zzko.cn/gh/Seamain/My-blog@master/src/images/icon.png"></img>
+<img class="avater" src="https://youke1.picui.cn/s1/2025/09/16/68c96bbd9d09c.png"></img>
 <div class="content">
 <span class="name">Seamain</span>
 <span class="description">普通的Blog</span>
