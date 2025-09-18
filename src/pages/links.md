@@ -7,7 +7,7 @@ layout: ../layouts/LinksLayout.astro
 
 > 友情链接（简称“友链”）是指两个网站之间相互放置对方网站链接的行为。这种做法的主要目的是通过互相推荐，增加彼此网站的访问量和搜索引擎排名。友情链接通常位于网站的首页或专门的友情链接页面，是一种常见的网络推广手段。它可以提高网站的曝光率、增加流量，并有助于提升网站在搜索引擎中的权重。
 
-本页为友链页，以下是一些满足本站要求的博客。
+本页为友链页，以下是本站友链
 
 <a href="https://jimmy0w0.me/">
 <div class="link">
@@ -19,15 +19,6 @@ layout: ../layouts/LinksLayout.astro
 </div>
 </a>
 
-<a href="https://blog.apci.top">
-<div class="link" style="background-color: #2390de">
-<img class="avater" src="https://i.328888.xyz/2023/01/15/2nx3c.png"></img>
-<div class="content">
-<span class="name" style="color: rgb(255,255,255)">LINXの橘味气泡水店</span>
-<span class="description" style="color: rgb(255,255,255)">人生不如意事十之九八,可与人言者并无二三</span>
-</div>
-</div>
-</a>
 
 <a href="https://subilan.win">
 <div class="link" style="background-color: #009688">
