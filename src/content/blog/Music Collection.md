@@ -28,7 +28,7 @@ featured: true
     <a href="/music/Piece-of-Cipher/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/Piece-of-Cipher+.png"><img>
+          <img class="avatar" src="/images/Piece-of-Cipher+.png"><img>
         </div>
       </div>
     </a>
@@ -41,7 +41,7 @@ featured: true
     <a href="/music/REVERSUS/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/REVERSUS.jpg"><img>
+          <img class="avatar" src="/images/REVERSUS.jpg"><img>
         </div>
       </div>
     </a>
@@ -54,7 +54,7 @@ featured: true
     <a href="/music/SWANSONG/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/SWANSONG.jpg"><img>
+          <img class="avatar" src="/images/SWANSONG.jpg"><img>
         </div>
       </div>
     </a>
@@ -75,7 +75,7 @@ featured: true
     <a href="/music/Proud-Echoes/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/Proud-Echoes.jpg"><img>
+          <img class="avatar" src="/images/Proud-Echoes.jpg"><img>
         </div>
       </div>
     </a>
@@ -96,7 +96,7 @@ featured: true
     <a href="/music/COLOURS-01/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/COLOURS.01.jpg"><img>
+          <img class="avatar" src="/images/COLOURS.01.jpg"><img>
         </div>
       </div>
     </a>
@@ -109,7 +109,7 @@ featured: true
     <a href="/music/COLOURS-02/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/COLOURS.02.jpg"><img>
+          <img class="avatar" src="/images/COLOURS.02.jpg"><img>
         </div>
       </div>
     </a>
@@ -122,7 +122,7 @@ featured: true
     <a href="/music/COLOURS-03/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/COLOURS.03.jpg"><img>
+          <img class="avatar" src="/images/COLOURS.03.jpg"><img>
         </div>
       </div>
     </a>
@@ -135,7 +135,7 @@ featured: true
     <a href="/music/COLOURS-04/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/COLOURS.04.jpg"><img>
+          <img class="avatar" src="/images/COLOURS.04.jpg"><img>
         </div>
       </div>
     </a>
@@ -148,7 +148,7 @@ featured: true
     <a href="/music/Dream-Blue/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/Dream-Blue.jpg"><img>
+          <img class="avatar" src="/images/Dream-Blue.jpg"><img>
         </div>
       </div>
     </a>
@@ -169,7 +169,7 @@ featured: true
     <a href="/music/やっぱり雨は降るんだね/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/やっぱり雨は降るんだね.jpg"><img>
+          <img class="avatar" src="/images/やっぱり雨は降るんだね.jpg"><img>
         </div>
       </div>
     </a>
@@ -182,7 +182,7 @@ featured: true
     <a href="/music/アンダーメンタリティ/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/アンダーメンタリティ.jpg"><img>
+          <img class="avatar" src="/images/アンダーメンタリティ.jpg"><img>
         </div>
       </div>
     </a>
@@ -195,7 +195,7 @@ featured: true
     <a href="/music/それでも雨は降るんだね/index.html">
       <div class="info">
         <div class="circle">
-          <img class="avater" src="/images/それでも雨は降るんだね.jpg"><img>
+          <img class="avatar" src="/images/それでも雨は降るんだね.jpg"><img>
         </div>
       </div>
     </a>

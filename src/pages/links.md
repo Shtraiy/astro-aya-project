@@ -7,11 +7,13 @@ layout: ../layouts/LinksLayout.astro
 
 > 友情链接（简称“友链”）是指两个网站之间相互放置对方网站链接的行为。这种做法的主要目的是通过互相推荐，增加彼此网站的访问量和搜索引擎排名。友情链接通常位于网站的首页或专门的友情链接页面，是一种常见的网络推广手段。它可以提高网站的曝光率、增加流量，并有助于提升网站在搜索引擎中的权重。
 
-本页为友链页，以下是本站友链
+## 本页为友链页，以下是本站友链
+
+
 
 <a href="https://jimmy0w0.me/">
 <div class="link">
-<img class="avater" src="https://jimmy0w0.me/favicon.svg"></img>
+<img class="avatar" src="https://jimmy0w0.me/favicon.svg"></img>
 <div class="content">
 <span class="name">Jimmy0w0</span>
 <span class="description">Babel Tower</span>
@@ -22,7 +24,7 @@ layout: ../layouts/LinksLayout.astro
 
 <a href="https://subilan.win">
 <div class="link" style="background-color: #009688">
-<img class="avater" src="https://subilan.win/avatar.jpg"></img>
+<img class="avatar" src="https://subilan.win/avatar.jpg"></img>
 <div class="content">
 <span class="name" style="color: rgb(235, 171, 87)">Subilan's Blog</span>
 <span class="description" style="color: rgb(235, 171, 87)">Satellite yourself</span>
@@ -32,7 +34,7 @@ layout: ../layouts/LinksLayout.astro
 
 <a href="https://seamain.org">
 <div class="link">
-<img class="avater" src="https://youke1.picui.cn/s1/2025/09/16/68c96bbd9d09c.png"></img>
+<img class="avatar" src="https://youke1.picui.cn/s1/2025/09/16/68c96bbd9d09c.png"></img>
 <div class="content">
 <span class="name">Seamain</span>
 <span class="description">普通的Blog</span>
@@ -42,15 +44,15 @@ layout: ../layouts/LinksLayout.astro
 
 ## 友链申请
 
-在申请友链之前，请注意您是否满足以下需求：
+在申请友链之前，请确保您是否满足以下需求：
 
-> 1.申请人的网站需要有一篇以上的原创文章。
+> 1.申请者的网站内容需健康合法，不得包含违反法律法规或不良信息。
 
-> 2.申请人的网站文章不能存在大量剽窃他人成果的情况。
+> 2.申请者的网站应该包含大量自己原创的内容。
 
-> 3.友链的申请是相互的，不应该出现单方面添加友链的情况。
+> 4.友链的申请是相互的，不应出现单方面添加友链的情况。
 
-> 4.长期失效的域名在联系站长无果后视为弃用，联系的一方有权移除友链。
+> 5.长期失效的域名视为弃用，在联系站长无果后联系方有权移除友链。
 
 如果您觉得您已经满足以上需求，可以通过如下的方式联系到我交换友链
 
@@ -99,7 +101,7 @@ layout: ../layouts/LinksLayout.astro
         border: 0.5px solid rgba(0,0,0,0.3);
         margin-right: -4px;
         margin-bottom: 5px;
-        .avater {
+        .avatar {
             display: inline-flex;
             border-radius: 50%;
             width: 72px;
