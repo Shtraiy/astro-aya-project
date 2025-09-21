@@ -159,6 +159,12 @@ export const SOCIALS: SocialObjects = [
     active: true,
   },
   {
+    name: "Bilibili",
+    href: "https://space.bilibili.com/30547965",
+    linkTitle: `${SITE.title} on Bilibili`,
+    active: true,
+  },
+  {
     name: "Clock",
     href: "https://timer.wynio.pw/",
     linkTitle: `${SITE.title} on Clock`,

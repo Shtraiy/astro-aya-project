@@ -10,7 +10,7 @@ layout: ../layouts/AboutLayout.astro
 
 最喜欢的专辑是**AD:PIANO V**
 
-会不定期更新一些自己的近况以及对一些热点的拙见
+会不定期更新一些自己的近况以及对一些热点的拙见，如果有勇气的话就往下继续看吧
 
 并非从事软件相关行业，只是稍微懂一点皮毛前端知识
 
@@ -36,4 +36,4 @@ layout: ../layouts/AboutLayout.astro
 
 # 关于PGP
 
-[个人PGP公钥](/pgp/pgp/index.html)
+[个人PGP公钥](/pgp/pgp/index.html)，不知道有多久没用了，永远不会过期
