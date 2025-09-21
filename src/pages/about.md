@@ -6,27 +6,13 @@ layout: ../layouts/AboutLayout.astro
 
 ![Aitsuki Nakuru](/css/logo.png)
 
-目前在读大学生，有一点点前端的知识
+喜欢听歌，最喜欢的唱见是**藍月なくる**，就连头像也是
 
-### 喜欢听歌，目前喜欢的唱见及团体有
+最喜欢的专辑是**AD:PIANO V**
 
-+ 藍月なくる
-+ Sennzai
-+ Feryquitous
-+ Such
-+ Sayuri
-+ 花谱
-+ EGOIST
-+ Risa Yuzuki
-+ 明透
-+ EMA
-+ Empty Old City
+会不定期更新一些自己的近况以及对一些热点的拙见
 
-### 目前喜欢的专辑系列有
-
-+ AD:PIANO V
-+ 少女病系列
-+ CYGNUS COLLECTION SS2016 'SWANSONG'
+并非从事软件相关行业，只是稍微懂一点皮毛前端知识
 
 # 关于本站
 
@@ -34,16 +20,19 @@ layout: ../layouts/AboutLayout.astro
 
 不定期更新
 
-本站标题为Nocturne(夜之曲)，出自专辑AD:Piano V Noir
+本站标题为Nocturne(夜之曲)，出自专辑**AD:Piano V Noir**，没有什么特别的意思，只是觉得这个名字比较意思
 
-描述为The Encyclopedia of Ivory Tower
+描述为The Encyclopedia of Ivory Tower，寓意为“象牙塔百科全书”
 
 [Ivory Tower](https://zh.wikipedia.org/wiki/%E8%B1%A1%E7%89%99%E5%A1%94)，出自圣经，指的是“脱离现实生活的大学等学术机构”
+
+灵感来源自小众宝藏游戏《恶魔之魂》中的一个地点，拉多维亚的象牙塔
+
+本站实际内容与其说是紧密相关，更可以说是毫无关联
 
 曾用域名*wynio.online*
 
 本站或将长期使用*wynio.pw*这个域名
-
 
 # 关于PGP
 
