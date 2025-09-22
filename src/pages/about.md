@@ -22,7 +22,7 @@ layout: ../layouts/AboutLayout.astro
 
 不定期更新
 
-本站标题为Nocturne(夜之曲)，出自专辑**AD:Piano V Noir**，没有什么特别的意思，只是觉得这个名字比较意思
+本站标题为Nocturne(夜之曲)，出自专辑**AD:Piano V Noir**，没有什么特别的意思，只是觉得这个名字比较有意思
 
 描述为The Encyclopedia of Ivory Tower，寓意为“象牙塔百科全书”
 
