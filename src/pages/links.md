@@ -34,7 +34,7 @@ layout: ../layouts/LinksLayout.astro
 
 <a href="https://seamain.org">
 <div class="link">
-<img class="avatar" src="https://youke1.picui.cn/s1/2025/09/16/68c96bbd9d09c.png"></img>
+<img class="avatar" src="https://pub-524ce7a864bb45428804d1b8a36d5de7.r2.dev/41C3EE1A37915E8E63F62929F89287B1.jpg"></img>
 <div class="content">
 <span class="name">Seamain</span>
 <span class="description">普通的Blog</span>
