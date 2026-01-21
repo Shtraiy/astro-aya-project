@@ -19,19 +19,19 @@ description: "本文记载了STM32单片机的开发环境配置"
 
 ## 环境搭建
 
-### 准备
+### 1、前置
 
 1、在搭建STM32的SPL开发环境之前，请确保你拥有一整套STM32的驱动文件
 
 2、正确安装并能正常运行keil软件
 
-### 1、初始化项目
+### 2、初始化项目
 
 新建一个项目目录，目录下应该有如下结构
 
 ![结构](https://s21.ax1x.com/2025/01/11/pEPuZ8K.png "结构")
 
-### 2、划分项目结构
+### 3、划分项目结构
 
 打开keil，选定project路径新建一个项目，然后将STM32的启动文件和驱动文件分别移动进CMSIS和LIB文件夹
 
@@ -43,7 +43,7 @@ description: "本文记载了STM32单片机的开发环境配置"
 
 ![LIB](https://s21.ax1x.com/2025/01/11/pEPuuKe.png "LIB")
 
-### 3、添加项目环境
+### 4、添加项目环境
 
 在keil中为新建的项目添加环境
 
@@ -57,7 +57,7 @@ CMSIS需要添加目录下的所有.c文件以及.s文件
 
 LIB同理，需要添加目录下所有的.c文件
 
-### 4、添加头文件目录
+### 5、添加头文件目录
 
 为项目添加C/C++头文件目录
 
@@ -73,7 +73,7 @@ LIB同理，需要添加目录下所有的.c文件
 
 随后退出保存，STM32基本的keil开发环境就搭建完成了
 
-### 5、项目结构的介绍
+### 6、项目结构的介绍
 
 在根据以上步骤初始化一个正常的STM32开发项目后，就可以正常进行编写代码了
 
@@ -95,7 +95,7 @@ USER目录的作用是存放开发者自定义的功能函数，便于区分厂�
 
 project目录的作用是放置keil生成的工程文件，keil4生成的是.uvproj，keil5生成的是.uvprojx
 
-### 6、关于使用其他编辑器开发STM32的配置方法
+### 7、使用Nvim+cmake搭建STM32开发环境的配置方法
 
 由于我最近一直在用nvim编辑器，所以在搭建了keil环境后便开始思考怎么用nvim写代码用keil进行调试
 
@@ -127,7 +127,6 @@ add_executable(main project/main.c)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ```
 
-由于我对于CMake工具的接触也不算多，我并不清楚为什么正常初始化项目后会出现不生成compile_commands.json的问题
 
 在进行项目初始化前记得在project下新建一个main.c文件
 
@@ -147,8 +146,9 @@ int main(void) {
 
 ```
 
+由于我对于CMake工具的接触也不算多，我并不清楚为什么正常初始化项目后会出现不生成compile_commands.json的问题
 
-因此在初始化cmake目录的时候执行下面这一条
+所以在初始化cmake目录的时候执行下面这一条
 
 ```cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B build```
 
@@ -156,3 +156,4 @@ int main(void) {
 
 执行完以上操作后就能够在nvim正常编写.c的代码了
 
+同时能够正确使用Lsp，实现Nvim编辑Keil进行烧录程序
