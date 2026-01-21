@@ -7,7 +7,7 @@ tags:
 pubDatetime: 2025-1-11 8:27:44
 description: "本文记载了STM32单片机的开发环境配置"
 ---
-# 本文记载了有关STM32单片机的Keil开发环境搭建过程
+# STM32单片机的Keil开发环境搭建
 
 本文使用的keil版本是v5.33，安装教程就不一一赘述了
 
@@ -128,6 +128,26 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ```
 
 由于我对于CMake工具的接触也不算多，我并不清楚为什么正常初始化项目后会出现不生成compile_commands.json的问题
+
+在进行项目初始化前记得在project下新建一个main.c文件
+
+测试程序如下：
+
+```
+#include "stm32f10x.h"       // Device header
+#include "gpio.h"
+
+void delay(int n) {
+	while(n--);
+}
+
+int main(void) {
+	while(1) {
+	}
+}
+
+```
+
 
 因此在初始化cmake目录的时候执行下面这一条
 
