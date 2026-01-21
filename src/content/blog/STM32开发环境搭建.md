@@ -43,6 +43,12 @@ description: "本文记载了STM32单片机的开发环境配置"
 
 ![LIB](https://s21.ax1x.com/2025/01/11/pEPuuKe.png "LIB")
 
+将里面的src目录和inc目录全部复制到LIB里
+
+USER存放自定义功能代码，同样包括inc和src，用于存放.h和.c
+
+project存放keil的工程文件和main.c
+
 ### 4、添加项目环境
 
 在keil中为新建的项目添加环境
@@ -68,6 +74,8 @@ LIB同理，需要添加目录下所有的.c文件
 ![inc](https://s21.ax1x.com/2025/01/11/pEPKEZj.png "inc")
 
 添加完毕后在同样的选项下找到Preprocessor Symbols，添加宏定义
+
+**USE_STDPERIPH_DRIVER**
 
 ![宏定义](https://s21.ax1x.com/2025/01/11/pEPKkLQ.png "宏定义")
 
@@ -103,7 +111,8 @@ project目录的作用是放置keil生成的工程文件，keil4生成的是.uvp
 
 用来管理.c的项目相当合适
 
-下面是CMakeLists.txt的配置。
+下面是CMakeLists.txt的配置,根据上面的项目结构编写，可以直接使用
+
 
 ```
 cmake_minimum_required(VERSION 3.28)
