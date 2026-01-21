@@ -135,7 +135,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ```
 #include "stm32f10x.h"       // Device header
-#include "gpio.h"
 
 void delay(int n) {
 	while(n--);
