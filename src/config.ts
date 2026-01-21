@@ -170,4 +170,10 @@ export const SOCIALS: SocialObjects = [
     linkTitle: `${SITE.title} on Clock`,
     active: true,
   },
+  {
+      name: "Linux",
+      href: "https://lcm.wynio.pw/",
+          linkTitle: `${SITE.title} on Linux`,
+      active: true,
+  }
 ];
