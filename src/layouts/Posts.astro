@@ -16,9 +16,9 @@ export interface Props {
 const { page } = Astro.props;
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`文章 | ${SITE.title}`}>
   <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+    <Main pageTitle="📖文章" pageDesc="我笔下的所有字句。">
     <ul>
       {
         page.data.map(({ data, slug }) => (

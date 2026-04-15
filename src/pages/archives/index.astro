@@ -16,24 +16,34 @@ if (!SITE.showArchives) {
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 const MonthMap: Record<string, string> = {
-  "1": "January",
-  "2": "February",
-  "3": "March",
-  "4": "April",
-  "5": "May",
-  "6": "June",
-  "7": "July",
-  "8": "August",
-  "9": "September",
-  "10": "October",
-  "11": "November",
-  "12": "December",
+  "1": "孟春",
+  "2": "仲春",
+  "3": "季春",
+  "4": "孟夏",
+  "5": "仲夏",
+  "6": "季夏",
+  "7": "孟秋",
+  "8": "仲秋",
+  "9": "季秋",
+  "10": "孟冬",
+  "11": "仲冬",
+  "12": "季冬",
 };
+
+// 新增一个工具函数：将阿拉伯数字转为中文数字（支持到99，写博客一般单月足够用了）
+function getChineseNumber(num: number): string {
+  const chars = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  if (num < 10) return chars[num];
+  if (num === 10) return '十';
+  if (num < 20) return '十' + (num % 10 === 0 ? '' : chars[num % 10]);
+  if (num < 100) return chars[Math.floor(num / 10)] + '十' + (num % 10 === 0 ? '' : chars[num % 10]);
+  return num.toString(); // 超过99的做个兜底，直接返回数字
+}
 ---
 
-<Layout title={`Archives | ${SITE.title}`}>
+<Layout title={`归档 | ${SITE.title}`}>
   <Header activeNav="archives" />
-  <Main pageTitle="Archives" pageDesc="All the articles I've archived.">
+  <Main pageTitle="Archives" pageDesc="所有已归档文章">
     {
       Object.entries(
         getPostsByGroupCondition(posts, post =>
@@ -55,8 +65,10 @@ const MonthMap: Record<string, string> = {
               .map(([month, monthGroup]) => (
                 <div class="flex flex-col sm:flex-row">
                   <div class="mt-6 min-w-36 text-lg sm:my-6">
-                    <span class="font-bold">{MonthMap[month]}</span>
-                    <sup class="text-xs">{monthGroup.length}</sup>
+                    {/* 主要修改这里：去掉了 <sup> 标签，将数量拼接进了同一个带有 font-bold 的 span 中 */}
+                    <span class="font-bold">
+                      {MonthMap[month]}-{getChineseNumber(monthGroup.length)}篇
+                    </span>
                   </div>
                   <ul>
                     {monthGroup.map(({ data, slug }) => (

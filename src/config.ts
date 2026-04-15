@@ -3,9 +3,9 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://wynio.pw", // replace this with your deployed domain
   author: "Resalia",
-  profile: "https://wynio.about",
-  desc: "The Encyclopedia of Ivory Tower.",
-  title: "Nocturne",
+  profile: "https://wynio/about",
+  desc: "Welcome to silent cage.",
+  title: "SilentCage",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerIndex: 3,
