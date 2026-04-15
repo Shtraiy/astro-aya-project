@@ -9,133 +9,130 @@ layout: ../layouts/LinksLayout.astro
 
 ## 本页为友链页，以下是本站友链
 
-
-
-<a href="https://jimmy0w0.me/">
-<div class="link">
-<img class="avatar" src="https://jimmy0w0.me/favicon.svg"></img>
-<div class="content">
-<span class="name">Jimmy0w0</span>
-<span class="description">Babel Tower</span>
+<div class="link-container">
+  <!-- 友链卡片 1 -->
+  <a class="link-card" href="https://jimmy0w0.me/" target="_blank">
+    <img class="avatar" src="https://jimmy0w0.me/favicon.svg" alt="Jimmy0w0">
+    <div class="content">
+      <span class="name">Jimmy0w0</span>
+      <span class="description">Babel Tower</span>
+    </div>
+  </a>
+  <!-- 友链卡片 2 -->
+  <a class="link-card" href="https://subilan.win" target="_blank" style="background-color: #009688;">
+    <img class="avatar" src="https://subilan.win/avatar.jpg" alt="Subilan">
+    <div class="content">
+      <span class="name" style="color: rgb(235, 171, 87)">Subilan's Blog</span>
+      <span class="description" style="color: rgb(235, 171, 87)">Satellite yourself</span>
+    </div>
+  </a>
+  <!-- 友链卡片 3 -->
+  <a class="link-card" href="https://seamain.org" target="_blank">
+    <img class="avatar" src="https://pub-524ce7a864bb45428804d1b8a36d5de7.r2.dev/41C3EE1A37915E8E63F62929F89287B1.jpg" alt="Seamain">
+    <div class="content">
+      <span class="name">Seamain</span>
+      <span class="description">普通的Blog</span>
+    </div>
+  </a>
 </div>
-</div>
-</a>
-
-
-<a href="https://subilan.win">
-<div class="link" style="background-color: #009688">
-<img class="avatar" src="https://subilan.win/avatar.jpg"></img>
-<div class="content">
-<span class="name" style="color: rgb(235, 171, 87)">Subilan's Blog</span>
-<span class="description" style="color: rgb(235, 171, 87)">Satellite yourself</span>
-</div>
-</div>
-</a>
-
-<a href="https://seamain.org">
-<div class="link">
-<img class="avatar" src="https://pub-524ce7a864bb45428804d1b8a36d5de7.r2.dev/41C3EE1A37915E8E63F62929F89287B1.jpg"></img>
-<div class="content">
-<span class="name">Seamain</span>
-<span class="description">普通的Blog</span>
-</div>
-</div>
-</a>
 
 ## 友链申请
 
 在申请友链之前，请确保阅读过以下须知：
 
-> 1.网站的内容必须健康合法，不得违反法律法规或包含不良信息
-
-> 2.网站内容应以原创为主，严禁包含剽窃、洗稿或极其劣质的采集内容
-
-> 3.网站若转载他人文章，必须严格遵守原作者协议并明确标注出处
-
-> 4.友链申请基于互惠原则，申请前请先在贵站添加本站链接
-
+> 1.网站的内容必须健康合法，不得违反法律法规或包含不良信息<br>
+> 2.网站内容应以原创为主，严禁包含剽窃、洗稿或极其劣质的采集内容<br>
+> 3.网站若转载他人文章，必须严格遵守原作者协议并明确标注出处<br>
+> 4.友链申请基于互惠原则，申请前请先在贵站添加本站链接<br>
 > 5.长期无法访问的域名将被暂时移除；若无法联系到博主或长期未恢复，本站有权单方面终止友链
 
-如果您觉得能够接受以上内容，可以通过如下的方式联系到我交换友链
+如果您觉得能够接受以上内容，可以通过如下的方式联系到我交换友链：
 
 + 通过GitHub的项目提交issue联系到我，[点此前往](https://github.com/Shtraiy/Blog)
-
 + 通过邮件联系到我，[点此联系](mailto:resalia@wynio.pw)
 
 在您添加友链的时候可以参考如下信息：
 
-> 网站名称：Nocturne
-
-> 网站介绍：The Encyclopedia of Ivory Tower
-
-> 网站主题色：#fc03e3
-
-> 网站地址：https://wynio.pw
-
+> 网站名称：Nocturne<br>
+> 网站介绍：The Encyclopedia of Ivory Tower<br>
+> 网站主题色：#fc03e3<br>
+> 网站地址：https://wynio.pw<br>
 > 头像：https://wynio.pw/css/logo.png
 
 ## 最后，感谢相遇！
 
 <style>
-#friends {
-    h1 {
-        margin:0 auto;
-        background: linear-gradient(#03c2fc,#e01da9);
-        -webkit-background-clip: text;
-        color: transparent;
-        font-size: 2rem;
-        line-height: 2rem;
-    }
-    h2 {
-        margin:0 auto;
-        background: linear-gradient(#14f7f0,#fa14bd);
-        -webkit-background-clip: text;
-        color: transparent;
-        font-size: 1.5rem;
-    }
+#friends h1 {
+    background: linear-gradient(#ba3453, #a234ba) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+    font-size: 2rem;
+    line-height: 1.2;
+}
 
-    .link {
-        font-size: 1.25rem;
-        line-height: 1.75;
-        display: inline-block;
-        padding: 8px 14px 8px 14px;
-        border-radius: 10px;
-        border: 0.5px solid rgba(0,0,0,0.3);
-        margin-right: -4px;
-        margin-bottom: 5px;
-        .avatar {
-            display: inline-flex;
-            border-radius: 50%;
-            width: 72px;
-            height: 72px;
-            margin: 0;
-            vertical-align: middle;
-        }
-        .content {
-            float: right;
-            flex-direction: column;
-            display: flex;
-            margin: 8px 8px 8px 8px;
-            height: 50%;
-            .name {
-                position: relative;
-                display: inline;
-                margin: 0;
-                text-decoration: none;
-                font-size: 21px;
-                font-color: #555555;
-            }
-            .description {
-                position: relative;
-                text-decoration: none;
-                font-size: 13px;
-            }
-        }
-    }
-    .link:hover {
-        box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
-  }
+#friends h2 {
+    background: linear-gradient(#af34ba, #6334ba) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.link-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; 
+    margin-top: 15px;
+}
+
+.link-card {
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start !important; 
+    text-align: left !important; 
+    width: 300px; 
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.1);
+    text-decoration: none !important; 
+    color: inherit;
+    transition: all 0.3s ease; 
+}
+
+.link-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    transform: translateY(-2px); 
+}
+
+.link-card .avatar {
+    flex-shrink: 0; 
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover; 
+    margin: 0 15px 0 0 !important; 
+}
+
+.link-card .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 这里去掉了 !important，加上了 #friends 增加权重，让你的内联颜色生效 */
+#friends .link-card .name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #555555;
+    margin-bottom: 5px;
+}
+
+#friends .link-card .description {
+    font-size: 0.85rem;
+    color: #888888;
+    line-height: 1.2;
 }
 </style>
-</div>
 
+</div>
