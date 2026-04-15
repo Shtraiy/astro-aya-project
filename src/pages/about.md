@@ -6,31 +6,19 @@ layout: ../layouts/AboutLayout.astro
 
 ![Aitsuki Nakuru](/css/logo.png)
 
-喜欢听歌，最喜欢听**藍月なくる**的歌，就连头像也是**藍月なくる**
+爱好是游戏、电影和番剧，喜欢听歌，最喜欢听**藍月なくる**的歌
 
 最喜欢的专辑是**AD:PIANO V**
 
 最喜欢的游戏系列是《黑暗之魂》系列
 
-会不定期更新一些自己的近况以及对一些热点的拙见，如果有勇气的话就往下继续看吧
-
-并非从事软件相关行业，只是稍微懂一点皮毛前端知识
+会不定期更新一些自己的近况以及对一些技术备忘录形式的笔记
 
 # 关于本站
 
 > 于2020年11月30日正式开始运营
 
-不定期更新
-
-本站标题为Nocturne(夜之曲)，出自专辑**AD:Piano V Noir**，没有什么特别的意思，只是觉得这个名字比较有意思
-
-描述为The Encyclopedia of Ivory Tower，寓意为“象牙塔百科全书”
-
-[Ivory Tower](https://zh.wikipedia.org/wiki/%E8%B1%A1%E7%89%99%E5%A1%94)，出自圣经，指的是“脱离现实生活的大学等学术机构”
-
-灵感来源自小众宝藏游戏《恶魔之魂》中的一个地点，拉多维亚的象牙塔
-
-本站实际内容与其说是紧密相关，更可以说是毫无关联
+SilentCage名字的灵感来源于Endorfin.蓝专的《無言の鳥籠》这首歌
 
 曾用域名*wynio.online*
 
@@ -38,4 +26,4 @@ layout: ../layouts/AboutLayout.astro
 
 # 关于PGP
 
-[个人PGP公钥](/pgp/pgp/index.html)，不知道有多久没用了，永远不会过期
+[个人PGP公钥](/pgp/pgp/index.html)，很久没用了，但是永远不会过期
