@@ -33,4 +33,31 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+const albums = defineCollection({
+  type: "content_layer",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/albums" }),
+  schema: z.object({
+    title: z.string(),
+    artist: z.string(),
+    theme: z.string(),
+    cover: z.string(),
+    date: z.date().optional(),
+    tracks: z.array(
+      z.object({
+        name: z.string(),
+        artist: z.string().optional(),
+        url: z.string(),
+      })
+    ),
+    lyrics: z
+      .array(
+        z.object({
+          time: z.number(),
+          text: z.string(),
+        })
+      )
+      .optional(),
+  }),
+});
+
+export const collections = { blog, albums };

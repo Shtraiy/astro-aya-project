@@ -13,13 +13,22 @@ import LinkButton from "@components/LinkButton.astro";
     <div class="not-found-wrapper">
       <h1>404</h1>
       <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p>Page Not Found</p>
-      <LinkButton
-        href="/"
-        className="my-6 text-lg underline decoration-dashed underline-offset-8"
-      >
-        Go back home
-      </LinkButton>
+      <p>页面未找到</p>
+      <p class="hint">你访问的页面不存在或已被移除</p>
+      <div class="actions">
+        <LinkButton
+          href="/"
+          class="my-6 text-lg underline decoration-dashed underline-offset-8"
+        >
+          返回首页
+        </LinkButton>
+        <LinkButton
+          href="/search/"
+          class="my-6 text-lg underline decoration-dashed underline-offset-8"
+        >
+          搜索文章
+        </LinkButton>
+      </div>
     </div>
   </main>
 
@@ -38,5 +47,11 @@ import LinkButton from "@components/LinkButton.astro";
   }
   .not-found-wrapper p {
     @apply mt-4 text-2xl sm:text-3xl;
+  }
+  .not-found-wrapper .hint {
+    @apply mt-2 text-base opacity-50 sm:text-lg;
+  }
+  .actions {
+    @apply flex gap-6;
   }
 </style>
