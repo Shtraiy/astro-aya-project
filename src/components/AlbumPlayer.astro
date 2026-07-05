@@ -10,11 +10,19 @@ export interface Props {
   cover?: string;
   title?: string;
   artist?: string;
+<<<<<<< HEAD
+=======
+  lyrics?: LyricLine[];  // reserved, not rendered currently
+>>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
 }
 
 const { theme, tracks, cover, title, artist } = Astro.props;
 const pageSize = 7;
 const totalPages = Math.ceil(tracks.length / pageSize);
+<<<<<<< HEAD
+=======
+const DUR_POOL = ["03:25", "04:10", "03:58", "04:33", "03:47", "04:02", "03:15", "04:28"];
+>>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
 ---
 
 <div class="ap-wrapper" style=`--ap-theme: ${theme}`>
@@ -143,10 +151,18 @@ const totalPages = Math.ceil(tracks.length / pageSize);
     const pageSize = parseInt(root.dataset.pageSize) || 7;
     const totalPages = Math.ceil(tracks.length / pageSize);
     const DUR_POOL = ["03:25", "04:10", "03:58", "04:33", "03:47", "04:02", "03:15", "04:28"];
+<<<<<<< HEAD
+=======
+    const MODE_NAMES = ["sequential", "shuffle", "single-repeat", "list-repeat"];
+>>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
 
     let currentPage = 0;
     let currentIndex = -1;
     let isPlaying = false;
+<<<<<<< HEAD
+=======
+    let isDragging = false;
+>>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
     let volume = 0.7;
     let playMode = 0;
     let shuffleOrder = [];
@@ -397,9 +413,17 @@ const totalPages = Math.ceil(tracks.length / pageSize);
       audio.currentTime = pct * audio.duration;
     }
     progressWrap.addEventListener("mousedown", (e) => {
+<<<<<<< HEAD
       seekFromEvent(e);
       document.addEventListener("mousemove", seekFromEvent);
       document.addEventListener("mouseup", () => {
+=======
+      isDragging = true;
+      seekFromEvent(e);
+      document.addEventListener("mousemove", seekFromEvent);
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+>>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
         document.removeEventListener("mousemove", seekFromEvent);
       }, { once: true });
     });
