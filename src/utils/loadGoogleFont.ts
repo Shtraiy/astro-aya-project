@@ -13,6 +13,12 @@ export type FontOptions = {
 // Local cache so fonts are downloaded only once
 const CACHE_DIR = path.join(process.cwd(), "node_modules", ".cache", "fonts");
 
+// satori uses opentype.js under the hood, which only supports ttf / otf / woff1.
+// Google Fonts serves woff2 to modern User-Agents, so we spoof an older UA that
+// only accepts truetype/woff1, forcing Google Fonts to give us a compatible format.
+const FONT_UA =
+  "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
+
 function cachePathFor(url: string): string {
   const hash = crypto.createHash("md5").update(url).digest("hex").slice(0, 8);
   return path.join(CACHE_DIR, `font-${hash}.bin`);
@@ -20,17 +26,15 @@ function cachePathFor(url: string): string {
 
 async function fetchWithTimeout(
   url: string,
-  timeoutMs: number
+  timeoutMs: number,
+  headers?: Record<string, string>
 ): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     return await fetch(url, {
       signal: controller.signal,
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-      },
+      headers: headers ?? {},
     });
   } finally {
     clearTimeout(timer);
@@ -40,6 +44,7 @@ async function fetchWithTimeout(
 /**
  * Try multiple CDN mirrors to fetch the Google Fonts CSS.
  * Falls back to Chinese-accessible mirrors when Google is blocked.
+ * Uses a legacy UA so Google Fonts returns ttf/woff1 URLs (not woff2).
  */
 async function fetchCssFromMirrors(
   font: string,
@@ -56,7 +61,7 @@ async function fetchCssFromMirrors(
 
   for (const { name, url, timeout } of mirrors) {
     try {
-      const res = await fetchWithTimeout(url, timeout);
+      const res = await fetchWithTimeout(url, timeout, { "User-Agent": FONT_UA });
       if (res.ok) {
         console.log(`[OG] Font CSS fetched via ${name} mirror`);
         return await res.text();
@@ -74,13 +79,17 @@ async function loadGoogleFont(
   text: string
 ): Promise<ArrayBuffer> {
   // 1. Get the CSS (which contains the actual font file URL)
+  //    Legacy UA ensures the URL points to ttf/woff, not woff2.
   const css = await fetchCssFromMirrors(font, text);
 
   const resource = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+    /src: url\((.+?)\) format\('(?:opentype|truetype|woff2?|woff)'\)/
   );
 
-  if (!resource) throw new Error("Failed to parse font URL from CSS");
+  if (!resource) {
+    console.warn("[OG] Could not parse font URL from CSS. Raw CSS:", css.slice(0, 300));
+    throw new Error("Failed to parse font URL from CSS");
+  }
 
   const fontUrl = resource[1];
   const cacheFile = cachePathFor(fontUrl);
@@ -94,8 +103,8 @@ async function loadGoogleFont(
     }
   }
 
-  // 3. Fetch the actual font binary (with a longer timeout)
-  const res = await fetchWithTimeout(fontUrl, 12000);
+  // 3. Fetch the actual font binary (legacy UA → compatible format)
+  const res = await fetchWithTimeout(fontUrl, 12000, { "User-Agent": FONT_UA });
 
   if (!res.ok) {
     throw new Error(`Font file download failed (HTTP ${res.status})`);

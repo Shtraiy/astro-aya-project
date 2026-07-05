@@ -77,7 +77,6 @@
     @apply hidden;
   }
 
-<<<<<<< HEAD
   /* ===== Heading anchor link (#) ===== */
   .prose :is(h2, h3, h4, h5, h6) {
     overflow: visible;
@@ -106,8 +105,6 @@
     text-decoration-thickness: 2px;
   }
 
-=======
->>>>>>> c8c1359b3937aaaabc9ad37efcd5b4dec965eb46
   /* width */
   ::-webkit-scrollbar {
     @apply w-3;
