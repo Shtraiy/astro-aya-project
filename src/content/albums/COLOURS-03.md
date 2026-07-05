@@ -1,0 +1,26 @@
+---
+title: "「COLOURS.03 “Redraw”」"
+artist: "Endorfin."
+theme: "#D02B27"
+cover: "/images/COLOURS.03.jpg"
+date: 2024-05-11T16:18:35.000Z
+tracks:
+  - name: "Apricot"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/01%20Apricot.flac"
+  - name: "ペンと林檎とわたし(画笔与苹果与我)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/02%20%E3%83%9A%E3%83%B3%E3%81%A8%E6%9E%97%E6%AA%8E%E3%81%A8%E3%82%8F%E3%81%9F%E3%81%97.flac"
+  - name: "ハートレス・トリコロール"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/03%20%E3%83%8F%E3%83%BC%E3%83%88%E3%83%AC%E3%82%B9%E3%83%BB%E3%83%88%E3%83%AA%E3%82%B3%E3%83%AD%E3%83%BC%E3%83%AB.flac"
+  - name: "ストレンジレッド"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/04%20%E3%82%B9%E3%83%88%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%AC%E3%83%83%E3%83%89.flac"
+  - name: "Untitled Sky"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/05%20Untitled%20Sky.flac"
+  - name: "雷花"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.03%20%E2%80%9CRedraw%E2%80%9D/06%20%E9%9B%B7%E8%8A%B1.flac"
+---

@@ -16,11 +16,13 @@ const { page } = Astro.props;
       <LinkButton
         disabled={!page.url.prev}
         href={page.url.prev as string}
-        className={`mr-4 select-none ${page.url.prev ? "" : "disabled"}`}
+        className={`mr-4 select-none inline-flex items-center gap-1 ${page.url.prev ? "" : "disabled"}`}
         ariaLabel="Previous"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" viewBox="0 0 24 24"
+          class="h-5 w-5"
           class:list={[{ "disabled-svg": !page.url.prev }]}
         >
           <path d="M12.707 17.293 8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z" />
@@ -31,12 +33,14 @@ const { page } = Astro.props;
       <LinkButton
         disabled={!page.url.next}
         href={page.url.next as string}
-        className={`mx-4 select-none ${page.url.next ? "" : "disabled"}`}
+        className={`mx-4 select-none inline-flex items-center gap-1 ${page.url.next ? "" : "disabled"}`}
         ariaLabel="Next"
       >
         下一篇
         <svg
           xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" viewBox="0 0 24 24"
+          class="h-5 w-5"
           class:list={[{ "disabled-svg": !page.url.next }]}
         >
           <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
