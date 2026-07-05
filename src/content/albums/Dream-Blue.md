@@ -1,0 +1,26 @@
+---
+title: "「Dream-Blue」"
+artist: "Endorfin."
+theme: "#2F82C4"
+cover: "/images/Dream-Blue.jpg"
+date: 2025-04-28T18:00:00.000Z
+tracks:
+  - name: "空白少女"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-01.%20Endorfin.%20-%20%E7%A9%BA%E7%99%BD%E5%B0%91%E5%A5%B3.flac"
+  - name: "Focus on"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-02.%20Endorfin.%20-%20Focus%20on.flac"
+  - name: "ゴースト・マキアート"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-03.%20Endorfin.%20-%20%E3%82%B4%E3%83%BC%E3%82%B9%E3%83%88%E3%83%BB%E3%83%9E%E3%82%AD%E3%82%A2%E3%83%BC%E3%83%88.flac"
+  - name: "Draw World!"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-04.%20Endorfin.%20-%20Draw%20World!.flac"
+  - name: "タイニーソング"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-05.%20Endorfin.%20-%20%E3%82%BF%E3%82%A4%E3%83%8B%E3%83%BC%E3%82%BD%E3%83%B3%E3%82%B0.flac"
+  - name: "ドリームブルー"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music3/raw/refs/heads/main/Dream%20Blue/1-06.%20Endorfin.%20-%20%E3%83%89%E3%83%AA%E3%83%BC%E3%83%A0%E3%83%96%E3%83%AB%E3%83%BC.flac"
+---

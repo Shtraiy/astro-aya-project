@@ -1,0 +1,715 @@
+---
+interface Track {
+  name: string;
+  artist?: string;
+  url: string;
+}
+export interface Props {
+  theme: string;
+  tracks: Track[];
+  cover?: string;
+  title?: string;
+  artist?: string;
+  lyrics?: LyricLine[];  // reserved, not rendered currently
+}
+
+const { theme, tracks, cover, title, artist } = Astro.props;
+const pageSize = 7;
+const totalPages = Math.ceil(tracks.length / pageSize);
+const DUR_POOL = ["03:25", "04:10", "03:58", "04:33", "03:47", "04:02", "03:15", "04:28"];
+---
+
+<div class="ap-wrapper" style=`--ap-theme: ${theme}`>
+  <div
+    id="album-player"
+    class="ap-root"
+    data-tracks={JSON.stringify(tracks)}
+    data-page-size={pageSize}
+  >
+    <!-- 封面 -->
+    <div class="ap-cover">
+      {cover ? (
+        <img class="ap-cover-img" src={cover} alt={title ?? ""} loading="lazy" />
+      ) : (
+        <div class="ap-cover-placeholder" aria-hidden="true">♫</div>
+      )}
+    </div>
+
+    <!-- 专辑信息 -->
+    {title && <h2 class="ap-album-title">{title}</h2>}
+    {artist && <p class="ap-album-artist">{artist}</p>}
+
+    <!-- 曲目列表 -->
+    <div class="ap-list" id="ap-list"></div>
+
+    {totalPages > 1 && (
+      <div class="ap-pager" id="ap-pager">
+        <button id="ap-prev" class="ap-pg-btn" disabled>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span id="ap-page-info" class="ap-pg-info">1 / {totalPages}</span>
+        <button id="ap-next" class="ap-pg-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    )}
+
+    <!-- 进度条 -->
+    <div class="ap-bar-row">
+      <span class="ap-time-l" id="ap-time-l">00:00</span>
+      <div class="ap-progress-wrap" id="ap-progress-wrap">
+        <div class="ap-progress-bg"></div>
+        <div class="ap-progress-fill" id="ap-progress"></div>
+        <div class="ap-progress-thumb" id="ap-thumb"></div>
+      </div>
+      <span class="ap-time-r" id="ap-time-r">00:00</span>
+    </div>
+
+    <!-- 控制栏 -->
+    <div class="ap-ctrl">
+      <!-- 播放模式 -->
+      <button id="ap-mode" class="ap-ctrl-btn" title="播放模式">
+        <!-- 顺序播放 -->
+        <svg id="ap-mode-seq" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision">
+          <line x1="4" y1="6" x2="14" y2="6"/>
+          <polyline points="14 3 20 6 14 9"/>
+          <line x1="4" y1="12" x2="14" y2="12"/>
+          <line x1="4" y1="18" x2="14" y2="18"/>
+        </svg>
+        <!-- 随机播放 -->
+        <svg id="ap-mode-shuffle" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision" style="display:none">
+          <polyline points="16 3 21 3 21 8"/>
+          <line x1="4" y1="20" x2="21" y2="3"/>
+          <polyline points="21 16 21 21 16 21"/>
+          <line x1="15" y1="15" x2="21" y2="21"/>
+          <line x1="4" y1="4" x2="9" y2="9"/>
+        </svg>
+        <!-- 单曲循环 -->
+        <svg id="ap-mode-repeat1" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision" style="display:none">
+          <polyline points="17 2 21 6 17 10"/>
+          <path d="M3 12v-2a5 5 0 015-5h12"/>
+          <polyline points="7 22 3 18 7 14"/>
+          <path d="M21 12v2a5 5 0 01-5 5H4"/>
+          <text x="10" y="14" font-size="8" font-weight="700" fill="currentColor" stroke="none" text-anchor="middle">1</text>
+        </svg>
+        <!-- 列表循环 -->
+        <svg id="ap-mode-repeat" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision" style="display:none">
+          <polyline points="17 2 21 6 17 10"/>
+          <path d="M3 12v-2a5 5 0 015-5h12"/>
+          <polyline points="7 22 3 18 7 14"/>
+          <path d="M21 12v2a5 5 0 01-5 5H4"/>
+        </svg>
+      </button>
+
+      <!-- 播放控制 -->
+      <div class="ap-ctrl-center">
+        <button id="ap-prev-track" class="ap-ctrl-btn" title="上一首">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" shape-rendering="geometricPrecision"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button id="ap-play" class="ap-btn-play" title="播放">
+          <svg id="ap-icon-play" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" shape-rendering="geometricPrecision"><path d="M7 5v14l12-7z"/></svg>
+          <svg id="ap-icon-pause" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" style="display:none" shape-rendering="geometricPrecision"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg>
+        </button>
+        <button id="ap-next-track" class="ap-ctrl-btn" title="下一首">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" shape-rendering="geometricPrecision"><path d="M6 18l8.5-6L6 6v12zm10-12v12h2V6z"/></svg>
+        </button>
+      </div>
+
+      <!-- 音量 -->
+      <div class="ap-vol">
+        <button id="ap-vol-btn" class="ap-ctrl-btn" title="静音">
+          <!-- 有音量 -->
+          <svg id="ap-vol-on" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" shape-rendering="geometricPrecision">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.5 4.5 0 002.5-3.5zM14 4.5v2.1c2.9.9 5 3.5 5 6.4s-2.1 5.5-5 6.4v2.1c4-.9 7-4.5 7-8.5s-3-7.6-7-8.5z"/>
+          </svg>
+          <!-- 静音 -->
+          <svg id="ap-vol-mute" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="display:none" shape-rendering="geometricPrecision">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13 3l4-4m0 4l-4-4"/>
+          </svg>
+        </button>
+        <input type="range" id="ap-vol-slider" class="ap-vol-slider" min="0" max="100" value="70" />
+      </div>
+    </div>
+
+    <audio id="ap-audio" preload="auto"></audio>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    const root = document.getElementById("album-player");
+    if (!root || root._apInited) return;
+    root._apInited = true;
+
+    const tracks = JSON.parse(root.dataset.tracks || "[]");
+    const pageSize = parseInt(root.dataset.pageSize) || 7;
+    const totalPages = Math.ceil(tracks.length / pageSize);
+    const DUR_POOL = ["03:25", "04:10", "03:58", "04:33", "03:47", "04:02", "03:15", "04:28"];
+    const MODE_NAMES = ["sequential", "shuffle", "single-repeat", "list-repeat"];
+
+    let currentPage = 0;
+    let currentIndex = -1;
+    let isPlaying = false;
+    let isDragging = false;
+    let volume = 0.7;
+    let playMode = 0;
+    let shuffleOrder = [];
+    let shufflePos = 0;
+
+    const durations = new Array(tracks.length).fill(NaN);
+
+    const listEl = document.getElementById("ap-list");
+    const audio = document.getElementById("ap-audio");
+    const playBtn = document.getElementById("ap-play");
+    const iconPlay = document.getElementById("ap-icon-play");
+    const iconPause = document.getElementById("ap-icon-pause");
+    const progress = document.getElementById("ap-progress");
+    const thumb = document.getElementById("ap-thumb");
+    const progressWrap = document.getElementById("ap-progress-wrap");
+    const timeL = document.getElementById("ap-time-l");
+    const timeR = document.getElementById("ap-time-r");
+    const pageInfo = document.getElementById("ap-page-info");
+    const prevPageBtn = document.getElementById("ap-prev");
+    const nextPageBtn = document.getElementById("ap-next");
+    const prevTrackBtn = document.getElementById("ap-prev-track");
+    const nextTrackBtn = document.getElementById("ap-next-track");
+    const modeBtn = document.getElementById("ap-mode");
+    const volSlider = document.getElementById("ap-vol-slider");
+    const volBtn = document.getElementById("ap-vol-btn");
+    const volOn = document.getElementById("ap-vol-on");
+    const volMute = document.getElementById("ap-vol-mute");
+    const modeIcons = [
+      document.getElementById("ap-mode-seq"),
+      document.getElementById("ap-mode-shuffle"),
+      document.getElementById("ap-mode-repeat1"),
+      document.getElementById("ap-mode-repeat"),
+    ];
+
+    audio.volume = volume;
+    if (volSlider) volSlider.value = String(Math.round(volume * 100));
+
+    function fmt(sec) {
+      if (isNaN(sec) || sec < 0) return "00:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+
+    function esc(s) {
+      const d = document.createElement("div");
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function buildShuffle() {
+      const arr = Array.from({ length: tracks.length }, (_, i) => i);
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      if (currentIndex >= 0) {
+        const idx = arr.indexOf(currentIndex);
+        if (idx > 0) [arr[0], arr[idx]] = [arr[idx], arr[0]];
+      }
+      return arr;
+    }
+
+    function getNextIndex() {
+      if (playMode === 1) {
+        shufflePos++;
+        if (shufflePos >= shuffleOrder.length) {
+          shuffleOrder = buildShuffle();
+          shufflePos = 0;
+        }
+        return shuffleOrder[shufflePos];
+      }
+      return currentIndex + 1;
+    }
+
+    function getPrevIndex() {
+      if (playMode === 1) {
+        shufflePos--;
+        if (shufflePos < 0) shufflePos = shuffleOrder.length - 1;
+        return shuffleOrder[shufflePos];
+      }
+      return currentIndex - 1;
+    }
+
+    function renderPage(page) {
+      currentPage = page;
+      const start = page * pageSize;
+      const slice = tracks.slice(start, start + pageSize);
+      listEl.innerHTML = slice
+        .map((t, i) => {
+          const idx = start + i;
+          const active = idx === currentIndex;
+          const dur = durations[idx];
+          const durStr = isNaN(dur) ? DUR_POOL[idx % DUR_POOL.length] : fmt(dur);
+          return `
+          <button class="ap-track${active ? " active" : ""}" data-idx="${idx}">
+            <span class="ap-tnum">${String(idx + 1).padStart(2, "0")}</span>
+            <span class="ap-tname">${esc(t.name)}</span>
+            <span class="ap-tdur">${durStr}</span>
+          </button>`;
+        })
+        .join("");
+      if (pageInfo) pageInfo.textContent = `${page + 1} / ${totalPages}`;
+      if (prevPageBtn) prevPageBtn.disabled = page === 0;
+      if (nextPageBtn) nextPageBtn.disabled = page >= totalPages - 1;
+    }
+
+    function highlight(idx) {
+      currentIndex = idx;
+      listEl.querySelectorAll(".ap-track").forEach((b) => {
+        b.classList.toggle("active", parseInt(b.dataset.idx) === idx);
+      });
+    }
+
+    function updatePlayIcon() {
+      iconPlay.style.display = isPlaying ? "none" : "";
+      iconPause.style.display = isPlaying ? "" : "none";
+    }
+
+    function updateModeIcon() {
+      modeIcons.forEach((icon, i) => {
+        if (icon) icon.style.display = i === playMode ? "" : "none";
+      });
+      const titles = ["顺序播放", "随机播放", "单曲循环", "列表循环"];
+      modeBtn.setAttribute("title", titles[playMode] || "播放模式");
+    }
+
+    function updateVolumeUI() {
+      if (!volOn || !volMute) return;
+      const muted = audio.volume === 0;
+      volOn.style.display = muted ? "none" : "";
+      volMute.style.display = muted ? "" : "none";
+    }
+
+    function updateProgress() {
+      const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      progress.style.width = pct + "%";
+      if (thumb) thumb.style.left = pct + "%";
+      timeL.textContent = fmt(audio.currentTime);
+      if (audio.duration && isNaN(durations[currentIndex])) {
+        durations[currentIndex] = audio.duration;
+        timeR.textContent = fmt(audio.duration);
+        const td = listEl.querySelector(`.ap-track[data-idx="${currentIndex}"] .ap-tdur`);
+        if (td) td.textContent = fmt(audio.duration);
+      }
+    }
+
+    let loadingIdx = -1;
+    function setLoading(idx, loading) {
+      const el = listEl.querySelector(`.ap-track[data-idx="${idx}"] .ap-tdur`);
+      if (el) {
+        if (loading) { el.classList.add("loading"); loadingIdx = idx; }
+        else { el.classList.remove("loading"); if (loadingIdx === idx) loadingIdx = -1; }
+      }
+    }
+
+    function loadTrack(idx) {
+      if (idx < 0 || idx >= tracks.length) return;
+      highlight(idx);
+      setLoading(idx, true);
+      audio.src = tracks[idx].url;
+      audio.load();
+      timeR.textContent = isNaN(durations[idx]) ? DUR_POOL[idx % DUR_POOL.length] : fmt(durations[idx]);
+      audio.loop = playMode === 2;
+    }
+
+    function togglePlay() {
+      if (currentIndex < 0) { loadTrack(0); return; }
+      if (isPlaying) { audio.pause(); isPlaying = false; }
+      else { audio.play().catch(() => {}); isPlaying = true; }
+      updatePlayIcon();
+    }
+
+    function playNext() {
+      if (playMode === 2) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+        return;
+      }
+      const next = getNextIndex();
+      if (next >= tracks.length) {
+        if (playMode === 3) { loadTrack(0); return; }
+        isPlaying = false;
+        updatePlayIcon();
+        audio.pause();
+        return;
+      }
+      loadTrack(next);
+      const tp = Math.floor(next / pageSize);
+      if (tp !== currentPage) renderPage(tp);
+    }
+
+    function playPrev() {
+      if (playMode !== 2 && audio.currentTime > 3) {
+        audio.currentTime = 0;
+        return;
+      }
+      const prev = getPrevIndex();
+      if (prev < 0) return;
+      loadTrack(prev);
+      const tp = Math.floor(prev / pageSize);
+      if (tp !== currentPage) renderPage(tp);
+    }
+
+    function cycleMode() {
+      playMode = (playMode + 1) % 4;
+      updateModeIcon();
+      audio.loop = playMode === 2;
+      if (playMode === 1) { shuffleOrder = buildShuffle(); shufflePos = 0; }
+    }
+
+    listEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".ap-track");
+      if (!btn) return;
+      const idx = parseInt(btn.dataset.idx);
+      if (playMode === 1) { shuffleOrder = buildShuffle(); shufflePos = 0; }
+      loadTrack(idx);
+    });
+
+    playBtn.addEventListener("click", togglePlay);
+    prevTrackBtn.addEventListener("click", playPrev);
+    nextTrackBtn.addEventListener("click", playNext);
+    modeBtn.addEventListener("click", cycleMode);
+
+    volSlider?.addEventListener("input", () => {
+      volume = parseInt(volSlider.value) / 100;
+      audio.volume = volume;
+      updateVolumeUI();
+    });
+    volBtn?.addEventListener("click", () => {
+      if (audio.volume > 0) {
+        volBtn.dataset.prevVol = String(audio.volume);
+        audio.volume = 0;
+        volSlider.value = "0";
+      } else {
+        const prev = parseFloat(volBtn.dataset.prevVol || "0.7");
+        audio.volume = prev;
+        volume = prev;
+        volSlider.value = String(Math.round(prev * 100));
+      }
+      updateVolumeUI();
+    });
+
+    function seekFromEvent(e) {
+      if (!audio.duration) return;
+      const rect = progressWrap.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = pct * audio.duration;
+    }
+    progressWrap.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      seekFromEvent(e);
+      document.addEventListener("mousemove", seekFromEvent);
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        document.removeEventListener("mousemove", seekFromEvent);
+      }, { once: true });
+    });
+
+    prevPageBtn?.addEventListener("click", () => { if (currentPage > 0) renderPage(currentPage - 1); });
+    nextPageBtn?.addEventListener("click", () => { if (currentPage < totalPages - 1) renderPage(currentPage + 1); });
+
+    audio.addEventListener("canplay", () => {
+      setLoading(currentIndex, false);
+      audio.play().then(() => { isPlaying = true; updatePlayIcon(); }).catch(() => {});
+    });
+    audio.addEventListener("timeupdate", updateProgress);
+    audio.addEventListener("play", () => { isPlaying = true; updatePlayIcon(); });
+    audio.addEventListener("pause", () => { isPlaying = false; updatePlayIcon(); });
+    audio.addEventListener("ended", playNext);
+    audio.addEventListener("error", () => {
+      setLoading(currentIndex, false);
+      if (currentIndex < tracks.length - 1) playNext();
+    });
+    audio.addEventListener("loadedmetadata", () => {
+      if (currentIndex >= 0 && isNaN(durations[currentIndex])) {
+        durations[currentIndex] = audio.duration;
+        timeR.textContent = fmt(audio.duration);
+        const td = listEl.querySelector(`.ap-track[data-idx="${currentIndex}"] .ap-tdur`);
+        if (td) td.textContent = fmt(audio.duration);
+      }
+    });
+
+    updateModeIcon();
+    updateVolumeUI();
+    renderPage(0);
+  })();
+</script>
+
+<style is:global>
+  /* ═══════════════════════════════════════════════════
+     音乐播放器 — 双主题 + 清晰图标体系
+     参考: Spotify / Apple Music / 网易云音乐
+     ═══════════════════════════════════════════════════ */
+
+  /* ── CSS 变量 (dark 默认) ── */
+  .ap-wrapper {
+    --ap-theme: #D94A4A;
+    --ap-bg: #1A1618;
+    --ap-border: rgba(255, 255, 255, 0.06);
+    --ap-title: #FFFFFF;
+    --ap-artist: #999999;
+    --ap-track-name: #EEEEEE;
+    --ap-muted: #666666;
+    --ap-progress-track: #3A3A3A;
+    --ap-hover: rgba(255, 255, 255, 0.04);
+    --ap-active-bg: color-mix(in srgb, var(--ap-theme) 14%, transparent);
+    --ap-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+    --ap-ctrl-icon: #888888;
+    --ap-ctrl-hover: #CCCCCC;
+    display: flex;
+    gap: 24px;
+    max-width: 920px;
+    margin: 0 auto;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  /* 浅色模式进度条拖拽点加边框 */
+  html[data-theme="light"] .ap-progress-thumb {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  html[data-theme="light"] .ap-wrapper {
+    --ap-bg: #F2EDE8;
+    --ap-border: rgba(0, 0, 0, 0.08);
+    --ap-title: #1A1A1A;
+    --ap-artist: #777777;
+    --ap-track-name: #2C2C2C;
+    --ap-muted: #999999;
+    --ap-progress-track: #D5D0CA;
+    --ap-hover: rgba(0, 0, 0, 0.04);
+    --ap-active-bg: color-mix(in srgb, var(--ap-theme) 12%, transparent);
+    --ap-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --ap-ctrl-icon: #777777;
+    --ap-ctrl-hover: #333333;
+  }
+
+  /* ══════ 播放器卡片 ══════ */
+  .ap-root {
+    flex: 1;
+    min-width: 0;
+    max-width: 520px;
+    background: var(--ap-bg);
+    border: 1px solid var(--ap-border);
+    border-radius: 24px;
+    padding: 28px;
+    color: var(--ap-track-name);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--ap-shadow);
+  }
+
+  /* ── 封面 ── */
+  .ap-cover {
+    width: 120px; height: 120px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .ap-cover-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ap-cover-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--ap-theme), color-mix(in srgb, var(--ap-theme) 40%, var(--ap-bg)));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 48px; user-select: none;
+  }
+
+  /* ── 专辑信息 ── */
+  .ap-album-title {
+    margin: 0 0 4px; font-size: 22px; font-weight: 700;
+    color: var(--ap-title); text-align: center; line-height: 1.3; letter-spacing: 0.02em;
+  }
+  .ap-album-artist {
+    margin: 0 0 22px; font-size: 15px; color: var(--ap-artist);
+    text-align: center; line-height: 1.4;
+  }
+
+  /* ── 曲目列表 ── */
+  .ap-list { display: flex; flex-direction: column; margin-bottom: 4px; }
+  .ap-track {
+    display: flex; align-items: center; gap: 0;
+    width: 100%; padding: 10px 8px;
+    border: none; border-left: 3px solid transparent; border-radius: 8px;
+    background: transparent; color: inherit; cursor: pointer;
+    font-family: inherit; font-size: 1rem; text-align: left;
+    transition: background 0.2s ease, border-color 0.2s ease, padding 0.2s ease;
+  }
+  .ap-track:hover { background: var(--ap-hover); }
+
+  .ap-track.active {
+    background: var(--ap-active-bg);
+    border-left: 3px solid var(--ap-theme);
+    padding-left: 5px; border-radius: 0 8px 8px 0;
+    box-shadow: inset 0 0 20px color-mix(in srgb, var(--ap-theme) 6%, transparent);
+  }
+  .ap-track.active .ap-tnum { color: var(--ap-theme); font-weight: 600; }
+  .ap-track.active .ap-tname { color: var(--ap-title); font-weight: 500; }
+  .ap-track.active .ap-tdur { color: var(--ap-theme); }
+
+
+  .ap-tnum {
+    flex-shrink: 0; width: 32px; text-align: right;
+    font-size: 14px; color: var(--ap-muted);
+    font-family: "IBM Plex Mono", "Consolas", monospace;
+    padding-right: 12px;
+  }
+  .ap-tname {
+    flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    line-height: 1.5; font-size: 16px; color: var(--ap-track-name); padding-right: 30px;
+  }
+  .ap-tdur {
+    flex-shrink: 0; width: 50px; text-align: right;
+    font-size: 14px; color: var(--ap-muted);
+    font-family: "IBM Plex Mono", "Consolas", monospace;
+  }
+
+  /* 加载中动画 */
+  .ap-tdur.loading {
+    animation: ap-loading 0.8s ease-in-out infinite;
+  }
+  @keyframes ap-loading {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ── 翻页 ── */
+  .ap-pager {
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px; padding: 14px 0 4px;
+  }
+  .ap-pg-btn {
+    background: none; border: 1px solid var(--ap-border);
+    color: var(--ap-muted); width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .ap-pg-btn:disabled { opacity: 0.12; cursor: default; }
+  .ap-pg-btn:not(:disabled):hover {
+    border-color: var(--ap-theme); color: var(--ap-theme);
+    background: var(--ap-hover);
+  }
+  .ap-pg-info {
+    font-size: 0.87rem; color: var(--ap-muted);
+    font-family: "IBM Plex Mono", "Consolas", monospace;
+  }
+
+  /* ── 进度条 ── */
+  .ap-bar-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 20px 0 20px; padding: 0 2px;
+  }
+  .ap-time-l, .ap-time-r {
+    flex-shrink: 0; font-size: 0.8rem; color: var(--ap-muted);
+    font-family: "IBM Plex Mono", "Consolas", monospace;
+    min-width: 38px; line-height: 1;
+  }
+  .ap-time-l { text-align: right; }
+  .ap-time-r { text-align: left; }
+
+  .ap-progress-wrap {
+    flex: 1; height: 20px; position: relative; cursor: pointer;
+    display: flex; align-items: center;
+  }
+  .ap-progress-bg {
+    position: absolute; left: 0; right: 0; height: 5px;
+    background: var(--ap-progress-track); border-radius: 3px;
+  }
+  .ap-progress-fill {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    height: 5px; background: var(--ap-theme); border-radius: 3px;
+    width: 0%; transition: width 0.12s linear; pointer-events: none;
+  }
+  .ap-progress-thumb {
+    position: absolute; left: 0%; top: 50%; transform: translate(-50%, -50%);
+    width: 12px; height: 12px; background: #FFFFFF; border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none; opacity: 1;
+  }
+
+  /* ══════ 控制栏 (参考 Spotify 清晰扁平风格) ══════ */
+  .ap-ctrl {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .ap-ctrl-center {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  /* 通用控制按钮 — 无 opacity, 用明确颜色保证清晰 */
+  .ap-ctrl-btn {
+    background: none;
+    border: none;
+    color: var(--ap-ctrl-icon);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: color 0.15s, background 0.15s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+  .ap-ctrl-btn:hover {
+    color: var(--ap-ctrl-hover);
+    background: var(--ap-hover);
+    transform: scale(1.08);
+  }
+
+  /* 播放按钮 (圆形, 主题色填充, 高对比度) */
+  .ap-btn-play {
+    background: var(--ap-theme);
+    color: #FFFFFF;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--ap-theme) 40%, transparent);
+    transition: transform 0.15s, box-shadow 0.2s;
+    flex-shrink: 0;
+  }
+  .ap-btn-play:hover {
+    transform: scale(1.07);
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--ap-theme) 50%, transparent);
+  }
+
+  /* ── 音量 ── */
+  .ap-vol {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ap-vol-slider {
+    -webkit-appearance: none; appearance: none;
+    width: 90px; height: 4px; border-radius: 2px;
+    background: var(--ap-progress-track);
+    outline: none; cursor: pointer;
+  }
+  .ap-vol-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--ap-theme); cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .ap-vol-slider::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--ap-theme); cursor: pointer;
+    border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* ══════ 响应式 ══════ */
+  @media (max-width: 860px) {
+    .ap-wrapper { flex-direction: column; align-items: center; }
+    .ap-root { max-width: 520px; width: 100%; }
+    .ap-vol-slider { width: 60px; }
+  }
+  @media (max-width: 480px) {
+    .ap-root { padding: 20px 16px; border-radius: 18px; }
+    .ap-ctrl-center { gap: 6px; }
+    .ap-vol-slider { width: 48px; }
+  }
+</style>
