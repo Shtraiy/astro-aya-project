@@ -4,7 +4,7 @@ tags:
   - 技术
   - 折腾
   - Linux
-pubDatetime: 2026-07-06 20:00:00
+pubDatetime: 2026-07-06 12:00:00
 description: "从硬件选型到系统安装再到Docker服务部署，记录作者第一台NAS的完整踩坑之路。"
 featured: false
 draft: false
