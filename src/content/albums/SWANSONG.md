@@ -2,7 +2,7 @@
 title: "「SWANSONG」"
 artist: "ELECTROCUTICA"
 theme: "#948D91"
-cover: "/images/SWANSONG.jpg"
+cover: "/images/albums/SWANSONG.jpg"
 date: 2024-05-15T10:16:21.000Z
 tracks:
   - name: "CRUCIFIxxxION"

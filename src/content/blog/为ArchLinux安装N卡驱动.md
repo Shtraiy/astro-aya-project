@@ -6,7 +6,7 @@ tags:
   - 折腾
   - 笔记
 pubDatetime: 2022-07-26 08:17:50
-description: "本文记录了一些站长在为ArchLinux安装N卡驱动遇到的情况"
+description: "本文记录了在ArchLinux上安装N卡驱动并尝试用Steam ProtonDB打游戏的折腾经历。"
 ---
 # 安装完Arch后我就一直在尝试装N卡驱动
 

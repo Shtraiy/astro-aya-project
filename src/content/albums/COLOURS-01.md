@@ -2,7 +2,7 @@
 title: "「COLOURS.01 “Growing”」"
 artist: "Endorfin."
 theme: "#47d649"
-cover: "/images/COLOURS.01.jpg"
+cover: "/images/albums/COLOURS.01.jpg"
 date: 2024-05-11T12:16:46.000Z
 tracks:
   - name: "a fairy with you"

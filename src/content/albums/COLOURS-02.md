@@ -2,7 +2,7 @@
 title: "「COLOURS.02 “Blurred Mind”」"
 artist: "Endorfin."
 theme: "#1A469C"
-cover: "/images/COLOURS.02.jpg"
+cover: "/images/albums/COLOURS.02.jpg"
 date: 2024-05-11T16:14:23.000Z
 tracks:
   - name: "ペトリコール(湿土气味)"

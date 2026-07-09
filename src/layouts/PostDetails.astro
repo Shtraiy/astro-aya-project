@@ -112,7 +112,7 @@ const nextPost =
 
     <div class="my-8 flex items-baseline justify-between gap-4">
       <ul class="inline-flex flex-wrap items-center gap-1">
-        {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+        {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
       </ul>
       <button id="back-to-top" class="focus-outline flex shrink-0 items-center gap-1 whitespace-nowrap hover:opacity-75">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="rotate-90 h-5 w-5"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"/></svg>
@@ -311,4 +311,66 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
+
+  /** Image lightbox — click to expand, wheel to zoom, click/esc to close */
+  let lightboxReady = false;
+  function initLightbox() {
+    const article = document.getElementById("article");
+    if (!article || lightboxReady) return;
+    lightboxReady = true;
+    article.addEventListener("click", e => {
+      const img = e.target.closest("img");
+      if (!img) return;
+
+      const overlay = document.createElement("div");
+      overlay.className = "lightbox-overlay";
+      const clone = img.cloneNode(true);
+      clone.style.cursor = "grab";
+      clone.style.transition = "transform 0.1s ease-out";
+      const closeBtn = document.createElement("span");
+      closeBtn.className = "lightbox-close";
+      closeBtn.textContent = "×";
+      overlay.appendChild(closeBtn);
+      overlay.appendChild(clone);
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+
+      let scale = 1;
+      const MIN = 0.5, MAX = 6, STEP = 0.15;
+
+      function applyZoom() {
+        clone.style.transform = `scale(${scale})`;
+      }
+
+      // Wheel zoom
+      overlay.addEventListener("wheel", e => {
+        e.preventDefault();
+        scale += e.deltaY < 0 ? STEP : -STEP;
+        scale = Math.min(MAX, Math.max(MIN, scale));
+        applyZoom();
+      }, { passive: false });
+
+      // Double-click reset
+      overlay.addEventListener("dblclick", e => {
+        if (e.target === overlay || e.target === closeBtn) return;
+        scale = 1;
+        applyZoom();
+      });
+
+      const close = () => {
+        overlay.remove();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", escHandler);
+      };
+      overlay.addEventListener("click", e => {
+        if (e.target === overlay || e.target.closest(".lightbox-close")) close();
+      });
+      document.addEventListener("keydown", escHandler);
+      function escHandler(e) {
+        if (e.key === "Escape") close();
+      }
+    });
+  }
+  initLightbox();
+  document.addEventListener("astro:after-swap", () => { lightboxReady = false; initLightbox(); });
 </script>

@@ -2,7 +2,7 @@
 title: "「COLOURS.04 ”Yelling”」"
 artist: "Endorfin."
 theme: "#EDC95E"
-cover: "/images/COLOURS.04.jpg"
+cover: "/images/albums/COLOURS.04.jpg"
 date: 2024-05-11T16:18:39.000Z
 tracks:
   - name: "水彩のカナリア"

@@ -2,7 +2,7 @@
 title: "「Proud Echoes」"
 artist: "Sennzai"
 theme: "#d1061b"
-cover: "/images/Proud-Echoes.jpg"
+cover: "/images/albums/Proud-Echoes.jpg"
 date: 2024-05-11T10:32:46.000Z
 tracks:
   - name: "白蓮華"

@@ -3,7 +3,7 @@ title: "最近将本站从Hexo移植到了Astro"
 tags: 
   - 网页
   - 技术
-description: "关于我将网站从Hexo移植到了Astro"
+description: "本文记录了将博客从Hexo框架迁移到Astro框架的过程。"
 pubDatetime: 2024-11-28 19:47:01
 ---
 

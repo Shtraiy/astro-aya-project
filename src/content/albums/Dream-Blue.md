@@ -2,7 +2,7 @@
 title: "「Dream-Blue」"
 artist: "Endorfin."
 theme: "#2F82C4"
-cover: "/images/Dream-Blue.jpg"
+cover: "/images/albums/Dream-Blue.jpg"
 date: 2025-04-28T18:00:00.000Z
 tracks:
   - name: "空白少女"

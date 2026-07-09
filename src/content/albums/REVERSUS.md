@@ -2,7 +2,7 @@
 title: "「REVERSUS」"
 artist: "ELECTROCUTICA"
 theme: "#1C211D"
-cover: "/images/REVERSUS.jpg"
+cover: "/images/albums/REVERSUS.jpg"
 date: 2024-05-15T10:08:54.000Z
 tracks:
   - name: "Reversus"

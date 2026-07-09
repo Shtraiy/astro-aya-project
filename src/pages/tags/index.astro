@@ -17,7 +17,7 @@ let tags = getUniqueTags(posts);
   <Header activeNav="tags" />
   <Main pageTitle="🌿笼中标签" pageDesc="文章标签总览">
     <ul>
-      {tags.map(({ tag }) => <Tag {tag} size="lg" />)}
+      {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} size="lg" />)}
     </ul>
   </Main>
   <Footer />

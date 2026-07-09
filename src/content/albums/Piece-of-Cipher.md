@@ -2,7 +2,7 @@
 title: "「Piece of Cipher+」"
 artist: "ELECTROCUTICA"
 theme: "#A7A7A7"
-cover: "/images/Piece-of-Cipher+.png"
+cover: "/images/albums/Piece-of-Cipher+.png"
 date: 2024-05-15T09:54:44.000Z
 tracks:
   - name: "Piece of Cipher"

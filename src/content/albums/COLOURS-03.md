@@ -2,7 +2,7 @@
 title: "「COLOURS.03 “Redraw”」"
 artist: "Endorfin."
 theme: "#D02B27"
-cover: "/images/COLOURS.03.jpg"
+cover: "/images/albums/COLOURS.03.jpg"
 date: 2024-05-11T16:18:35.000Z
 tracks:
   - name: "Apricot"
