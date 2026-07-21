@@ -5,7 +5,7 @@ tags:
   - 单片机
   - STM32
 pubDatetime: 2025-1-11 8:27:44
-description: "本文记载了STM32单片机的开发环境配置"
+description: "本文记录了基于Keil v5.33搭建STM32标准外设库开发环境的过程。"
 ---
 # STM32单片机的Keil开发环境搭建
 
@@ -29,7 +29,7 @@ description: "本文记载了STM32单片机的开发环境配置"
 
 新建一个项目目录，目录下应该有如下结构
 
-![结构](https://s21.ax1x.com/2025/01/11/pEPuZ8K.png "结构")
+![结构](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png "结构")
 
 ### 3、划分项目结构
 
@@ -37,11 +37,11 @@ description: "本文记载了STM32单片机的开发环境配置"
 
 添加启动文件进入CMSIS目录
 
-![CMSIS](https://s21.ax1x.com/2025/01/11/pEPumvD.png "CMSIS")
+![CMSIS](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/CMSIS.png "CMSIS")
 
 添加标准库文件进入LIB目录
 
-![LIB](https://s21.ax1x.com/2025/01/11/pEPuuKe.png "LIB")
+![LIB](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/SPL.png "LIB")
 
 将里面的src目录和inc目录全部复制到LIB里
 
@@ -55,11 +55,11 @@ project存放keil的工程文件和main.c
 
 找到这个东西
 
-![方块](https://s21.ax1x.com/2025/01/11/pEPu4aR.png "方块")
+![方块](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/%E6%96%B9%E5%9D%97.png "方块")
 
 CMSIS需要添加目录下的所有.c文件以及.s文件
 
-![CMSIS](https://s21.ax1x.com/2025/01/11/pEPuhZ9.png "CMSIS")
+![CMSIS](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE.png "CMSIS")
 
 LIB同理，需要添加目录下所有的.c文件
 
@@ -71,13 +71,13 @@ LIB同理，需要添加目录下所有的.c文件
 
 添加如下项
 
-![inc](https://s21.ax1x.com/2025/01/11/pEPKEZj.png "inc")
+![inc](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/inc.png "inc")
 
 添加完毕后在同样的选项下找到Preprocessor Symbols，添加宏定义
 
 **USE_STDPERIPH_DRIVER**
 
-![宏定义](https://s21.ax1x.com/2025/01/11/pEPKkLQ.png "宏定义")
+![宏定义](https://images.wynio.pw/api/images/STM32%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/%E5%AE%8F%E5%AE%9A%E4%B9%89.png "宏定义")
 
 随后退出保存，STM32基本的keil开发环境就搭建完成了
 

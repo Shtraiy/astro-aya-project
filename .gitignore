@@ -22,6 +22,12 @@ pnpm-debug.log*
 # ignore .astro directory
 .astro
 
+# local editor and agent configuration
+.vscode/
+.agents/
+.claude/
+.codex/
+
 # yarn
 .yarn/*
 !.yarn/patches

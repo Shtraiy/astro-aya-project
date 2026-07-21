@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - opened
@@ -9,11 +12,13 @@ on:
       - reopened
   workflow_call:
 
+  workflow_dispatch:
+
 jobs:
   build:
     name: Code standards & build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
 
     strategy:
       matrix:

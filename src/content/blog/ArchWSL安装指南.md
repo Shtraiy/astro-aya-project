@@ -5,7 +5,7 @@ tags:
   - Linux
   - wsl2
 pubDatetime: 2024-12-5 00:02:00
-description: "本文记载了ArchWSL的安装流程"
+description: "本文记录了在Windows上安装ArchWSL的基本流程，参考官方文档整理。"
 ---
 # 有关ArchWSL的安装流程
 

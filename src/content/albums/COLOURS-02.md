@@ -1,0 +1,26 @@
+---
+title: "「COLOURS.02 “Blurred Mind”」"
+artist: "Endorfin."
+theme: "#1A469C"
+cover: "/images/albums/COLOURS.02.jpg"
+date: 2024-05-11T16:14:23.000Z
+tracks:
+  - name: "ペトリコール(湿土气味)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/01.%20%E3%83%9A%E3%83%88%E3%83%AA%E3%82%B3%E3%83%BC%E3%83%AB.flac"
+  - name: "秒針とソーダフロート(秒针与漂浮苏打)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/02.%20%E7%A7%92%E9%87%9D%E3%81%A8%E3%82%BD%E3%83%BC%E3%83%80%E3%83%95%E3%83%AD%E3%83%BC%E3%83%88.flac"
+  - name: "無言の鳥籠(无言的鸟笼)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/03.%20%E7%84%A1%E8%A8%80%E3%81%AE%E9%B3%A5%E7%B1%A0.flac"
+  - name: "シュガーレス・レイン(无糖雨)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/04.%20%E3%82%B7%E3%83%A5%E3%82%AC%E3%83%BC%E3%83%AC%E3%82%B9%E3%83%BB%E3%83%AC%E3%82%A4%E3%83%B3.flac"
+  - name: "ココロメソッド(心灵公式)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/05.%20%E3%82%B3%E3%82%B3%E3%83%AD%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89.flac"
+  - name: "ミントブルー・ガール(薄荷蓝女孩)"
+    artist: "Endorfin."
+    url: "https://github.com/Resalia/music1/raw/main/COLOURS.02%20%E2%80%9CBlurred%20Mind%E2%80%9D/06.%20%E3%83%9F%E3%83%B3%E3%83%88%E3%83%96%E3%83%AB%E3%83%BC%E3%83%BB%E3%82%AC%E3%83%BC%E3%83%AB%20(2022%20Edition).flac"
+---
