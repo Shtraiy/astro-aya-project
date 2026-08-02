@@ -6,4 +6,3 @@
 //   new Response(await generateOgImageForSite(), {
 //     headers: { "Content-Type": "image/png" },
 //   });
-
