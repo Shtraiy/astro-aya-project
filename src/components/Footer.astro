@@ -15,31 +15,41 @@ const { noMarginTop = false } = Astro.props;
   <Hr noPadding />
   <div class="footer-wrapper">
     <Socials centered />
-    <div class="footer-right"><a href="https://icp.gov.moe/?keyword=20230124" target="_blank" one-link-mark="yes">萌ICP备20230124号</a></div>
-    <div class="copyright-wrapper">
+    <div class="footer-info">
       <span>Copyright &#169; Resalia 2020-{currentYear}</span>
-      <!-- <span class="separator">&nbsp;|&nbsp;</span> -->
+      <span class="footer-sep">|</span>
+      <a href="https://icp.gov.moe/?keyword=20230124" target="_blank" one-link-mark="yes">萌ICP备20230124号</a>
     </div>
   </div>
 </footer>
+
+<script>
+  function initBackToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+  initBackToTop();
+  document.addEventListener("astro:after-swap", initBackToTop);
+</script>
 
 <style>
   footer {
     @apply w-full;
   }
   .footer-wrapper {
-    @apply flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4;
+    @apply flex flex-col items-center gap-1 py-6 sm:py-4;
+  }
+  .footer-info {
+    @apply flex items-center gap-2 text-sm opacity-60;
+  }
+  .footer-sep {
+    @apply opacity-30;
   }
   .link-button {
     @apply my-1 p-2 hover:rotate-6;
   }
   .link-button svg {
-    @apply scale-125;
-  }
-  .copyright-wrapper {
-    @apply my-2 flex flex-col items-center whitespace-nowrap sm:flex-row;
-  }
-  .separator {
-    @apply hidden sm:inline;
+    @apply h-6 w-6 scale-125;
   }
 </style>

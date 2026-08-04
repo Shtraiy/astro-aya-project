@@ -8,23 +8,27 @@ import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 import getSortedPosts from "@utils/getSortedPosts";
 
-// Retrieve all published articles
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 const sortedPosts = getSortedPosts(posts);
 
-// List of items to search in
 const searchList = sortedPosts.map(({ data, slug }) => ({
   title: data.title,
   description: data.description,
-  data,
+  data: {
+    title: data.title,
+    description: data.description,
+    pubDatetime: data.pubDatetime,
+    modDatetime: data.modDatetime,
+    tags: data.tags,
+  },
   slug,
 }));
 ---
 
-<Layout title={`Search | ${SITE.title}`}>
+<Layout title={`搜索 | ${SITE.title}`}>
   <Header activeNav="search" />
   <Main pageTitle="搜寻" pageDesc="在我写下的字句里，找到你想要的内容。">
-    <SearchBar client:load searchList={searchList} />
+    <SearchBar client:load searchJson={JSON.stringify(searchList)} />
   </Main>
   <Footer />
 </Layout>

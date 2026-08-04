@@ -56,11 +56,13 @@ module.exports = {
       },
       stroke: {
         skin: {
+          base: withOpacity("--color-text-base"),
           accent: withOpacity("--color-accent")
         }
       },
       fontFamily: {
-        mono: ["IBM Plex Mono", "sans-serif", "monospace"],
+        sans: ["Inter", "LXGW WenKai Screen", "PingFang SC", "Microsoft YaHei", "sans-serif"],
+        mono: ["IBM Plex Mono", "Consolas", "monospace"],
       },
 
       typography: {
