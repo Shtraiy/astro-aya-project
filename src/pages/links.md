@@ -63,17 +63,13 @@ layout: ../layouts/LinksLayout.astro
 
 <style>
 #friends h1 {
-    background: linear-gradient(#ba3453, #a234ba) !important;
-    -webkit-background-clip: text !important;
-    color: transparent !important;
+    color: rgb(var(--color-accent));
     font-size: 2rem;
     line-height: 1.2;
 }
 
 #friends h2 {
-    background: linear-gradient(#af34ba, #6334ba) !important;
-    -webkit-background-clip: text !important;
-    color: transparent !important;
+    color: rgb(var(--color-accent));
     font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -94,15 +90,16 @@ layout: ../layouts/LinksLayout.astro
     width: 300px; 
     padding: 10px 15px;
     border-radius: 10px;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgb(var(--color-border));
     text-decoration: none !important; 
     color: inherit;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
+    background: rgb(var(--color-card));
 }
 
 .link-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(128,128,128,0.25);
+    transform: translateY(-2px);
 }
 
 .link-card .avatar {
@@ -120,17 +117,17 @@ layout: ../layouts/LinksLayout.astro
     justify-content: center;
 }
 
-/* 这里去掉了 !important，加上了 #friends 增加权重，让你的内联颜色生效 */
 #friends .link-card .name {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #555555;
+    color: rgb(var(--color-text-base));
     margin-bottom: 5px;
 }
 
 #friends .link-card .description {
     font-size: 0.85rem;
-    color: #888888;
+    color: rgb(var(--color-text-base));
+    opacity: 0.6;
     line-height: 1.2;
 }
 </style>

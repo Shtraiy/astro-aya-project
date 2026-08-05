@@ -1,0 +1,54 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import AlbumPlayer from "@components/AlbumPlayer.astro";
+
+export interface Props {
+  album: CollectionEntry<"albums">;
+}
+
+export async function getStaticPaths() {
+  const albums = await getCollection("albums");
+  return albums.map(album => ({
+    params: { slug: album.slug },
+    props: { album },
+  }));
+}
+
+const { album } = Astro.props;
+const { title, artist, theme, cover, tracks } = album.data;
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header activeNav="music" />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+    <a href="/music/" class="focus-outline mb-2 mt-8 flex items-center hover:opacity-75">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="h-5 w-5"
+        ><path
+          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+        ></path>
+      </svg><span>返回音乐藏馆</span>
+    </a>
+  </div>
+  <main id="main-content" class="music-main">
+    <AlbumPlayer
+      theme={theme}
+      tracks={tracks}
+      cover={cover}
+      title={title}
+      artist={artist}
+    />
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .music-main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+  }
+</style>

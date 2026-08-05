@@ -4,7 +4,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "archives" | "tags" |"links"| "about" | "search";
+  activeNav?: "posts" | "archives" | "tags" | "links" | "about" | "search" | "music";
 }
 
 const { activeNav } = Astro.props;
@@ -55,7 +55,7 @@ const { activeNav } = Astro.props;
             <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
           </svg>
         </button>
-        <ul id="menu-items" class="display-none sm:flex">
+        <ul id="menu-items" class="mobile-menu sm:flex">
           <li>
             <a href="/posts/" class={activeNav === "posts" ? "active" : ""}>
               文章
@@ -64,6 +64,11 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
               标签
+            </a>
+          </li>
+          <li>
+            <a href="/music/" class={activeNav === "music" ? "active" : ""}>
+              音乐
             </a>
           </li>
           <li>
@@ -81,7 +86,7 @@ const { activeNav } = Astro.props;
               <li>
                  <LinkButton
                    href="/archives/"
-                  className={`focus-outline flex justify-center p-3 sm:p-1`}
+                  className={`focus-outline inline-flex items-center justify-center p-3 sm:p-1`}
                   ariaLabel="archives"
                   title="Archives"
                 >
@@ -103,7 +108,7 @@ const { activeNav } = Astro.props;
                       activeNav === "archives" && "active",
                     ]}
                   >
-                    Archives
+                    归档文章
                   </span>
                 </LinkButton>
               </li>
@@ -112,15 +117,18 @@ const { activeNav } = Astro.props;
           <li>
             <LinkButton
               href="/search/"
-              className={`focus-outline p-3 sm:p-1 ${
+              className={`focus-outline inline-flex items-center p-3 sm:p-1 ${
                 activeNav === "search" ? "active" : ""
-              } flex`}
+              }`}
               ariaLabel="search"
               title="Search"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="scale-125 sm:scale-100"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                class="h-6 w-6 scale-125 sm:scale-100"
                 ><path
                   d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
                 ></path>
@@ -163,7 +171,7 @@ const { activeNav } = Astro.props;
     @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
   }
   .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
+    @apply relative flex w-full items-start justify-between p-4 sm:flex-nowrap sm:items-center sm:py-8;
   }
   .logo {
     @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
@@ -176,16 +184,13 @@ const { activeNav } = Astro.props;
   }
 
   nav {
-    @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
-  }
-  nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
+    @apply flex w-full flex-col items-center sm:ml-2 sm:w-auto sm:flex-1 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
   }
   nav ul li a {
-    @apply w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1;
+    @apply w-full whitespace-nowrap px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1;
   }
   nav ul li:nth-last-child(2) a {
     @apply w-auto;
@@ -211,7 +216,30 @@ const { activeNav } = Astro.props;
     @apply p-3 sm:p-1;
   }
   #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
+    @apply h-6 w-6 scale-125 hover:rotate-12 sm:scale-100;
+  }
+
+  .mobile-menu {
+    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+  .mobile-menu.open {
+    max-height: 24rem;
+    opacity: 1;
+  }
+  @media (min-width: 640px) {
+    .mobile-menu {
+      display: flex;
+      max-height: none;
+      overflow: visible;
+      opacity: 1;
+      width: auto;
+      margin: 0;
+      gap: 1.25rem;
+    }
   }
 
   .menu-icon line {
@@ -243,7 +271,7 @@ const { activeNav } = Astro.props;
         "aria-label",
         menuExpanded ? "Open Menu" : "Close Menu"
       );
-      menuItems?.classList.toggle("display-none");
+      menuItems?.classList.toggle("open");
     });
   }
 

@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import AlbumCard from "@components/AlbumCard.astro";
+
+const albums = await getCollection("albums");
+
+// Group by artist
+const artistMap = new Map<string, typeof albums>();
+for (const album of albums) {
+  const key = album.data.artist;
+  if (!artistMap.has(key)) artistMap.set(key, []);
+  artistMap.get(key)!.push(album);
+}
+// Sort each artist's albums by date desc
+for (const [, list] of artistMap) {
+  list.sort(
+    (a, b) =>
+      new Date(b.data.date ?? 0).getTime() -
+      new Date(a.data.date ?? 0).getTime()
+  );
+}
+const artists = Array.from(artistMap.entries());
+---
+
+<Layout title={`音乐藏馆 | ${SITE.title}`}>
+  <Header activeNav="music" />
+  <Main pageTitle="🎵音乐藏馆" pageDesc="收藏一些喜欢的专辑，点击封面开始聆听">
+    <div id="albums">
+      {
+        artists.map(([artist, artistAlbums]) => (
+          <div>
+            <h3>{artist}</h3>
+            {artistAlbums.map(album => (
+              <AlbumCard
+                title={album.data.title}
+                artist={album.data.artist}
+                theme={album.data.theme}
+                cover={album.data.cover}
+                slug={album.slug}
+              />
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>
+
+<style>
+  #albums h3 {
+    margin: 24px auto 8px;
+    text-align: center;
+    color: rgb(var(--color-accent));
+    font-size: 1.5rem;
+  }
+</style>

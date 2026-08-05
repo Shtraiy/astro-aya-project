@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import { remarkAlert } from "remark-github-blockquote-alert";
+
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
@@ -29,6 +30,7 @@ export default defineConfig({
         },
       ],
     ],
+
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
