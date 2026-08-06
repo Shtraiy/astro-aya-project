@@ -146,17 +146,17 @@ ani-rss提供了MCP Server接口，AstrBot可以通过MCP调用它。这意味�
 
 那么如何配置呢，方式如下图
 
-![ani-rss MCP配置](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/mcp%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F.png)
+![ani-rss MCP配置](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/mcp%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F.png)
 
 通过这个方式在astrbot的设置里注册mcp服务
 
 效果如下
 
-![AstrBot测试效果](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/astrbot%E6%B5%8B%E8%AF%95%E5%9B%BE.png)
+![AstrBot测试效果](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/astrbot%E6%B5%8B%E8%AF%95%E5%9B%BE.png)
 
 然后经过qbit的下载，以及ani-rss的管理分类和重命名，在Jellyfin的页面下，我们能看到刮削完成后的尼古喵喵
 
-![Jellyfin刮削效果](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/jellyfin%E6%95%88%E6%9E%9C%E5%9B%BE.png)
+![Jellyfin刮削效果](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/jellyfin%E6%95%88%E6%9E%9C%E5%9B%BE.png)
 
 全程不需要什么繁琐的操作，只需要@你的astrbot，让他添加追番列表，然后他就会自动把整理好的番剧下载到媒体库，然后通过astrbot通知你追番情况
 
@@ -164,7 +164,7 @@ ani-rss提供了MCP Server接口，AstrBot可以通过MCP调用它。这意味�
 
 最后在astrbot的设置里添加任务，让bot在一个特定的时间段唤醒，查询追番情况，告诉你追番的更新情况
 
-![追番提醒](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/%E8%BF%BD%E7%95%AA%E6%8F%90%E9%86%92.png)
+![追番提醒](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B02/%E8%BF%BD%E7%95%AA%E6%8F%90%E9%86%92.png)
 
 一切大功告成，你再也不会错过你的追番更新而你却忘记第一时间观看
 

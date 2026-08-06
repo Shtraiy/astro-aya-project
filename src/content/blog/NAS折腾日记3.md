@@ -20,7 +20,7 @@ draft: false
 
 Docker 管理面板直接整个灰了。整个模块显示"未知错误"。
 
-![Docker面板变灰了](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B03/Docker%E9%9D%A2%E6%9D%BF%E5%8F%98%E7%81%B0%E4%BA%86.png)
+![Docker面板变灰了](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B03/Docker%E9%9D%A2%E6%9D%BF%E5%8F%98%E7%81%B0%E4%BA%86.png)
 
 天都塌了，看到这个我就知道今晚有的忙了
 
@@ -66,7 +66,7 @@ Gemini 也很配合，给了一堆操作——卸载重装 Docker、清理残留
 
 果不其然，我找到了，一位提问者的回复下面，有人给出了飞牛的默认配置
 
-![破局](https://images.wynio.pw/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B03/%E7%A0%B4%E5%B1%80.png)
+![破局](https://images.frp.wynio.pw:28099/api/images/NAS%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B03/%E7%A0%B4%E5%B1%80.png)
 
 那现在要做的就很明确了：**重新安装 Docker，然后把飞牛面板指向正确的路径。**
 
