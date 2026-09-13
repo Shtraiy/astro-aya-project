@@ -54,6 +54,13 @@
 
 @utility focus-outline {
   @apply outline-2 outline-offset-1 outline-skin-accent focus-visible:no-underline focus-visible:outline-dashed;
+  /*
+    Tailwind v4 给 outline-<宽度> 附带了 outline-style: var(--tw-outline-style)，
+    而该变量注册的初始值是 solid，于是这些元素平时就会画出一圈实线轮廓。
+    v3 里 outline-2 只设宽度、样式仍是 initial 的 none，所以这里显式还原：
+    平时不出轮廓，只有键盘 focus-visible 时才出现虚线（见下面的 :focus-visible 规则）。
+  */
+  outline-style: none;
 }
 
 @layer base {
@@ -100,6 +107,8 @@
   }
   a {
     @apply outline-2 outline-offset-1 outline-skin-accent focus-visible:no-underline focus-visible:outline-dashed;
+    /* 同上：v4 下 outline-2 会带出实线轮廓，这里还原 v3 的「仅聚焦时显示」 */
+    outline-style: none;
   }
   svg {
     @apply inline-block fill-skin-base group-hover:fill-skin-accent;
