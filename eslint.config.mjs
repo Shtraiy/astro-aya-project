@@ -39,6 +39,7 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", ".astro"],
+    // public/js/APlayer.min.js 这类第三方压缩产物不该参与 lint
+    ignores: ["dist/**", ".astro", "**/*.min.js", "**/*.min.css"],
   },
 ];
