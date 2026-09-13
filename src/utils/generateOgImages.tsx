@@ -22,7 +22,11 @@ function fallbackOgPng(title: string): Buffer {
 }
 
 function escapeXml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 export async function generateOgImageForPost(post: CollectionEntry<"blog">) {
@@ -30,7 +34,9 @@ export async function generateOgImageForPost(post: CollectionEntry<"blog">) {
     const svg = await postOgImage(post);
     return svgBufferToPngBuffer(svg);
   } catch (e) {
-    console.warn(`[OG] Falling back to simple OG for "${post.data.title}": ${e}`);
+    console.warn(
+      `[OG] Falling back to simple OG for "${post.data.title}": ${e}`
+    );
     return fallbackOgPng(post.data.title);
   }
 }

@@ -18,7 +18,11 @@ const { noMarginTop = false } = Astro.props;
     <div class="footer-info">
       <span>Copyright &#169; Resalia 2020-{currentYear}</span>
       <span class="footer-sep">|</span>
-      <a href="https://icp.gov.moe/?keyword=20230124" target="_blank" one-link-mark="yes">萌ICP备20230124号</a>
+      <a
+        href="https://icp.gov.moe/?keyword=20230124"
+        target="_blank"
+        one-link-mark="yes">萌ICP备20230124号</a
+      >
     </div>
   </div>
 </footer>
@@ -34,7 +38,7 @@ const { noMarginTop = false } = Astro.props;
 </script>
 
 <style>
-@reference "../styles/base.css";
+  @reference "../styles/base.css";
   footer {
     @apply w-full;
   }

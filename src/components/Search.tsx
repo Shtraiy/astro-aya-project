@@ -23,7 +23,9 @@ export default function SearchBar({ searchJson }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout>>();
   const [inputVal, setInputVal] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[] | null>(null);
+  const [searchResults, setSearchResults] = useState<SearchResult[] | null>(
+    null
+  );
 
   // JSON 字符串 → 解析为数组，绕过 Astro props 序列化
   const searchList: SearchItem[] = useMemo(() => {
@@ -97,7 +99,14 @@ export default function SearchBar({ searchJson }: Props) {
     <>
       <label className="relative block">
         <span className="absolute inset-y-0 left-0 flex items-center pl-2 opacity-75">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="h-5 w-5"
+          >
             <path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path>
           </svg>
           <span className="sr-only">搜索</span>
@@ -115,7 +124,9 @@ export default function SearchBar({ searchJson }: Props) {
       </label>
 
       {searchList.length === 0 && (
-        <p className="mt-6 text-center text-skin-base/60">暂无文章数据，搜索不可用。</p>
+        <p className="mt-6 text-center text-skin-base/60">
+          暂无文章数据，搜索不可用。
+        </p>
       )}
 
       {inputVal.length > 0 && searchResults !== null && (
@@ -124,9 +135,13 @@ export default function SearchBar({ searchJson }: Props) {
         </div>
       )}
 
-      {inputVal.length > 0 && searchResults !== null && searchResults.length === 0 && (
-        <p className="mt-4 text-center text-skin-base/60">没有找到匹配的文章，试试换个关键词吧。</p>
-      )}
+      {inputVal.length > 0 &&
+        searchResults !== null &&
+        searchResults.length === 0 && (
+          <p className="mt-4 text-center text-skin-base/60">
+            没有找到匹配的文章，试试换个关键词吧。
+          </p>
+        )}
 
       <ul>
         {searchResults &&

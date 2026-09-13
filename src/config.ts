@@ -12,7 +12,7 @@ export const SITE: Site = {
   postPerPage: 6,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: true,
-/*   editPost: {
+  /*   editPost: {
     url: "https://github.com/satnaing/astro-paper/edit/main/src/content/blog",
     text: "Suggest Changes",
     appendFilePath: false,
@@ -171,9 +171,9 @@ export const SOCIALS: SocialObjects = [
     active: true,
   },
   {
-      name: "Linux",
-      href: "https://lcm.wynio.pw/",
-          linkTitle: `${SITE.title} on Linux`,
-      active: true,
-  }
+    name: "Linux",
+    href: "https://lcm.wynio.pw/",
+    linkTitle: `${SITE.title} on Linux`,
+    active: true,
+  },
 ];

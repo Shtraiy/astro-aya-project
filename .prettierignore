@@ -11,3 +11,10 @@
 !.prettierrc
 !eslint.config.mjs
 !README.md
+
+# 第三方压缩产物：格式化会把 3 行的压缩代码展开成几百行，没有意义
+/public/js/*.min.js
+/public/js/*.min.css
+
+# 文章正文由作者手写维护，不参与 Prettier，避免工具改写正文排版
+/src/content/blog

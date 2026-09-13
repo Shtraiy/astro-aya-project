@@ -4,12 +4,12 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "archives" | "tags" | "links" | "about" | "search" | "music";
+  activeNav?:
+    "posts" | "archives" | "tags" | "links" | "about" | "search" | "music";
 }
 
 const { activeNav } = Astro.props;
 ---
-
 
 <header>
   <a id="skip-to-content" href="#main-content">Skip to content</a>
@@ -84,8 +84,8 @@ const { activeNav } = Astro.props;
           {
             SITE.showArchives && (
               <li>
-                 <LinkButton
-                   href="/archives/"
+                <LinkButton
+                  href="/archives/"
                   className={`focus-outline inline-flex items-center justify-center p-3 sm:p-1`}
                   ariaLabel="archives"
                   title="Archives"
@@ -164,7 +164,7 @@ const { activeNav } = Astro.props;
 </header>
 
 <style>
-@reference "../styles/base.css";
+  @reference "../styles/base.css";
   #skip-to-content {
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
@@ -225,7 +225,9 @@ const { activeNav } = Astro.props;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.35s ease, opacity 0.25s ease;
+    transition:
+      max-height 0.35s ease,
+      opacity 0.25s ease;
   }
   .mobile-menu.open {
     max-height: 24rem;

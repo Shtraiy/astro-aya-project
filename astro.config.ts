@@ -12,10 +12,7 @@ import { SITE } from "./src/config";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  integrations: [
-    react(),
-    sitemap(),
-  ],
+  integrations: [react(), sitemap()],
   markdown: {
     // Astro 7 默认改用 Sätteri（Rust）渲染 Markdown，本项目的 remark 插件
     // （目录、折叠、GitHub 提示框）需要显式装回 unified/rehype 管线，

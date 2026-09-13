@@ -97,7 +97,11 @@ const nextPost =
       class="focus-outline mb-2 mt-8 flex items-center hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
         ><path
           d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
         ></path>
@@ -125,8 +129,20 @@ const nextPost =
       <ul class="inline-flex flex-wrap items-center gap-1">
         {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
       </ul>
-      <button id="back-to-top" class="focus-outline flex shrink-0 items-center gap-1 whitespace-nowrap hover:opacity-75">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="rotate-90 h-5 w-5"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"/></svg>
+      <button
+        id="back-to-top"
+        class="focus-outline flex shrink-0 items-center gap-1 whitespace-nowrap hover:opacity-75"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="rotate-90 h-5 w-5"
+          ><path
+            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+          ></path></svg
+        >
         <span>回到顶部</span>
       </button>
     </div>
@@ -153,11 +169,11 @@ const nextPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M15 6l-6 6l6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 6l-6 6l6 6" />
             </svg>
             <div>
-                <span>上一篇文章</span>
+              <span>上一篇文章</span>
               <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
             </div>
           </a>
@@ -185,8 +201,8 @@ const nextPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M9 6l6 6l-6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 6l6 6l-6 6" />
             </svg>
           </a>
         )
@@ -205,7 +221,7 @@ const nextPost =
 </Layout>
 
 <style>
-@reference "../styles/base.css";
+  @reference "../styles/base.css";
   main {
     @apply mx-auto w-full max-w-3xl px-4 pb-12;
   }
@@ -348,19 +364,25 @@ const nextPost =
       document.body.style.overflow = "hidden";
 
       let scale = 1;
-      const MIN = 0.5, MAX = 6, STEP = 0.15;
+      const MIN = 0.5,
+        MAX = 6,
+        STEP = 0.15;
 
       function applyZoom() {
         clone.style.transform = `scale(${scale})`;
       }
 
       // Wheel zoom
-      overlay.addEventListener("wheel", e => {
-        e.preventDefault();
-        scale += e.deltaY < 0 ? STEP : -STEP;
-        scale = Math.min(MAX, Math.max(MIN, scale));
-        applyZoom();
-      }, { passive: false });
+      overlay.addEventListener(
+        "wheel",
+        e => {
+          e.preventDefault();
+          scale += e.deltaY < 0 ? STEP : -STEP;
+          scale = Math.min(MAX, Math.max(MIN, scale));
+          applyZoom();
+        },
+        { passive: false }
+      );
 
       // Double-click reset
       overlay.addEventListener("dblclick", e => {
@@ -375,7 +397,8 @@ const nextPost =
         document.removeEventListener("keydown", escHandler);
       };
       overlay.addEventListener("click", e => {
-        if (e.target === overlay || e.target.closest(".lightbox-close")) close();
+        if (e.target === overlay || e.target.closest(".lightbox-close"))
+          close();
       });
       document.addEventListener("keydown", escHandler);
       function escHandler(e) {
@@ -384,14 +407,18 @@ const nextPost =
     });
   }
   initLightbox();
-  document.addEventListener("astro:after-swap", () => { lightboxReady = false; initLightbox(); });
+  document.addEventListener("astro:after-swap", () => {
+    lightboxReady = false;
+    initLightbox();
+  });
 
   /** Render Mermaid diagrams */
   async function renderMermaid() {
     const mermaidDivs = document.querySelectorAll(".mermaid");
     if (!mermaidDivs.length) return;
 
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } =
+      await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
     mermaid.initialize({ startOnLoad: false, theme: "default" });
     await mermaid.run({ nodes: [...mermaidDivs] });
   }

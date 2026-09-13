@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/LinksLayout.astro
 ---
+
 <div id="friends">
 
 # 🔗友情链接
@@ -48,8 +49,8 @@ layout: ../layouts/LinksLayout.astro
 
 如果您觉得能够接受以上内容，可以通过如下的方式联系到我交换友链：
 
-+ 通过GitHub的项目提交issue联系到我，[点此前往](https://github.com/Shtraiy/Blog)
-+ 通过邮件联系到我，[点此联系](mailto:resalia@wynio.pw)
+- 通过GitHub的项目提交issue联系到我，[点此前往](https://github.com/Shtraiy/Blog)
+- 通过邮件联系到我，[点此联系](mailto:resalia@wynio.pw)
 
 在您添加友链的时候可以参考如下信息：
 

@@ -32,11 +32,16 @@ const MonthMap: Record<string, string> = {
 
 // 新增一个工具函数：将阿拉伯数字转为中文数字（支持到99，写博客一般单月足够用了）
 function getChineseNumber(num: number): string {
-  const chars = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  const chars = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
   if (num < 10) return chars[num];
-  if (num === 10) return '十';
-  if (num < 20) return '十' + (num % 10 === 0 ? '' : chars[num % 10]);
-  if (num < 100) return chars[Math.floor(num / 10)] + '十' + (num % 10 === 0 ? '' : chars[num % 10]);
+  if (num === 10) return "十";
+  if (num < 20) return "十" + (num % 10 === 0 ? "" : chars[num % 10]);
+  if (num < 100)
+    return (
+      chars[Math.floor(num / 10)] +
+      "十" +
+      (num % 10 === 0 ? "" : chars[num % 10])
+    );
   return num.toString(); // 超过99的做个兜底，直接返回数字
 }
 ---

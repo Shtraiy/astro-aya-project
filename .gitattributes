@@ -13,3 +13,8 @@
 *.tsx text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+*.json text eol=lf
+
+# 无扩展名的配置文件也一并固定为 LF，避免本地（core.autocrlf=true）
+# 与 CI（Linux 检出）看到不同的行尾，导致 format:check 结果不一致
+.prettierrc text eol=lf

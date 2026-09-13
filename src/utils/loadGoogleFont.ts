@@ -17,8 +17,7 @@ const CACHE_DIR = path.join(process.cwd(), "node_modules", ".cache", "fonts");
 // satori 底层用 opentype.js 解析字体，只认 ttf / otf（woff1 还得先解包）。
 // Google Fonts 对现代 UA 会返回 woff2，所以这里伪装旧 UA 尽量拿到 ttf/woff1；
 // 但各镜像不一定遵守，所以下载后一律用 fontverter 转成 sfnt 再交给 satori。
-const FONT_UA =
-  "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
+const FONT_UA = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
 
 // 标题里有汉字，而 IBM Plex Mono 没有汉字字形，缺字体时 satori 会画成豆腐块，
 // 所以额外请求一个中文字体，让 satori 逐字回退（拉丁字符仍用 IBM Plex Mono）。
@@ -134,10 +133,18 @@ async function fetchCssFromMirrors(
   const cssPath = `css2?family=${font}&text=${encodeURIComponent(text)}`;
 
   const mirrors = [
-    { name: "google", url: `https://fonts.googleapis.com/${cssPath}`, timeout: 5000 },
+    {
+      name: "google",
+      url: `https://fonts.googleapis.com/${cssPath}`,
+      timeout: 5000,
+    },
     { name: "loli", url: `https://fonts.loli.net/${cssPath}`, timeout: 8000 },
     { name: "fontim", url: `https://fonts.font.im/${cssPath}`, timeout: 8000 },
-    { name: "geekzu", url: `https://fonts.geekzu.org/${cssPath}`, timeout: 8000 },
+    {
+      name: "geekzu",
+      url: `https://fonts.geekzu.org/${cssPath}`,
+      timeout: 8000,
+    },
   ];
 
   // 并行请求所有镜像：串行时被墙的镜像会把超时一层层叠起来（最坏 29s/次）
@@ -178,7 +185,10 @@ async function loadGoogleFont(
   );
 
   if (!resource) {
-    console.warn("[OG] Could not parse font URL from CSS. Raw CSS:", css.slice(0, 300));
+    console.warn(
+      "[OG] Could not parse font URL from CSS. Raw CSS:",
+      css.slice(0, 300)
+    );
     throw new Error("Failed to parse font URL from CSS");
   }
 
