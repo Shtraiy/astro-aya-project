@@ -3,7 +3,6 @@ import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: "content_layer",
   loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
@@ -34,7 +33,6 @@ const blog = defineCollection({
 });
 
 const albums = defineCollection({
-  type: "content_layer",
   loader: glob({ pattern: "**/*.md", base: "./src/content/albums" }),
   schema: z.object({
     title: z.string(),

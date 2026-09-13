@@ -71,8 +71,8 @@ function getChineseNumber(num: number): string {
                     </span>
                   </div>
                   <ul>
-                    {monthGroup.map(({ data, slug }) => (
-                      <Card href={`/posts/${slug}`} frontmatter={data} />
+                    {monthGroup.map(({ data, id }) => (
+                      <Card href={`/posts/${id}`} frontmatter={data} />
                     ))}
                   </ul>
                 </div>

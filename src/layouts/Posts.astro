@@ -21,8 +21,8 @@ const { page } = Astro.props;
     <Main pageTitle="📖文章" pageDesc="我笔下的所有字句。">
     <ul>
       {
-        page.data.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
+        page.data.map(({ data, id }) => (
+          <Card href={`/posts/${id}/`} frontmatter={data} />
         ))
       }
     </ul>

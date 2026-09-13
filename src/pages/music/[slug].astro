@@ -13,7 +13,7 @@ export interface Props {
 export async function getStaticPaths() {
   const albums = await getCollection("albums");
   return albums.map(album => ({
-    params: { slug: album.slug },
+    params: { slug: album.id },
     props: { album },
   }));
 }
