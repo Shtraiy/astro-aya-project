@@ -7,7 +7,7 @@ layout: ../../layouts/PGPLayout.astro
 
 # 个人公钥
 
-- Email：weihuazhen24@gmail.com
+- Email：resalia@wynio.pw
 - 密钥长度： RSA - 4096 - Bit
 - 过期时间：∞
 - 指纹：9D01 58B7 72E2 5C52 775A E79A 831D B03C 4906 F4B8
