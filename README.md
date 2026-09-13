@@ -8,7 +8,7 @@
 
 - 文章列表、标签、归档、分页与模糊搜索（Fuse.js）
 - 音乐藏馆（`/music`）：专辑展示与播放器
-- 友链页面（`/links`）与 PGP 公钥页面（`/pgp`）
+- 友链页面（`/links`）
 - RSS、sitemap、robots.txt
 - 每篇文章在构建时自动生成 OG 分享图，站点另有默认图 `/og.png`
 - 浅色 / 深色主题，中文排版（霞鹜文楷屏幕版）
@@ -70,7 +70,7 @@ npm run preview
 │   │   └── albums/              # 音乐专辑（.md）
 │   ├── content.config.ts        # 内容集合的 schema（注意：不在 src/content 里）
 │   ├── layouts/
-│   ├── pages/                   # 路由：posts / tags / archives / music / links / pgp …
+│   ├── pages/                   # 路由：posts / tags / archives / music / links …
 │   ├── styles/base.css          # Tailwind 主题与全局样式
 │   ├── utils/                   # 排序、标签、OG 图片生成等
 │   └── config.ts                # 站点信息、社交链接

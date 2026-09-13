@@ -23,7 +23,3 @@ SilentCage名字的灵感来源于Endorfin.蓝专的《無言の鳥籠》这首�
 曾用域名*wynio.online*
 
 本站或将长期使用*wynio.pw*这个域名
-
-# 关于PGP
-
-[个人PGP公钥](/pgp/pgp/index.html)，很久没用了，但是永远不会过期

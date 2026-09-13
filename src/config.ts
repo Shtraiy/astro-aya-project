@@ -46,12 +46,6 @@ export const SOCIALS: SocialObjects = [
     active: true,
   },
   {
-    name: "PGP",
-    href: "/pgp/pgp/",
-    linkTitle: `${SITE.title} on PGP`,
-    active: true,
-  },
-  {
     name: "Bilibili",
     href: "https://space.bilibili.com/30547965",
     linkTitle: `${SITE.title} on Bilibili`,
