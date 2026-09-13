@@ -36,3 +36,12 @@ pnpm-debug.log*
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# 本地无关文件：临时图片与模板遗留素材，不再上传
+/效果图.png
+/修改图.png
+/AstroPaper-lighthouse-score.svg
+/public/assets/dev.svg
+/public/assets/forrest-gump-quote.webp
+/src/assets/images/AstroPaper-v3.png
+/src/assets/images/AstroPaper-v4.png
