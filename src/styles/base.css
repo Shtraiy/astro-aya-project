@@ -1,6 +1,60 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+/*
+  深色模式：对应原 tailwind.config.cjs 的
+  darkMode: ["selector", "[data-theme='dark']"]。
+  当前代码里没有用到 dark: 前缀，保留是为了以后可用。
+*/
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+  v4 主题：承接原 tailwind.config.cjs 里的皮肤色板与字体。
+  下方 :root / html[data-theme] 里的 --color-* 存的是 "R, G, B" 三元组，
+  所以这里必须用 @theme inline —— 工具类会在运行时解析 rgb(var(--color-*)),
+  这样 bg-skin-fill/70 这类透明度修饰符依然有效，深浅色切换也不受影响。
+*/
+@theme inline {
+  --color-skin-base: rgb(var(--color-text-base));
+  --color-skin-accent: rgb(var(--color-accent));
+  --color-skin-fill: rgb(var(--color-fill));
+  /* 原 textColor.skin.inverted 取的是 --color-fill */
+  --color-skin-inverted: rgb(var(--color-fill));
+  --color-skin-card: rgb(var(--color-card));
+  --color-skin-card-muted: rgb(var(--color-card-muted));
+  --color-skin-line: rgb(var(--color-border));
+
+  --font-sans: "Inter", "LXGW WenKai Screen", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility display-none {
+  @apply hidden;
+}
+
+@utility focus-outline {
+  @apply outline-2 outline-offset-1 outline-skin-accent focus-visible:no-underline focus-visible:outline-dashed;
+}
 
 @layer base {
   html {
@@ -35,7 +89,7 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans leading-relaxed text-skin-base selection:bg-skin-accent/70 selection:text-skin-inverted;
+    @apply flex min-h-svh flex-col bg-skin-fill font-sans leading-relaxed text-skin-base selection:bg-skin-accent/70 selection:text-skin-inverted;
   }
   code, pre, kbd, samp {
     font-family: "IBM Plex Mono", "Consolas", monospace;
@@ -45,7 +99,7 @@
     @apply mx-auto max-w-3xl px-4;
   }
   a {
-    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+    @apply outline-2 outline-offset-1 outline-skin-accent focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
     @apply inline-block fill-skin-base group-hover:fill-skin-accent;
@@ -54,10 +108,10 @@
     @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110;
   }
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base prose-h3:italic prose-p:!text-skin-base prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8 hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent/50 prose-blockquote:opacity-80 prose-figcaption:!text-skin-base prose-figcaption:opacity-70 prose-strong:!text-skin-base prose-code:rounded prose-code:bg-skin-card/75 prose-code:p-1 prose-code:before:!content-none prose-code:after:!content-none prose-ol:!text-skin-base prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent prose-table:text-skin-base prose-th:border prose-th:border-skin-line prose-td:border prose-td:border-skin-line prose-hr:!border-skin-line;
+    @apply prose-headings:mb-3! prose-headings:!text-skin-base prose-h3:italic prose-p:!text-skin-base prose-a:!text-skin-base prose-a:decoration-dashed! prose-a:underline-offset-8 hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent/50 prose-blockquote:opacity-80 prose-figcaption:!text-skin-base prose-figcaption:opacity-70 prose-strong:!text-skin-base prose-code:rounded-sm prose-code:bg-skin-card/75 prose-code:p-1 prose-code:before:content-none! prose-code:after:content-none! prose-ol:!text-skin-base prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent prose-table:text-skin-base prose-th:border prose-th:border-skin-line prose-td:border prose-td:border-skin-line prose-hr:!border-skin-line;
   }
   .prose a {
-    @apply break-words hover:!text-skin-accent;
+    @apply wrap-break-word hover:!text-skin-accent;
   }
   .prose thead th:first-child,
   .prose tbody td:first-child,
@@ -149,13 +203,14 @@
   }
 }
 
-@layer components {
-  .display-none {
-    @apply hidden;
-  }
-  .focus-outline {
-    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
-  }
+/*
+  原 v3 配置里 typography.DEFAULT.css.pre/code.color = false，即不给 pre/code
+  设颜色，让 shiki 的行内颜色和正文继承色透出来。v4 的 typography 插件会把这两个
+  颜色设回来，所以在图层之外（优先级高于任何 @layer）显式还原。
+*/
+.prose pre,
+.prose code {
+  color: inherit;
 }
 
 /* ===== 打印样式 ===== */
