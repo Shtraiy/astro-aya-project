@@ -1,6 +1,21 @@
 {
   "name": "astro-aya",
-  "version": "4.7.0",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SilentCage —— 个人博客：随笔、技术笔记与音乐藏馆",
+  "author": "Resalia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shtraiy/astro-aya-project.git"
+  },
+  "keywords": [
+    "blog",
+    "astro",
+    "tailwindcss",
+    "typescript",
+    "silentcage"
+  ],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
