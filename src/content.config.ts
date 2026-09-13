@@ -1,6 +1,7 @@
 import { SITE } from "@config";
 import { glob } from "astro/loaders";
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 
 const blog = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
@@ -46,7 +47,7 @@ const albums = defineCollection({
       z.object({
         name: z.string(),
         artist: z.string().optional(),
-        url: z.string().url(),
+        url: z.url(),
       })
     ),
     lyrics: z
