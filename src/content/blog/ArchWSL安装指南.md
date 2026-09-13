@@ -56,7 +56,7 @@ wsl --set-default-version 2
 ```
 
 ### 设置默认用户
-参考ArchWiki的[Sudo](https://wiki.archlinux.org/index.php/Sudo#Example_entries)和[User and groups](https://wiki.archlinux.org/index.php/Users_and_groups)页。
+参考ArchWiki的[Sudo](https://wiki.archlinux.org/index.php/Sudo#Example_entries)和[User and groups](https://wiki.archlinux.org/index.php/Users_and_groups)页
 
 ```
 >Arch.exe

@@ -16,7 +16,7 @@ description: "本文记述了研究KataGo围棋AI并配合Sabaki进行对弈的�
 
 但是我最近对一个叫做Katago围棋AI有了点兴趣，于是就研究了一下
 
-Katago是由David J. Wu 所研究并开发的一套围棋软件。
+Katago是由David J. Wu 所研究并开发的一套围棋软件
 
 并且以DeepMind的AlphaGo Zero与AlphaZero论文为基础为基础，训练速度更快，棋力更强
 
