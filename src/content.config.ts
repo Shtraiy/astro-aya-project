@@ -33,32 +33,4 @@ const blog = defineCollection({
     }),
 });
 
-const albums = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/albums" }),
-  schema: z.object({
-    title: z.string(),
-    artist: z.string(),
-    theme: z.string().regex(/^#[0-9a-fA-F]{6}$/, {
-      message: "Album theme must be a 6-digit hex color.",
-    }),
-    cover: z.string().min(1),
-    date: z.date().optional(),
-    tracks: z.array(
-      z.object({
-        name: z.string(),
-        artist: z.string().optional(),
-        url: z.url(),
-      })
-    ),
-    lyrics: z
-      .array(
-        z.object({
-          time: z.number(),
-          text: z.string(),
-        })
-      )
-      .optional(),
-  }),
-});
-
-export const collections = { blog, albums };
+export const collections = { blog };

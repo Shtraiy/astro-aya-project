@@ -1,0 +1,46 @@
+# Waline 评论服务端（跑在 NAS 上，数据留在 NAS 本地）
+#
+# 官方文档：https://waline.js.org/guide/deploy/vps.html
+# 用法：
+#   cd deploy/waline
+#   WALINE_JWT_TOKEN=$(openssl rand -hex 32) docker compose up -d
+#   （NAS 上没有 openssl 就随便找一段长随机串填进 JWT_TOKEN，别用占位符）
+#
+# 起来之后监听 8360，再由 frp 把它映射到公网 https 域名上。
+
+services:
+  waline:
+    image: lizheming/waline:latest
+    container_name: waline
+    restart: unless-stopped
+    ports:
+      # frpc 和它同机跑的话，建议收紧成 "127.0.0.1:8360:8360"，别在局域网里也开着
+      - "8360:8360"
+    volumes:
+      # SQLite 数据库就躺在 ./data 里，备份 = 拷这个目录
+      - ./data:/app/data
+    environment:
+      TZ: Asia/Shanghai
+
+      # ── 数据库：单机博客用 SQLite 最省事，换成 MySQL / PostgreSQL / MongoDB 也行 ──
+      SQLITE_PATH: /app/data
+
+      # ── 必须改：用来签发登录令牌，泄露等于评论后台被人随便进 ──
+      JWT_TOKEN: ${WALINE_JWT_TOKEN:?先设置 WALINE_JWT_TOKEN，随便一串长随机值}
+
+      # ── 站点信息（评论通知邮件里会用到） ──
+      SITE_NAME: SilentCage
+      SITE_URL: https://wynio.pw
+      AUTHOR_EMAIL: resalia@wynio.pw
+
+      # ── 跨域白名单：只有来自这个域名的请求才被接受，其它一律 403 ──
+      # 不配 = 允许所有来源。Vercel 的预览域名（xxx.vercel.app）要单独加进来，
+      # 否则在预览站上评论会 403。
+      SECURE_DOMAINS: wynio.pw
+
+      # ── 下面这些按需打开 ──
+      # LOGIN: force              # 强制登录后才能评论（默认免登录）
+      # COMMENT_AUDIT: true       # 所有评论先审核
+      # IPQPS: 3                  # 单 IP 每秒请求上限，挡一下脚本刷评论
+      # DISABLE_USERAGENT: true   # 不记录 UA
+      # AKISMET_KEY: xxx          # Akismet 反垃圾（可选）

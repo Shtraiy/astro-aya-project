@@ -1,0 +1,221 @@
+---
+import type { MarkdownHeading } from "astro";
+
+/**
+ * 右侧粘性目录：每一项左侧有一条进度条，随阅读位置填充；
+ * 当前所在小节高亮，点标题平滑跳转并写入 URL hash。
+ *
+ * 目录项来自 Astro render() 返回的 headings，因此文章里不用手写
+ * `Table of contents` 段落。
+ */
+interface Props {
+  headings: MarkdownHeading[];
+  /** 少于这么多条目录时整个组件不渲染 */
+  minItems?: number;
+}
+
+const { headings, minItems = 2 } = Astro.props;
+
+const toc = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+const show = toc.length >= minItems;
+---
+
+{
+  show && (
+    <toc-nav class="toc">
+      <p class="toc-title">目录</p>
+      <ul class="toc-list">
+        {toc.map(heading => (
+          <li class:list={["toc-item", heading.depth === 3 && "toc-item-sub"]}>
+            <span class="toc-bar" aria-hidden="true">
+              <span class="toc-bar-fill" />
+            </span>
+            <a
+              class="toc-link"
+              href={`#${heading.slug}`}
+              data-slug={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </toc-nav>
+  )
+}
+
+<style>
+  @reference "../styles/base.css";
+
+  .toc {
+    display: block;
+  }
+  .toc-title {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    @apply text-foreground;
+  }
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .toc-item {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .toc-bar {
+    position: relative;
+    flex: none;
+    width: 2px;
+    border-radius: 999px;
+    @apply bg-border;
+    overflow: hidden;
+  }
+  .toc-bar-fill {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 0;
+    @apply bg-primary;
+    transition: height 0.15s linear;
+  }
+  .toc-link {
+    flex: 1;
+    min-width: 0;
+    padding: 0.1875rem 0.375rem;
+    border-radius: 0.375rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    @apply text-muted-foreground;
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+  .toc-link:hover {
+    @apply text-foreground;
+  }
+  .toc-link.is-active {
+    @apply text-primary;
+    font-weight: 500;
+  }
+  .toc-item-sub .toc-link {
+    padding-inline-start: 1rem;
+    font-size: 0.78125rem;
+  }
+</style>
+
+<script>
+  type TocItem = {
+    link: HTMLAnchorElement;
+    fill: HTMLElement | null;
+    heading: HTMLElement;
+  };
+
+  /**
+   * 阅读位置按「探针线」计算：探针在视口上方 28% 处，
+   * 它落在哪个小节的区间里，哪个小节就是当前小节；
+   * 区间内的推进比例就是这一项的进度条高度。
+   */
+  const PROBE_RATIO = 0.28;
+
+  function setupToc(nav: HTMLElement) {
+    // 视图切换会重新插入同一个组件，用标记位避免重复绑定
+    if (nav.dataset.tocReady === "true") return;
+    nav.dataset.tocReady = "true";
+
+    const items: TocItem[] = Array.from(
+      nav.querySelectorAll<HTMLAnchorElement>(".toc-link")
+    )
+      .map(link => {
+        const slug = link.dataset.slug;
+        const heading = slug ? document.getElementById(slug) : null;
+        return {
+          link,
+          fill:
+            link.parentElement?.querySelector<HTMLElement>(".toc-bar-fill") ??
+            null,
+          heading: heading as HTMLElement,
+        };
+      })
+      .filter(item => item.heading instanceof HTMLElement);
+
+    if (!items.length) return;
+
+    const article = document.getElementById("article");
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      // 页面切换后旧节点会脱离文档，直接停更
+      if (!nav.isConnected) return;
+
+      const probe = window.scrollY + window.innerHeight * PROBE_RATIO;
+      const articleEnd =
+        (article?.getBoundingClientRect().bottom ?? 0) + window.scrollY;
+
+      let activeIndex = -1;
+
+      items.forEach((item, index) => {
+        const start = item.heading.getBoundingClientRect().top + window.scrollY;
+        const end =
+          index + 1 < items.length
+            ? items[index + 1].heading.getBoundingClientRect().top +
+              window.scrollY
+            : Math.max(articleEnd, start + 1);
+        const span = Math.max(end - start, 1);
+        const progress = Math.min(1, Math.max(0, (probe - start) / span));
+
+        if (item.fill) {
+          item.fill.style.height = `${(progress * 100).toFixed(1)}%`;
+        }
+        if (probe >= start) activeIndex = index;
+      });
+
+      items.forEach((item, index) => {
+        item.link.classList.toggle("is-active", index === activeIndex);
+      });
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(update);
+    };
+
+    nav.addEventListener("click", event => {
+      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+        ".toc-link"
+      );
+      if (!link) return;
+
+      const slug = link.dataset.slug;
+      const heading = slug ? document.getElementById(slug) : null;
+      if (!slug || !heading) return;
+
+      event.preventDefault();
+      history.pushState(null, "", `#${slug}`);
+      heading.scrollIntoView({ behavior: "smooth", block: "start" });
+      update();
+    });
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    update();
+  }
+
+  function initTocs() {
+    document.querySelectorAll<HTMLElement>("toc-nav").forEach(setupToc);
+  }
+
+  initTocs();
+  document.addEventListener("astro:page-load", initTocs);
+</script>

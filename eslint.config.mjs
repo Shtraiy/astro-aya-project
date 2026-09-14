@@ -40,6 +40,13 @@ export default [
   },
   {
     // public/js/APlayer.min.js 这类第三方压缩产物不该参与 lint
-    ignores: ["dist/**", ".astro", "**/*.min.js", "**/*.min.css"],
+    // 参考主题是本地拿来对照的另一个完整项目（含 node_modules），既不提交也不该扫
+    ignores: [
+      "dist/**",
+      ".astro",
+      "**/*.min.js",
+      "**/*.min.css",
+      "参考主题/**",
+    ],
   },
 ];

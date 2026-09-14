@@ -1,49 +1,89 @@
 ---
-import Breadcrumbs from "@components/Breadcrumbs.astro";
+import Icon from "@components/Icon.astro";
+import type { IconName } from "@components/Icon.astro";
 
-interface StringTitleProp {
+interface Props {
+  /** 页面标题 */
   pageTitle: string;
   pageDesc?: string;
+  /** 标题左侧图标块里的线性图标；不传则不显示图标块 */
+  icon?: IconName;
+  /** 图标块的色相 0-359（标签页用它对应的标签色）；不传则跟随站点强调色 */
+  iconHue?: number;
 }
 
-interface ArrayTitleProp {
-  pageTitle: [string, string];
-  titleTransition: string;
-  pageDesc?: string;
-}
-
-export type Props = StringTitleProp | ArrayTitleProp;
-
-const { props } = Astro;
+const { pageTitle, pageDesc, icon, iconHue } = Astro.props;
 ---
 
-<Breadcrumbs />
 <main id="main-content">
-  {
-    "titleTransition" in props ? (
-      <h1>
-        {props.pageTitle[0]}
-        <span transition:name={props.titleTransition}>
-          {props.pageTitle[1]}
+  <div class="page-head">
+    {
+      icon && (
+        <span
+          class="page-head-icon"
+          style={iconHue === undefined ? undefined : `--page-hue:${iconHue}`}
+        >
+          <Icon name={icon} size={22} />
         </span>
-      </h1>
-    ) : (
-      <h1>{props.pageTitle}</h1>
-    )
-  }
-  <p>{props.pageDesc}</p>
+      )
+    }
+    <div class="page-head-text">
+      <h1>{pageTitle}</h1>
+      {pageDesc && <p>{pageDesc}</p>}
+    </div>
+  </div>
   <slot />
 </main>
 
 <style>
   @reference "../styles/base.css";
   #main-content {
-    @apply mx-auto w-full max-w-3xl px-4 pb-4;
+    /* pt-12：以前这段留白是面包屑撑起来的，面包屑去掉后标题贴着页头分隔线了 */
+    @apply mx-auto w-full max-w-3xl px-4 pt-12 pb-4;
   }
-  #main-content h1 {
+  /* 页面头：左侧圆角图标块 + 标题 + 说明 */
+  .page-head {
+    @apply mb-9 flex items-center gap-4;
+  }
+  .page-head-icon {
+    /*
+      图标和底色走同一个色相（--page-hue）：默认取站点强调色，
+      标签页会用内联样式覆盖成该标签的颜色。线稿图标只继承 currentColor，
+      所以底色 / 描边 / 图标三者的色相一致，不会出现
+      彩色 emoji 落在另一种颜色底上的割裂感。
+    */
+    --page-hue: var(--accent-hue);
+    --page-icon-color: hsl(var(--page-hue) 62% 41%);
+    @apply grid size-12 flex-none place-items-center rounded-2xl;
+    color: var(--page-icon-color);
+    background-color: color-mix(
+      in srgb,
+      var(--page-icon-color) 13%,
+      transparent
+    );
+    border: 1px solid
+      color-mix(in srgb, var(--page-icon-color) 32%, transparent);
+  }
+  /* 夜间底色深，浅色相才看得清 */
+  :global(html[data-theme="dark"]) .page-head-icon {
+    --page-icon-color: hsl(var(--page-hue) 78% 72%);
+    background-color: color-mix(
+      in srgb,
+      var(--page-icon-color) 16%,
+      transparent
+    );
+    border-color: color-mix(in srgb, var(--page-icon-color) 34%, transparent);
+  }
+  .page-head-text {
+    @apply min-w-0;
+  }
+  .page-head-text h1 {
     @apply text-2xl font-semibold tracking-wider sm:text-3xl;
   }
-  #main-content p {
-    @apply mb-6 mt-2 italic;
+  /* 说明文字不再用斜体：长句斜体在中文里很别扭 */
+  .page-head-text p {
+    @apply mt-1.5 text-sm;
+    color: rgb(var(--palette-muted-text));
+    font-style: normal;
   }
 </style>

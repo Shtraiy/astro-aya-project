@@ -1,24 +1,29 @@
 ---
-import { getCollection } from "astro:content";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
+import TagCloud from "@components/TagCloud.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import Tag from "@components/Tag.astro";
-import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
-
-const posts = await getCollection("blog");
-
-let tags = getUniqueTags(posts);
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>
   <Header activeNav="tags" />
-  <Main pageTitle="🌿笼中标签" pageDesc="文章标签总览">
-    <ul>
-      {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} size="lg" />)}
-    </ul>
+  <Main
+    pageTitle="笼中标签"
+    pageDesc="字号越大，说明这个标签下的文章越多 · 点任意标签查看该主题下的文章"
+    icon="hashtag"
+  >
+    <TagCloud variant="page" />
   </Main>
   <Footer />
 </Layout>
+
+<style>
+  @reference "../../styles/base.css";
+
+  /* 标签云自己带外边距节奏，这里只把篇幅拉开一点 */
+  #main-content {
+    padding-bottom: 4rem;
+  }
+</style>

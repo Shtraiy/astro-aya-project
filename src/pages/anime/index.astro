@@ -1,0 +1,468 @@
+---
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import StatsStrip from "@components/StatsStrip.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
+/**
+ * 追番：Bangumi 收藏快照。
+ *
+ * 数据由 `npm run sync:bangumi` 生成（src/data/bangumi.json），页面本身是纯静态的，
+ * 运行时不请求 Bangumi，前端也不带任何凭据 —— 和音乐收藏页一个路子。
+ */
+interface Item {
+  id: number;
+  status: number;
+  name: string;
+  nameCN: string;
+  cover: string | null;
+  date: string | null;
+  eps: number | null;
+  epStatus: number | null;
+  rate: number | null;
+  updatedAt: string | null;
+}
+
+interface BangumiData {
+  user: {
+    username: string;
+    nickname: string;
+    avatar: string | null;
+    url: string;
+  } | null;
+  syncedAt: string | null;
+  items: Item[];
+}
+
+/** 收藏状态，顺序就是页面上的分类顺序 */
+const STATUS = [
+  { type: 3, label: "在看" },
+  { type: 1, label: "想看" },
+  { type: 2, label: "看过" },
+  { type: 4, label: "搁置" },
+  { type: 5, label: "抛弃" },
+];
+
+const EMPTY: BangumiData = { user: null, syncedAt: null, items: [] };
+
+/** 数据文件缺失时退回空状态（页面显示导入引导），而不是把构建搞挂 */
+const loadBangumi = (): BangumiData => {
+  try {
+    const file = path.join(process.cwd(), "src", "data", "bangumi.json");
+    const parsed = JSON.parse(readFileSync(file, "utf8")) as BangumiData;
+    return { ...EMPTY, ...parsed, items: parsed.items ?? [] };
+  } catch {
+    return EMPTY;
+  }
+};
+
+const { user, syncedAt, items } = loadBangumi();
+
+const timeOf = (value: string | null) =>
+  value ? new Date(value).getTime() || 0 : 0;
+
+/** 看过按评分排，其余按最近更新排 —— 和 Bangumi 自己的习惯一致 */
+const sortItems = (list: Item[]) => {
+  const sorted = [...list];
+  const allDone = sorted.every(item => item.status === 2);
+  if (allDone && sorted.some(item => item.rate)) {
+    return sorted.sort(
+      (a, b) =>
+        (b.rate ?? 0) - (a.rate ?? 0) ||
+        timeOf(b.updatedAt) - timeOf(a.updatedAt)
+    );
+  }
+  return sorted.sort((a, b) => timeOf(b.updatedAt) - timeOf(a.updatedAt));
+};
+
+const groups = STATUS.map(status => ({
+  ...status,
+  items: sortItems(items.filter(item => item.status === status.type)),
+})).filter(group => group.items.length > 0);
+
+const done = items.filter(item => item.status === 2);
+const rated = done.filter(item => item.rate);
+const averageRate = rated.length
+  ? Math.round(
+      (rated.reduce((sum, item) => sum + (item.rate ?? 0), 0) / rated.length) *
+        10
+    ) / 10
+  : null;
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const stats = [
+  { value: items.length.toString(), label: "部收藏" },
+  {
+    value: items.filter(item => item.status === 3).length.toString(),
+    label: "在看",
+  },
+  { value: done.length.toString(), label: "看过" },
+  { value: averageRate ? `${averageRate} 分` : "—", label: "看过的均分" },
+];
+
+const displayName = (item: Item) => item.nameCN || item.name || "未命名";
+const subName = (item: Item) =>
+  item.nameCN && item.name && item.name !== item.nameCN ? item.name : "";
+
+const pageDesc = user
+  ? `${user.nickname} 的 Bangumi 收藏 · 同步于 ${
+      syncedAt ? formatDate(syncedAt) : "未知时间"
+    }`
+  : "还没同步过 · 拉一次 Bangumi 收藏就能把这页填满";
+
+/** 「看到 5 / 12 话」；拿不到总话数就只说看到第几话 */
+const progressText = (item: Item) => {
+  if (item.status !== 3 || item.epStatus === null) return "";
+  return item.eps
+    ? `看到 ${item.epStatus} / ${item.eps} 话`
+    : `看到 ${item.epStatus} 话`;
+};
+
+const progressPercent = (item: Item) => {
+  if (item.status !== 3 || !item.eps || item.epStatus === null) return 0;
+  return Math.min(100, Math.round((item.epStatus / item.eps) * 100));
+};
+
+const metaLine = (item: Item) => {
+  const year = item.date ? item.date.slice(0, 4) : "";
+  const progress = progressText(item);
+  const rate = item.rate ? `${item.rate} 分` : "";
+  return [year, progress || rate].filter(Boolean).join(" · ");
+};
+---
+
+<Layout title={`追番 | ${SITE.title}`}>
+  <Header activeNav="anime" />
+
+  <Main pageTitle="追番" pageDesc={pageDesc} icon="tv">
+    {
+      items.length === 0 ? (
+        <section class="anime-empty">
+          <p>还没有同步数据。三步就能把这页填满：</p>
+          <ol>
+            <li>
+              把 <code>.env.example</code> 复制成 <code>.env</code>，填上{" "}
+              <code>BANGUMI_USER=你的用户名</code>
+            </li>
+            <li>
+              运行 <code>npm run sync:bangumi</code>
+              （连不上 bgm.tv 就再加一行{" "}
+              <code>BANGUMI_PROXY=http://127.0.0.1:7890</code>）
+            </li>
+            <li>重新构建站点</li>
+          </ol>
+        </section>
+      ) : (
+        <>
+          <StatsStrip items={stats} class="mb-10" />
+
+          <div class="anime-filter">
+            <ul class="anime-chips">
+              <li>
+                <button type="button" class="chip is-current" data-status="all">
+                  全部<span class="chip-count">{items.length}</span>
+                </button>
+              </li>
+              {groups.map(group => (
+                <li>
+                  <button type="button" class="chip" data-status={group.type}>
+                    {group.label}
+                    <span class="chip-count">{group.items.length}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {groups.map(group => (
+            <section class="anime-group" data-group={group.type}>
+              <h2 class="anime-group-title">
+                {group.label}
+                <span class="anime-group-count">{group.items.length}</span>
+              </h2>
+              <ul class="anime-grid">
+                {group.items.map((item, index) => (
+                  <li class="anime" data-status={item.status}>
+                    <a
+                      class="anime-link"
+                      href={`https://bgm.tv/subject/${item.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${displayName(item)}${subName(item) ? ` / ${subName(item)}` : ""}`}
+                    >
+                      <span class="anime-cover">
+                        {item.cover ? (
+                          <img
+                            src={item.cover}
+                            alt=""
+                            loading={index < 12 ? "eager" : "lazy"}
+                            decoding="async"
+                            referrerpolicy="no-referrer"
+                          />
+                        ) : (
+                          <span class="anime-cover-fallback" aria-hidden="true">
+                            {displayName(item).slice(0, 1)}
+                          </span>
+                        )}
+                        {item.rate ? (
+                          <span class="anime-rate">★ {item.rate}</span>
+                        ) : null}
+                        {progressPercent(item) > 0 && (
+                          <span class="anime-progress" aria-hidden="true">
+                            <span
+                              class="anime-progress-fill"
+                              style={`width:${progressPercent(item)}%`}
+                            />
+                          </span>
+                        )}
+                      </span>
+                      <span class="anime-name">{displayName(item)}</span>
+                      {subName(item) && (
+                        <span class="anime-sub">{subName(item)}</span>
+                      )}
+                      {metaLine(item) && (
+                        <span class="anime-meta">{metaLine(item)}</span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </>
+      )
+    }
+  </Main>
+
+  <Footer />
+</Layout>
+
+<script>
+  /*
+    分类筛选：纯前端显隐，同时把下面所有分组收成一组展示，
+    避免"全部"标签下同一个番出现两次（分组标题此时也一起收起）。
+  */
+  function initAnimeFilter() {
+    const buttons = Array.from(
+      document.querySelectorAll<HTMLButtonElement>("button[data-status]")
+    );
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>(".anime[data-status]")
+    );
+    const groupSections = Array.from(
+      document.querySelectorAll<HTMLElement>(".anime-group[data-group]")
+    );
+    if (!buttons.length || !cards.length) return;
+    // 首页加载时直接调用 + astro:page-load 各绑一次，这里挡掉重复绑定
+    if (buttons.some(button => button.dataset.bound === "true")) return;
+
+    const apply = (value: string) => {
+      for (const button of buttons) {
+        button.classList.toggle("is-current", button.dataset.status === value);
+      }
+      for (const card of cards) {
+        card.hidden = value !== "all" && card.dataset.status !== value;
+      }
+      for (const section of groupSections) {
+        section.hidden = value !== "all" && section.dataset.group !== value;
+      }
+    };
+
+    for (const button of buttons) {
+      button.dataset.bound = "true";
+      button.addEventListener("click", () =>
+        apply(button.dataset.status ?? "all")
+      );
+    }
+  }
+
+  initAnimeFilter();
+  document.addEventListener("astro:page-load", initAnimeFilter);
+</script>
+
+<style>
+  @reference "../../styles/base.css";
+
+  /* ── 分类药丸 ── */
+  .anime-filter {
+    margin-bottom: 1.5rem;
+  }
+  .anime-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ── 分组 ── */
+  .anime-group + .anime-group {
+    margin-top: 2.25rem;
+  }
+  .anime-group[hidden] {
+    display: none;
+  }
+  .anime-group-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    @apply text-foreground;
+  }
+  .anime-group-count {
+    padding: 0 0.4375rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgb(var(--palette-muted-text));
+    background-color: rgb(var(--palette-muted));
+  }
+
+  /* ── 海报墙 ── */
+  .anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    gap: 1.25rem 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48rem) {
+    .anime-grid {
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: 1.5rem 0.875rem;
+    }
+  }
+  .anime[hidden] {
+    display: none;
+  }
+  .anime-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .anime-cover {
+    position: relative;
+    display: block;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 0.625rem;
+    background-color: rgb(var(--palette-muted));
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .anime-link:hover .anime-cover {
+    transform: translateY(-2px) scale(1.012);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.22);
+  }
+  .anime-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .anime-cover-fallback {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgb(var(--palette-muted-text));
+  }
+  /* 评分角标 */
+  .anime-rate {
+    position: absolute;
+    top: 0.3125rem;
+    right: 0.3125rem;
+    padding: 0 0.3125rem;
+    border-radius: 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #fff;
+    background-color: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(4px);
+  }
+  /* 看到第几话：贴在封面底部的进度条 */
+  .anime-progress {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 0.25rem;
+    background-color: rgb(0 0 0 / 0.45);
+  }
+  .anime-progress-fill {
+    display: block;
+    height: 100%;
+    background-color: rgb(var(--palette-accent));
+  }
+  .anime-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.35;
+    @apply text-foreground;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .anime-sub,
+  .anime-meta {
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    @apply text-muted-foreground;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .anime-meta {
+    opacity: 0.75;
+  }
+
+  /* ── 未同步时的引导 ── */
+  .anime-empty {
+    padding: 1.25rem 1.375rem;
+    border: 1px dashed rgb(var(--palette-border));
+    border-radius: 1rem;
+    font-size: 0.9375rem;
+    @apply text-muted-foreground;
+  }
+  .anime-empty p {
+    margin: 0 0 0.75rem;
+    color: rgb(var(--palette-text));
+  }
+  .anime-empty ol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  .anime-empty code {
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.375rem;
+    font-size: 0.875em;
+    background-color: rgb(var(--palette-muted));
+    @apply text-foreground;
+  }
+</style>

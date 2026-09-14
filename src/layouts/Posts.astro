@@ -5,7 +5,9 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
+import TagCloud from "@components/TagCloud.astro";
 import { SITE } from "@config";
+import { getReadingTime } from "@utils/getReadingTime";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -18,15 +20,23 @@ const { page } = Astro.props;
 
 <Layout title={`文章 | ${SITE.title}`}>
   <Header activeNav="posts" />
-  <Main pageTitle="📖文章" pageDesc="我笔下的所有字句。">
+  <Main pageTitle="文章" pageDesc="我笔下的所有字句。" icon="book">
     <ul>
       {
-        page.data.map(({ data, id }) => (
-          <Card href={`/posts/${id}/`} frontmatter={data} />
+        page.data.map(post => (
+          <Card
+            href={`/posts/${post.id}/`}
+            frontmatter={post.data}
+            readingTime={getReadingTime(post.body ?? "")}
+          />
         ))
       }
     </ul>
   </Main>
+
+  <aside class="side-rail">
+    <TagCloud limit={20} />
+  </aside>
 
   <Pagination {page} />
 

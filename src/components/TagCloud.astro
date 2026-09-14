@@ -1,0 +1,147 @@
+---
+import { getCollection } from "astro:content";
+import Icon from "@components/Icon.astro";
+import { slugifyStr } from "@utils/slugify";
+import { tagHue } from "@utils/tagHue";
+import postFilter from "@utils/postFilter";
+
+/**
+ * 标签云：给列表页当右侧栏用。
+ * 按文章数从多到少排序，让站内主要话题排在前面（纯按字母排中文没有意义）。
+ */
+interface Props {
+  /** 当前所在标签，会被高亮 */
+  currentTag?: string;
+  /** 最多显示多少个，0 表示全部 */
+  limit?: number;
+  /** rail：列表页侧栏的紧凑版；page：标签总览页的大号云 */
+  variant?: "rail" | "page";
+}
+
+const { currentTag, limit = 0, variant = "rail" } = Astro.props;
+
+const posts = await getCollection("blog");
+
+const counts = new Map<string, { tagName: string; count: number }>();
+for (const post of posts.filter(postFilter)) {
+  for (const tagName of post.data.tags) {
+    const tag = slugifyStr(tagName);
+    const entry = counts.get(tag);
+    if (entry) entry.count += 1;
+    else counts.set(tag, { tagName, count: 1 });
+  }
+}
+
+const sorted = [...counts.entries()]
+  .map(([tag, { tagName, count }]) => ({ tag, tagName, count }))
+  .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+
+const tags = limit > 0 ? sorted.slice(0, limit) : sorted;
+const hidden = sorted.length - tags.length;
+
+// 标签总览页：出现次数越多字号越大（0-3 档）
+const maxCount = sorted.reduce((max, item) => Math.max(max, item.count), 1);
+const weightOf = (count: number) =>
+  Math.min(3, Math.round((count / maxCount) * 3));
+const totalMarks = sorted.reduce((sum, item) => sum + item.count, 0);
+---
+
+<div class="tag-cloud" data-variant={variant}>
+  {
+    variant === "rail" ? (
+      <p class="tag-cloud-title">
+        <Icon name="hashtag" class="tag-cloud-icon" />
+        <span>标签</span>
+      </p>
+    ) : (
+      <p class="tag-cloud-summary">
+        {sorted.length} 个标签 · 共 {totalMarks} 次标记
+      </p>
+    )
+  }
+  <ul class="tag-cloud-list">
+    {
+      tags.map(({ tag, tagName, count }) => (
+        <li>
+          <a
+            class:list={[
+              "chip",
+              "chip--tag",
+              tag === currentTag && "is-current",
+            ]}
+            href={`/tags/${tag}/`}
+            style={`--tag-hue:${tagHue(tagName)}${variant === "page" ? `;--w:${weightOf(count)}` : ""}`}
+          >
+            <span>{tagName}</span>
+            <span class="chip-count">{count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    variant === "rail" && (
+      <a class="tag-cloud-more" href="/tags/">
+        {hidden > 0 ? `还有 ${hidden} 个标签` : "查看标签总览"}
+        <span aria-hidden="true">→</span>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  @reference "../styles/base.css";
+
+  .tag-cloud-title {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    @apply text-foreground;
+  }
+  .tag-cloud-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+  }
+  .tag-cloud-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tag-cloud-more {
+    display: inline-block;
+    margin-top: 0.875rem;
+    font-size: 0.75rem;
+    text-decoration: none;
+    @apply text-muted-foreground;
+  }
+  .tag-cloud-more:hover {
+    @apply text-foreground;
+  }
+
+  /* ── 标签总览页：大号云，字号体现热度 ── */
+  .tag-cloud-summary {
+    margin: 0 0 1rem;
+    font-size: 0.8125rem;
+    @apply text-muted-foreground;
+  }
+  .tag-cloud[data-variant="page"] .tag-cloud-list {
+    gap: 0.5rem;
+  }
+  .tag-cloud[data-variant="page"] .chip {
+    padding: 0.25rem 0.75rem;
+    /* 出现越多字号越大：0.8125rem ~ 1.1875rem */
+    font-size: calc(0.8125rem + var(--w, 0) * 0.125rem);
+  }
+  .tag-cloud[data-variant="page"] .chip-count {
+    font-size: 0.75rem;
+  }
+</style>

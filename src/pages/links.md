@@ -1,10 +1,10 @@
 ---
 layout: ../layouts/LinksLayout.astro
+title: 友情链接
+description: 本站的朋友们 · 想交换友链可以先看看下面的须知
 ---
 
 <div id="friends">
-
-# 🔗友情链接
 
 > 友情链接（简称“友链”）是指两个网站之间相互放置对方网站链接的行为。这种做法的主要目的是通过互相推荐，增加彼此网站的访问量和搜索引擎排名。友情链接通常位于网站的首页或专门的友情链接页面，是一种常见的网络推广手段。它可以提高网站的曝光率、增加流量，并有助于提升网站在搜索引擎中的权重。
 
@@ -63,14 +63,8 @@ layout: ../layouts/LinksLayout.astro
 ## 最后，感谢相遇！
 
 <style>
-#friends h1 {
-    color: rgb(var(--color-accent));
-    font-size: 2rem;
-    line-height: 1.2;
-}
-
 #friends h2 {
-    color: rgb(var(--color-accent));
+    color: rgb(var(--palette-accent));
     font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -91,11 +85,11 @@ layout: ../layouts/LinksLayout.astro
     width: 300px; 
     padding: 10px 15px;
     border-radius: 10px;
-    border: 1px solid rgb(var(--color-border));
+    border: 1px solid rgb(var(--palette-border));
     text-decoration: none !important; 
     color: inherit;
     transition: all 0.3s ease;
-    background: rgb(var(--color-card));
+    background: rgb(var(--palette-card));
 }
 
 .link-card:hover {
@@ -121,13 +115,13 @@ layout: ../layouts/LinksLayout.astro
 #friends .link-card .name {
     font-size: 1.1rem;
     font-weight: bold;
-    color: rgb(var(--color-text-base));
+    color: rgb(var(--palette-text));
     margin-bottom: 5px;
 }
 
 #friends .link-card .description {
     font-size: 0.85rem;
-    color: rgb(var(--color-text-base));
+    color: rgb(var(--palette-text));
     opacity: 0.6;
     line-height: 1.2;
 }

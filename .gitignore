@@ -45,3 +45,6 @@ pnpm-debug.log*
 /public/assets/forrest-gump-quote.webp
 /src/assets/images/AstroPaper-v3.png
 /src/assets/images/AstroPaper-v4.png
+
+# 本地拿来对照的参考主题：整个项目（含 node_modules），不提交
+/参考主题/

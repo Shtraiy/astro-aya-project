@@ -1,0 +1,94 @@
+---
+/**
+ * 一条分段式统计条（首页 / 收藏 / 追番共用）。
+ *
+ * 以前每张数字卡各自带边框，并排时边框会互相打架；收成一条之后
+ * 分隔线由格子自己画，窄屏自动 2×2、宽屏一行，观感统一。
+ * 外边距交给调用方（用 Tailwind 的 m* 系列），这里只管条本身。
+ */
+interface Props {
+  items: { value: string; label: string }[];
+  class?: string;
+}
+
+const { items, class: className = "" } = Astro.props;
+---
+
+<ul class:list={["stats-strip", className]}>
+  {
+    items.map(item => (
+      <li class="stats-strip-item">
+        <span class="stats-strip-value">{item.value}</span>
+        <span class="stats-strip-label">{item.label}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @reference "../styles/base.css";
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 0.875rem;
+    overflow: hidden;
+  }
+  /* 48rem（媒体查询里按 16px 算）才排成四列，再窄「2026年9月13日」会被挤成两行 */
+  @media (min-width: 48rem) {
+    .stats-strip {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .stats-strip-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.75rem 0.875rem;
+    transition: background-color 0.2s ease;
+  }
+  /* 窄屏两列：右列竖分隔线、第二行横分隔线；宽屏四列只留竖线 */
+  .stats-strip-item:nth-child(even) {
+    border-left: 1px solid rgb(var(--palette-border));
+  }
+  .stats-strip-item:nth-child(n + 3) {
+    border-top: 1px solid rgb(var(--palette-border));
+  }
+  @media (min-width: 48rem) {
+    .stats-strip-item:nth-child(n + 3) {
+      border-top: none;
+    }
+    .stats-strip-item:nth-child(odd):not(:first-child) {
+      border-left: 1px solid rgb(var(--palette-border));
+    }
+  }
+  .stats-strip-item:hover {
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted-text)) 7%,
+      transparent
+    );
+  }
+  .stats-strip-value {
+    @apply text-foreground;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .stats-strip-label {
+    @apply text-muted-foreground;
+    font-size: 0.75rem;
+  }
+  @media (max-width: 48rem) {
+    .stats-strip-item {
+      padding: 0.625rem 0.75rem;
+    }
+    .stats-strip-value {
+      font-size: 0.9375rem;
+    }
+  }
+</style>

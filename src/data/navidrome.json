@@ -1,0 +1,5133 @@
+{
+  "serverUrl": "https://music.frp.wynio.pw:62026",
+  "syncedAt": "2026-09-13T15:25:38.064Z",
+  "albums": [
+    {
+      "id": "4LKmMz6R9bqf9SWJC29y2Q",
+      "name": "花標本乙女-Herbarium Maiden-",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2021,
+      "genre": null,
+      "songCount": 2,
+      "duration": 643,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4LKmMz6R9bqf9SWJC29y2Q.jpg",
+      "tracks": [
+        {
+          "id": "tFS7svEKxLswQ7dgeVjP7J",
+          "title": "標本Ⅰ：彼岸花",
+          "track": 1,
+          "duration": 347
+        },
+        {
+          "id": "6nWM3L4HwIPgTI85QChxcz",
+          "title": "標本Ⅱ：藤",
+          "track": 2,
+          "duration": 295
+        }
+      ]
+    },
+    {
+      "id": "0kcZTm1w4WzEPDsEKdSbV6",
+      "name": "花標本乙女VI-Herbarium Maiden-",
+      "artist": "ABSOLUTE CASTAWAY • 中恵光城",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2023,
+      "genre": null,
+      "songCount": 2,
+      "duration": 527,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0kcZTm1w4WzEPDsEKdSbV6.jpg",
+      "tracks": [
+        {
+          "id": "ZCQJRKPewqKPEQ4MuLAvPC",
+          "title": "標本Ⅺ：梔子",
+          "track": 1,
+          "duration": 243
+        },
+        {
+          "id": "2NpJTrnRGB4bI2KgPiFCki",
+          "title": "標本Ⅻ：黒百合",
+          "track": 2,
+          "duration": 284
+        }
+      ]
+    },
+    {
+      "id": "2a2wrRvEwhjrbkwKj5pxjH",
+      "name": "花標本乙女Ⅱ -Herbarium Maiden-",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2021,
+      "genre": null,
+      "songCount": 4,
+      "duration": 1123,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2a2wrRvEwhjrbkwKj5pxjH.jpg",
+      "tracks": [
+        {
+          "id": "7HQdaanRh7rlrHihiUpSKr",
+          "title": "標本Ⅲ:桔梗",
+          "track": 1,
+          "duration": 322
+        },
+        {
+          "id": "zA2swdBfJfDJzJFOLgtdlc",
+          "title": "標本Ⅳ:秋桜",
+          "track": 2,
+          "duration": 239
+        },
+        {
+          "id": "QWXxPojJo1EXRZ7H6oQAK3",
+          "title": "標本Ⅲ:桔梗 (Instrumental)",
+          "track": 3,
+          "duration": 322
+        },
+        {
+          "id": "53EbqpHK4bC52oP6VAX5hh",
+          "title": "標本Ⅳ:秋桜 (Instrumental)",
+          "track": 4,
+          "duration": 239
+        }
+      ]
+    },
+    {
+      "id": "77mUJBDQDqQteQ37iK9F83",
+      "name": "花標本乙女Ⅲ -Herbarium Maiden-",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2022,
+      "genre": null,
+      "songCount": 4,
+      "duration": 1060,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/77mUJBDQDqQteQ37iK9F83.jpg",
+      "tracks": [
+        {
+          "id": "yHGZsrIxJVBmHE1ozidjvN",
+          "title": "標本Ⅴ：向日葵",
+          "track": 1,
+          "duration": 272
+        },
+        {
+          "id": "fxLiZUr6IvtlsSvjkU54mB",
+          "title": "標本Ⅵ：月見草",
+          "track": 2,
+          "duration": 258
+        },
+        {
+          "id": "KePszC6T8PxcEVDR7f9Rnp",
+          "title": "標本Ⅴ：向日葵 (Instrumental)",
+          "track": 3,
+          "duration": 271
+        },
+        {
+          "id": "z5cU8nfLTlRzGRe5gr4RX4",
+          "title": "標本Ⅵ：月見草 (Instrumental)",
+          "track": 4,
+          "duration": 258
+        }
+      ]
+    },
+    {
+      "id": "26UpiKBujrLvjSRtPLNMyQ",
+      "name": "花標本乙女：桜",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": null,
+      "genre": null,
+      "songCount": 2,
+      "duration": 441,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/26UpiKBujrLvjSRtPLNMyQ.jpg",
+      "tracks": [
+        {
+          "id": "VWK7CXha0ZRNpcUmEgxtto",
+          "title": "標本Ⅸ：桜",
+          "track": 1,
+          "duration": 221
+        },
+        {
+          "id": "tb9CWJWxo1vj8aaT04oXer",
+          "title": "標本Ⅸ：桜(Instrumental)",
+          "track": 2,
+          "duration": 220
+        }
+      ]
+    },
+    {
+      "id": "6JPxKbLHtIGduEwkaAydmo",
+      "name": "花標本乙女：水仙",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2022,
+      "genre": null,
+      "songCount": 2,
+      "duration": 622,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/6JPxKbLHtIGduEwkaAydmo.jpg",
+      "tracks": [
+        {
+          "id": "JDF5XWLaoYwCfsDlttD3YQ",
+          "title": "標本Ⅷ：水仙",
+          "track": 1,
+          "duration": 311
+        },
+        {
+          "id": "Ow8JoCF0zBYUNtZkP2WLCq",
+          "title": "標本Ⅷ：水仙(Instrumental)",
+          "track": 2,
+          "duration": 310
+        }
+      ]
+    },
+    {
+      "id": "0gwP9sJaEB4ArD0sLkJxXf",
+      "name": "花標本乙女：沈丁花",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": null,
+      "genre": null,
+      "songCount": 2,
+      "duration": 624,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0gwP9sJaEB4ArD0sLkJxXf.jpg",
+      "tracks": [
+        {
+          "id": "PGrDHf1nnJbKUOiBcHAnIZ",
+          "title": "標本Ⅹ：沈丁花",
+          "track": 1,
+          "duration": 312
+        },
+        {
+          "id": "IlUCBsTuWpuZnYAB3XT83r",
+          "title": "標本Ⅹ：沈丁花(Instrumental)",
+          "track": 2,
+          "duration": 312
+        }
+      ]
+    },
+    {
+      "id": "4iCIMHTg7ViTWggKW8szoU",
+      "name": "花標本乙女：芍薬",
+      "artist": "ABSOLUTE CASTAWAY",
+      "artistId": "1t8ZqiU4lJOT3kAuSsOnwW",
+      "year": 2022,
+      "genre": null,
+      "songCount": 2,
+      "duration": 748,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4iCIMHTg7ViTWggKW8szoU.jpg",
+      "tracks": [
+        {
+          "id": "31YBslk6vQG73T0iSgd9bE",
+          "title": "標本Ⅶ：芍薬",
+          "track": 1,
+          "duration": 374
+        },
+        {
+          "id": "k49t3qeeZDUgt9OUzRQyRm",
+          "title": "標本Ⅶ：芍薬(Instrumental)",
+          "track": 2,
+          "duration": 373
+        }
+      ]
+    },
+    {
+      "id": "1cQxdVeHlpLZXTMnme9LLn",
+      "name": "V/A",
+      "artist": "An",
+      "artistId": "3zJ6diiYc0NjRaSRHBOTbd",
+      "year": 2024,
+      "genre": null,
+      "songCount": 4,
+      "duration": 1081,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1cQxdVeHlpLZXTMnme9LLn.jpg",
+      "tracks": [
+        {
+          "id": "dDsktFpDJdf0aQ14wfrcKK",
+          "title": "Section22",
+          "track": 1,
+          "duration": 69
+        },
+        {
+          "id": "KqfFqvGiM1hflqyMrxzw4G",
+          "title": "VA",
+          "track": 2,
+          "duration": 594
+        },
+        {
+          "id": "xz7QY7knbJZIEu7BtOyUCX",
+          "title": "旅路",
+          "track": 3,
+          "duration": 365
+        },
+        {
+          "id": "FoZ8VHnuOwh471Rc0eIP44",
+          "title": "地平線",
+          "track": 4,
+          "duration": 51
+        }
+      ]
+    },
+    {
+      "id": "1usvTP2gjLS9vaVGDbmCxm",
+      "name": "KiLLKiSS",
+      "artist": "Ave Mujica",
+      "artistId": "0sDxEIRwdJE5I5fQtiZkk5",
+      "year": 2025,
+      "genre": "Anime",
+      "songCount": 1,
+      "duration": 208,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1usvTP2gjLS9vaVGDbmCxm.jpg",
+      "tracks": [
+        {
+          "id": "Cc8GofqafezDz3GOYSqffd",
+          "title": "KiLLKiSS",
+          "track": 1,
+          "duration": 208
+        }
+      ]
+    },
+    {
+      "id": "3yY5s2Cw0m4aaCOqwvTDGx",
+      "name": "ELYSIAN",
+      "artist": "BlackY",
+      "artistId": "3mrQLeUix0kYbGuSneVGfT",
+      "year": 2024,
+      "genre": "Pop",
+      "songCount": 10,
+      "duration": 2153,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3yY5s2Cw0m4aaCOqwvTDGx.jpg",
+      "tracks": [
+        {
+          "id": "m1l54m3kq9t3Fv5JaXbQmY",
+          "title": "ELYSIAN",
+          "track": 2,
+          "duration": 207
+        },
+        {
+          "id": "6Uj78rp06E9kQcabIAjvGZ",
+          "title": "Starlit Doze",
+          "track": 3,
+          "duration": 226
+        },
+        {
+          "id": "r9HUC7HrG6A9SM6L4XsdvP",
+          "title": "Ego Eimi (Long ver.)",
+          "track": 4,
+          "duration": 221
+        },
+        {
+          "id": "tPIKrl7pNei3uQiLcmO8pL",
+          "title": "一梦红尘",
+          "track": 5,
+          "duration": 219
+        },
+        {
+          "id": "ieoUJxAXqZBfrqEAcjebjx",
+          "title": "Eve Avenir",
+          "track": 6,
+          "duration": 202
+        },
+        {
+          "id": "SZ1HPV7JK5VdPkIRVnCptI",
+          "title": "ELYSIAN -Instrumental-",
+          "track": 8,
+          "duration": 207
+        },
+        {
+          "id": "QkaQYBKuJrvXhSqhIiHDPg",
+          "title": "Starlit Doze -Instrumental-",
+          "track": 9,
+          "duration": 227
+        },
+        {
+          "id": "lFX44d5d9dvSZKKynANwuc",
+          "title": "Ego Eimi -Instrumental-",
+          "track": 10,
+          "duration": 221
+        },
+        {
+          "id": "FaKroWhOUcWK1EsnHN4iDh",
+          "title": "一梦红尘 -Instrumental-",
+          "track": 11,
+          "duration": 215
+        },
+        {
+          "id": "ui3ZVpj0lgcueO0y6kLaDh",
+          "title": "Eve Avenir -Instrumental-",
+          "track": 12,
+          "duration": 204
+        }
+      ]
+    },
+    {
+      "id": "7bOtr5jaJaJat4Y81Ntrkm",
+      "name": "眠らない夢",
+      "artist": "Dazbee",
+      "artistId": "5WcrVAIlIlqlWpIqWVFFaT",
+      "year": 2024,
+      "genre": null,
+      "songCount": 4,
+      "duration": 713,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7bOtr5jaJaJat4Y81Ntrkm.jpg",
+      "tracks": [
+        {
+          "id": "mgttw94ujctRHYUI9ItT9d",
+          "title": "Intro",
+          "track": 1,
+          "duration": 121
+        },
+        {
+          "id": "uA6f0G1mjBzyvTuH35h3wk",
+          "title": "Nemuranai Yume",
+          "track": 2,
+          "duration": 202
+        },
+        {
+          "id": "FnSB6YGRuSPz284b4q4dOm",
+          "title": "Cabo da Roca",
+          "track": 3,
+          "duration": 212
+        },
+        {
+          "id": "m41p8btAlGRok3mXUdGztM",
+          "title": "Outro",
+          "track": 4,
+          "duration": 176
+        }
+      ]
+    },
+    {
+      "id": "7kkLKTM44VWekuU2ZD78qm",
+      "name": "AD:PIANO X",
+      "artist": "Diverse System",
+      "artistId": "17tZdZvVgmGkTN3Of5B8s0",
+      "year": 2026,
+      "genre": null,
+      "songCount": 45,
+      "duration": 11337,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7kkLKTM44VWekuU2ZD78qm.jpg",
+      "tracks": [
+        {
+          "id": "7Lxnz5GWRfdys1yEYrT8W7",
+          "title": "噓喰らいの怪物",
+          "track": 1,
+          "duration": 238
+        },
+        {
+          "id": "VNH2UWcHmGBctQeXkGbRC6",
+          "title": "変幻自在",
+          "track": 2,
+          "duration": 240
+        },
+        {
+          "id": "DujXowbt4yK0PVlRYx1o6t",
+          "title": "Shinobi",
+          "track": 3,
+          "duration": 258
+        },
+        {
+          "id": "f6fZPNiWNSTUXIvLPsRmE6",
+          "title": "1000年後もきっと快晴",
+          "track": 4,
+          "duration": 201
+        },
+        {
+          "id": "LgJu9HHhDhF8IoRgQR5yvI",
+          "title": "Scheria -after Reconstruction of Pandora's Box-",
+          "track": 5,
+          "duration": 323
+        },
+        {
+          "id": "cQZzoT7SQCWV5uO8JasSGR",
+          "title": "Myself",
+          "track": 6,
+          "duration": 286
+        },
+        {
+          "id": "sTCGVHBKq6lw2ra0DOufVX",
+          "title": "hymn",
+          "track": 7,
+          "duration": 278
+        },
+        {
+          "id": "D7cM1p8B3ydV3ENgbuGQT5",
+          "title": "異端",
+          "track": 8,
+          "duration": 204
+        },
+        {
+          "id": "Z7SbbyH61xDt0e7hV4EhaA",
+          "title": "星図のための時間視差",
+          "track": 9,
+          "duration": 228
+        },
+        {
+          "id": "jcFSu0g1u1qtIUlnHZ4fRu",
+          "title": "よすが",
+          "track": 10,
+          "duration": 245
+        },
+        {
+          "id": "Am7W36vcxRG7yd0REJyih5",
+          "title": "Eternal Descent",
+          "track": 11,
+          "duration": 242
+        },
+        {
+          "id": "70JkxGWBxaaq4MYXB4TwKD",
+          "title": "Arcspire",
+          "track": 12,
+          "duration": 228
+        },
+        {
+          "id": "zmdLcchkHQrh754O4Zl96S",
+          "title": "追憶は午後のひかり",
+          "track": 13,
+          "duration": 185
+        },
+        {
+          "id": "5szlY4lcOAgndSjgycipeW",
+          "title": "輪廻",
+          "track": 14,
+          "duration": 211
+        },
+        {
+          "id": "9M0HfCtiYHdNoJcrBOUDcl",
+          "title": "from memory",
+          "track": 15,
+          "duration": 218
+        },
+        {
+          "id": "br8ift2pb6l2XTKFMf8Dqn",
+          "title": "Lingering Souls",
+          "track": 16,
+          "duration": 305
+        },
+        {
+          "id": "rByMmrqkf36zd8N0H8JDUi",
+          "title": "Rewind",
+          "track": 17,
+          "duration": 192
+        },
+        {
+          "id": "Th2RGZWTSAIkQ4aLZC7upa",
+          "title": "Where We Belong",
+          "track": 18,
+          "duration": 269
+        },
+        {
+          "id": "6mSEnHY9tkILj9zEyT3KKi",
+          "title": "Inner Reverberation",
+          "track": 19,
+          "duration": 270
+        },
+        {
+          "id": "VGugXAmrPvR0UA6OLSfiV2",
+          "title": "エイドスとヒュレー",
+          "track": 20,
+          "duration": 224
+        },
+        {
+          "id": "VzXO7OjXaZH6ZAGoX1Wsrs",
+          "title": "Heart of Guardian",
+          "track": 21,
+          "duration": 232
+        },
+        {
+          "id": "TFcGnlDfYxJMgUJI4tbuci",
+          "title": "Silver Walk",
+          "track": 22,
+          "duration": 195
+        },
+        {
+          "id": "HjaQW6i6ABZBfmZp98LUJj",
+          "title": "忘却の町 エルシア",
+          "track": 23,
+          "duration": 202
+        },
+        {
+          "id": "IjhlbCL1YudkFPBloAHRu7",
+          "title": "L'Immesurable",
+          "track": 24,
+          "duration": 222
+        },
+        {
+          "id": "yk5kFeElVbp1B3WDcnVAbr",
+          "title": "Fragments of truth",
+          "track": 25,
+          "duration": 243
+        },
+        {
+          "id": "7L7aXoqMErEVSLEJB06koC",
+          "title": "Reminiscence",
+          "track": 26,
+          "duration": 254
+        },
+        {
+          "id": "QItdDFvUxpUA6IEMgTVk7Y",
+          "title": "冬の魔女",
+          "track": 27,
+          "duration": 180
+        },
+        {
+          "id": "5v4vvY8cJqNceccFqYRYJ6",
+          "title": "あかいねこをさがして、さがして。",
+          "track": 28,
+          "duration": 211
+        },
+        {
+          "id": "bpiSWrwUaBUSrqJQ3MCNZF",
+          "title": "Hanae",
+          "track": 29,
+          "duration": 245
+        },
+        {
+          "id": "Jh7mttUoevmstdcDOlP0kS",
+          "title": "昨日と同じ服",
+          "track": 30,
+          "duration": 147
+        },
+        {
+          "id": "JfNVH894vDLc0VpKjMnUad",
+          "title": "Le Canon bleu - 紺碧のカノン",
+          "track": 31,
+          "duration": 303
+        },
+        {
+          "id": "zgV5VwRj38ZGkuB1oVP7Sf",
+          "title": "愛しうる限り...Op. 4",
+          "track": 32,
+          "duration": 282
+        },
+        {
+          "id": "nfF4PBNrdstzKns6HJwLRB",
+          "title": "Lavender",
+          "track": 33,
+          "duration": 197
+        },
+        {
+          "id": "uzyfxEH9ZB67dXeVpBCTeE",
+          "title": "Unsolved Feeling",
+          "track": 34,
+          "duration": 301
+        },
+        {
+          "id": "T8GBQyYTLMQUh3ap5rPRx2",
+          "title": "Wait for it",
+          "track": 35,
+          "duration": 227
+        },
+        {
+          "id": "qvIXLPaP1WnPnbHCZ4dTJe",
+          "title": "片隅のアーティスト",
+          "track": 36,
+          "duration": 206
+        },
+        {
+          "id": "27C1gMjBEZCq3LPR6KGIDh",
+          "title": "Endless Truth",
+          "track": 37,
+          "duration": 310
+        },
+        {
+          "id": "C2DGVCs6IYXxBFAPCbZtnd",
+          "title": "The Mechanisim of Our Earthly Desires",
+          "track": 38,
+          "duration": 225
+        },
+        {
+          "id": "GW2z3PcgfGybu9K6D7BSq0",
+          "title": "魅了",
+          "track": 39,
+          "duration": 218
+        },
+        {
+          "id": "WVijkdCQng3ISgVeqIUnLL",
+          "title": "萌の顕現",
+          "track": 40,
+          "duration": 280
+        },
+        {
+          "id": "qqp2GabAW7nWCo24CX4gId",
+          "title": "A tribute to G.W.",
+          "track": 41,
+          "duration": 379
+        },
+        {
+          "id": "jyjE682e8jsxkQ2iJCDq3L",
+          "title": "いまひとたびの、僕らの歩みを",
+          "track": 42,
+          "duration": 262
+        },
+        {
+          "id": "5tkSAkohYGaHA7hV2vKkVL",
+          "title": "最後の惑星",
+          "track": 43,
+          "duration": 242
+        },
+        {
+          "id": "IPQy9mpn5LJpCmj4NCVetp",
+          "title": "The Story So Far",
+          "track": 44,
+          "duration": 315
+        },
+        {
+          "id": "mM6qAZ7FnD1wJXKGmTsMZa",
+          "title": "Piano History",
+          "track": 45,
+          "duration": 597
+        }
+      ]
+    },
+    {
+      "id": "4UOjPaaYvAYAWmzq8NxCFh",
+      "name": "名前のない怪物",
+      "artist": "EGOIST",
+      "artistId": "7r6Koy8IQj33JRn3ZDmtnQ",
+      "year": 2012,
+      "genre": "動畫音樂",
+      "songCount": 7,
+      "duration": 1391,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4UOjPaaYvAYAWmzq8NxCFh.jpg",
+      "tracks": [
+        {
+          "id": "paO435eaToQEMcZecSftXX",
+          "title": "prelude",
+          "track": 1,
+          "duration": 37
+        },
+        {
+          "id": "cBGpnqG6tyiAmLZVWvPg6E",
+          "title": "名前のない怪物",
+          "track": 2,
+          "duration": 317
+        },
+        {
+          "id": "TW8FWX0wO9r9VFYFWWviiV",
+          "title": "カナデナル",
+          "track": 3,
+          "duration": 257
+        },
+        {
+          "id": "n3aCjQIdE4YtcEdYFdMfZl",
+          "title": "名前のない怪物 (TV Edit 92s ver)",
+          "track": 4,
+          "duration": 102
+        },
+        {
+          "id": "sA3rY4PmfaR6js5ssn4NR3",
+          "title": "名前のない怪物 -Instrumental-",
+          "track": 5,
+          "duration": 317
+        },
+        {
+          "id": "sS6co9cE6O4rKxbKnYy2Jg",
+          "title": "カナデナル -Instrumental-",
+          "track": 6,
+          "duration": 257
+        },
+        {
+          "id": "4P9IiofZKGiC0KehoBo9Bv",
+          "title": "名前のない怪物 (TV Edit 92s ver) -Instrumental-",
+          "track": 7,
+          "duration": 100
+        }
+      ]
+    },
+    {
+      "id": "6gZaQLAT9e0aaCY7D3Lrlx",
+      "name": "Piece of Cipher +",
+      "artist": "ELECTROCUTICA",
+      "artistId": "3UeCFFgeRBgrrCxkrO9NWc",
+      "year": 2013,
+      "genre": null,
+      "songCount": 11,
+      "duration": 3615,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/6gZaQLAT9e0aaCY7D3Lrlx.jpg",
+      "tracks": [
+        {
+          "id": "dDyFvURqEygWUCucW3x7Nu",
+          "title": "Piece of Cipher",
+          "track": 1,
+          "duration": 311
+        },
+        {
+          "id": "0xFCg6PFOjy5hbQzV0tPlh",
+          "title": "Chaining Intention",
+          "track": 2,
+          "duration": 278
+        },
+        {
+          "id": "a5Ht5N9XiYpHhlhZ4HdFRS",
+          "title": "Dependence Intension",
+          "track": 3,
+          "duration": 305
+        },
+        {
+          "id": "Imb69BJ7lwdrGavjaqbvHI",
+          "title": "L'azur",
+          "track": 4,
+          "duration": 200
+        },
+        {
+          "id": "jzxvq3WjQjzr4iWYgc4UFo",
+          "title": "Light Snow",
+          "track": 5,
+          "duration": 405
+        },
+        {
+          "id": "2lYgKSWW4IY8IuR7L2iyEZ",
+          "title": "Blindness",
+          "track": 6,
+          "duration": 324
+        },
+        {
+          "id": "X90QOkYYdv7W9UPnJGpsLx",
+          "title": "Drain",
+          "track": 7,
+          "duration": 394
+        },
+        {
+          "id": "Yl3RHnmX0uZPNMbccAeNxn",
+          "title": "0259 in my Room",
+          "track": 8,
+          "duration": 213
+        },
+        {
+          "id": "H8ASVY3ZghJrzvi4iDxTVJ",
+          "title": "Fantasia Nr.1",
+          "track": 9,
+          "duration": 294
+        },
+        {
+          "id": "IhLoCDwsnMMsUZOY8AI8m1",
+          "title": "Fantasia Nr.2",
+          "track": 10,
+          "duration": 493
+        },
+        {
+          "id": "NmGY1cCHnsEA5LKRhe1kGj",
+          "title": "あめふるはこにわ",
+          "track": 11,
+          "duration": 398
+        }
+      ]
+    },
+    {
+      "id": "4AErf3rRLhlqiJPgXNQrQi",
+      "name": "REVERSUS",
+      "artist": "ELECTROCUTICA",
+      "artistId": "3UeCFFgeRBgrrCxkrO9NWc",
+      "year": 2010,
+      "genre": "Vocaloid",
+      "songCount": 8,
+      "duration": 2581,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4AErf3rRLhlqiJPgXNQrQi.jpg",
+      "tracks": [
+        {
+          "id": "ysAOnJuUSnwPtB560OSq8f",
+          "title": "Reversus",
+          "track": 1,
+          "duration": 439
+        },
+        {
+          "id": "XYaN7uaIn0lWNSgPUb2L5k",
+          "title": "fluctus+fractus",
+          "track": 2,
+          "duration": 221
+        },
+        {
+          "id": "1AQuiv1SPBfIgkszIkwnWY",
+          "title": "Melaleuca",
+          "track": 3,
+          "duration": 400
+        },
+        {
+          "id": "MkcakDSTxC9zfOnfa3zNYT",
+          "title": "Illusionika",
+          "track": 4,
+          "duration": 351
+        },
+        {
+          "id": "mGfVCY06EhovuNKceChZal",
+          "title": "#006F86",
+          "track": 5,
+          "duration": 436
+        },
+        {
+          "id": "jO9eBpjPCMgQDMQeUAfjcx",
+          "title": "vice versa",
+          "track": 6,
+          "duration": 220
+        },
+        {
+          "id": "sDTZtwdhpopakG9zzZwTHI",
+          "title": "Triplaneta",
+          "track": 7,
+          "duration": 368
+        },
+        {
+          "id": "UV0VeDvbkzE1OaOaNrBub6",
+          "title": "Lullaby",
+          "track": 8,
+          "duration": 142
+        }
+      ]
+    },
+    {
+      "id": "33tzRC6HNGDwaiJyTCxKbw",
+      "name": "SWANSONG",
+      "artist": "ELECTROCUTICA",
+      "artistId": "3UeCFFgeRBgrrCxkrO9NWc",
+      "year": 2016,
+      "genre": null,
+      "songCount": 8,
+      "duration": 2362,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/33tzRC6HNGDwaiJyTCxKbw.jpg",
+      "tracks": [
+        {
+          "id": "J8PQE84j40Hi5idpGWUjIx",
+          "title": "CRUCIFIxxxION",
+          "track": 1,
+          "duration": 270
+        },
+        {
+          "id": "dIFozgJoTT7cduDAV6cdiW",
+          "title": "未必の恋 -Dolus Eventualis-",
+          "track": 2,
+          "duration": 292
+        },
+        {
+          "id": "AqujgcDDaoQZO3mvECh3iD",
+          "title": "Dependence Intension",
+          "track": 3,
+          "duration": 304
+        },
+        {
+          "id": "LyBNCYcglGsiPgxD2sYeLG",
+          "title": "Chaining Intention Re:form mix",
+          "track": 4,
+          "duration": 442
+        },
+        {
+          "id": "6keIQEUvyUnYyIF8YoyF5m",
+          "title": "Piano Lesson",
+          "track": 5,
+          "duration": 388
+        },
+        {
+          "id": "7RnRbYIH2A6nTKHR30k6ib",
+          "title": "STREWBERRY TRAP",
+          "track": 6,
+          "duration": 38
+        },
+        {
+          "id": "tQJTdTGoICUnesQVeTphMv",
+          "title": "Chaining Intention",
+          "track": 7,
+          "duration": 276
+        },
+        {
+          "id": "wZFJazKcIs1Y0tZ3jq8SAj",
+          "title": "SWANSONG",
+          "track": 8,
+          "duration": 352
+        }
+      ]
+    },
+    {
+      "id": "4Afjg38ABmTY6pMyBjzENP",
+      "name": "Astronomy",
+      "artist": "Empty old City",
+      "artistId": "2e0gHS6p3D3pwjQx0ZqwGj",
+      "year": 2024,
+      "genre": "General",
+      "songCount": 1,
+      "duration": 203,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4Afjg38ABmTY6pMyBjzENP.jpg",
+      "tracks": [
+        {
+          "id": "IyIkaagRmI3wkeMkqkx2Eo",
+          "title": "Astronomy",
+          "track": 1,
+          "duration": 203
+        }
+      ]
+    },
+    {
+      "id": "0SiSsa0w0cETm4Yj9vhgcU",
+      "name": "Buffer",
+      "artist": "Empty old City",
+      "artistId": "2e0gHS6p3D3pwjQx0ZqwGj",
+      "year": 2024,
+      "genre": null,
+      "songCount": 1,
+      "duration": 197,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0SiSsa0w0cETm4Yj9vhgcU.jpg",
+      "tracks": [
+        {
+          "id": "IXIR2XKAaXBHNNCmDyVRza",
+          "title": "Buffer",
+          "track": 1,
+          "duration": 197
+        }
+      ]
+    },
+    {
+      "id": "5zSg7aNNO0Wwak2yj3QGqK",
+      "name": "Alt.Strato",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2018,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2208,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5zSg7aNNO0Wwak2yj3QGqK.jpg",
+      "tracks": [
+        {
+          "id": "6wnkodz1rEMLq6JISSj5F9",
+          "title": "Introduction",
+          "track": 1,
+          "duration": 23
+        },
+        {
+          "id": "hOswmF93rNniSlUhaUqZwJ",
+          "title": "Cornus Florida",
+          "track": 2,
+          "duration": 218
+        },
+        {
+          "id": "8lfWeuFaOiB8utiW7JLCNF",
+          "title": "リフレクション",
+          "track": 3,
+          "duration": 263
+        },
+        {
+          "id": "uwsPZuPgjh1F9dXledlnb3",
+          "title": "泡沫の灯",
+          "track": 4,
+          "duration": 234
+        },
+        {
+          "id": "jWfCjtHDBQTlSK6oQPPRyQ",
+          "title": "Four Leaves",
+          "track": 5,
+          "duration": 227
+        },
+        {
+          "id": "qQAfBpp8CrKPGeeeiXxvFu",
+          "title": "Alt.Strato",
+          "track": 6,
+          "duration": 263
+        },
+        {
+          "id": "P2JszZzW8uSJWd1A3PEeEq",
+          "title": "Cornus Florida (Instrumental)",
+          "track": 7,
+          "duration": 218
+        },
+        {
+          "id": "BcpKuCkVtLEWaLn85ZbcwZ",
+          "title": "リフレクション (Instrumental)",
+          "track": 8,
+          "duration": 263
+        },
+        {
+          "id": "sM28HsY90F1eDzU3zfHFJ9",
+          "title": "泡沫の灯 (Instrumental)",
+          "track": 9,
+          "duration": 234
+        },
+        {
+          "id": "SVmwvohhCJA6VwZ0Aw1jHz",
+          "title": "Alt.Strato (Instrumental)",
+          "track": 10,
+          "duration": 261
+        }
+      ]
+    },
+    {
+      "id": "10XHI9KWjxYrRmh8EVyF1G",
+      "name": "Cirro.Strato",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2026,
+      "genre": "J-POP",
+      "songCount": 5,
+      "duration": 924,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/10XHI9KWjxYrRmh8EVyF1G.jpg",
+      "tracks": [
+        {
+          "id": "muqouZMclyt4doAZzhisr5",
+          "title": "太陽のない夏みたいな僕を",
+          "track": 1,
+          "duration": 216
+        },
+        {
+          "id": "qYcuxvGL0AGvbgOx8PZMTM",
+          "title": "ハルラ",
+          "track": 2,
+          "duration": 202
+        },
+        {
+          "id": "5kx2HonXY36rTqCkkut0yD",
+          "title": "八月と青とラムネ",
+          "track": 3,
+          "duration": 218
+        },
+        {
+          "id": "zO6b7FJ3bdcImygRWBfT4Y",
+          "title": "サマーエンディング",
+          "track": 4,
+          "duration": 232
+        },
+        {
+          "id": "JLkDxHi1LKGMgqMhaJXVix",
+          "title": "ある夏のエピローグ",
+          "track": 5,
+          "duration": 54
+        }
+      ]
+    },
+    {
+      "id": "6C4nYMBgcyzourmSj12IoZ",
+      "name": "COLOURS.01 “Growing”",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2022,
+      "genre": "Doujin",
+      "songCount": 11,
+      "duration": 2283,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/6C4nYMBgcyzourmSj12IoZ.jpg",
+      "tracks": [
+        {
+          "id": "65U4wTHFcU1WpF6zun1QS8",
+          "title": "a fairy with you",
+          "track": 1,
+          "duration": 55
+        },
+        {
+          "id": "b72TsicevBw1dtL2wb01vf",
+          "title": "hananokori,tsubomihitotsu",
+          "track": 2,
+          "duration": 216
+        },
+        {
+          "id": "4AjXwBp83TJQiSl7lOrzpN",
+          "title": "Sunnyside clover",
+          "track": 3,
+          "duration": 266
+        },
+        {
+          "id": "79xnwrv5hmXOq3e7ZeW03K",
+          "title": "Transistor",
+          "track": 4,
+          "duration": 223
+        },
+        {
+          "id": "j70EsZ45TpLlDj2csG8a1V",
+          "title": "route signal",
+          "track": 5,
+          "duration": 173
+        },
+        {
+          "id": "Ok2AOzyBVArBfjdZ07XoS5",
+          "title": "Anti Glaze",
+          "track": 6,
+          "duration": 234
+        },
+        {
+          "id": "GQWl4arZvrFejLE0Btd0xk",
+          "title": "hananokori,tsubomihitotsu (Instrumental)",
+          "track": 7,
+          "duration": 216
+        },
+        {
+          "id": "z0K1mMly3SYa8OwfLHVul2",
+          "title": "Sunnyside clover (Instrumental)",
+          "track": 8,
+          "duration": 266
+        },
+        {
+          "id": "LvIJ2Tgrb5XcPEEMixHBqI",
+          "title": "Transistor (Instrumental)",
+          "track": 9,
+          "duration": 223
+        },
+        {
+          "id": "F2WPkPKxTNT92Z601DZH7l",
+          "title": "route signal (Instrumental)",
+          "track": 10,
+          "duration": 173
+        },
+        {
+          "id": "sSLFdqLvX8SYboXLBgRu9B",
+          "title": "Anti Glaze (Instrumental)",
+          "track": 11,
+          "duration": 234
+        }
+      ]
+    },
+    {
+      "id": "7CAMdGQB3gP6RpYJ0yiHlW",
+      "name": "COLOURS.02 “Blurred Mind”",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2022,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2813,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7CAMdGQB3gP6RpYJ0yiHlW.jpg",
+      "tracks": [
+        {
+          "id": "edwfmnzV8hqEjrQPbrqZ7u",
+          "title": "ペトリコール",
+          "track": 1,
+          "duration": 209
+        },
+        {
+          "id": "92D9wMd4Xz0FfJ3AkUhfor",
+          "title": "秒針とソーダフロート",
+          "track": 2,
+          "duration": 197
+        },
+        {
+          "id": "z9nb2lNNllbIhhPr3ORfHd",
+          "title": "無言の鳥籠",
+          "track": 3,
+          "duration": 217
+        },
+        {
+          "id": "yndk2NdWC9g4UYNhJGe8zh",
+          "title": "シュガーレス・レイン",
+          "track": 4,
+          "duration": 236
+        },
+        {
+          "id": "H6SzQ16cW89iVy1xfaJM1H",
+          "title": "ココロメソッド",
+          "track": 5,
+          "duration": 260
+        },
+        {
+          "id": "DAEdZhMelr3IxbgtjWKDOX",
+          "title": "ミントブルー・ガール (2022 Edition)",
+          "track": 6,
+          "duration": 286
+        },
+        {
+          "id": "8mEpYy3FiiR3RUG6MzA1W5",
+          "title": "ペトリコール (Instrumental)",
+          "track": 7,
+          "duration": 209
+        },
+        {
+          "id": "WfZSPxhdC5drNjC3LFeMBO",
+          "title": "秒針とソーダフロート (Instrumental)",
+          "track": 8,
+          "duration": 197
+        },
+        {
+          "id": "h1RMd3I9VWeebc6JSH4lfD",
+          "title": "無言の鳥籠 (Instrumental)",
+          "track": 9,
+          "duration": 217
+        },
+        {
+          "id": "clo0EvdS2KnfIWaz4NyLv7",
+          "title": "シュガーレス・レイン (Instrumental)",
+          "track": 10,
+          "duration": 237
+        },
+        {
+          "id": "37souTxsmFIJqtwDpaLKqA",
+          "title": "ココロメソッド (Instrumental)",
+          "track": 11,
+          "duration": 259
+        },
+        {
+          "id": "p3Rn8Yox3Bw8m85apPDh0o",
+          "title": "ミントブルー・ガール (2022 Edition) (Instrumental)",
+          "track": 12,
+          "duration": 284
+        }
+      ]
+    },
+    {
+      "id": "4x1lgVObcCIgi48sHcMuk9",
+      "name": "COLOURS.03 “Redraw”",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2023,
+      "genre": "J-pop",
+      "songCount": 12,
+      "duration": 2530,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4x1lgVObcCIgi48sHcMuk9.jpg",
+      "tracks": [
+        {
+          "id": "IvHbUTlxyxMz7aVhrywdZa",
+          "title": "Apricot",
+          "track": 1,
+          "duration": 203
+        },
+        {
+          "id": "uIdexnTgHJMskDtuXMDp7n",
+          "title": "ペンと林檎とわたし",
+          "track": 2,
+          "duration": 235
+        },
+        {
+          "id": "Ua4HImLCVSrRBYcxVkd8Tb",
+          "title": "ハートレス・トリコロール",
+          "track": 3,
+          "duration": 178
+        },
+        {
+          "id": "KQtkLEaomqpnZJITeoAcxG",
+          "title": "ストレンジレッド",
+          "track": 4,
+          "duration": 200
+        },
+        {
+          "id": "Lm6UoIx1bdiiVKwM7j1kdc",
+          "title": "Untitled Sky",
+          "track": 5,
+          "duration": 240
+        },
+        {
+          "id": "b0UVp241TVyLOxM5EhLsTT",
+          "title": "雷花",
+          "track": 6,
+          "duration": 207
+        },
+        {
+          "id": "lPw6UB2CVVZY56bst03uqV",
+          "title": "Apricot (Instrumental)",
+          "track": 7,
+          "duration": 203
+        },
+        {
+          "id": "DMbSql92YhV218nDoUPuvA",
+          "title": "ペンと林檎とわたし (Instrumental)",
+          "track": 8,
+          "duration": 235
+        },
+        {
+          "id": "5BSwD3FaHeG71lLPuz7KBF",
+          "title": "ハートレス・トリコロール (Instrumental)",
+          "track": 9,
+          "duration": 179
+        },
+        {
+          "id": "9ZvH4ao6yRgeMIa5rUtdGo",
+          "title": "ストレンジレッド (Instrumental)",
+          "track": 10,
+          "duration": 200
+        },
+        {
+          "id": "nBd0MYDatnlgJaY5Cat4DH",
+          "title": "Untitled Sky (Instrumental)",
+          "track": 11,
+          "duration": 240
+        },
+        {
+          "id": "sf49mcRgyWacGnVYidN98k",
+          "title": "雷花 (Instrumental)",
+          "track": 12,
+          "duration": 205
+        }
+      ]
+    },
+    {
+      "id": "620RCTCOFIKeiNxPIKbiya",
+      "name": "COLOURS.04 \"Yelling\"",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2024,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2573,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/620RCTCOFIKeiNxPIKbiya.jpg",
+      "tracks": [
+        {
+          "id": "ktLy893GlKysEBsmvvzTnE",
+          "title": "水彩のカナリア",
+          "track": 1,
+          "duration": 243
+        },
+        {
+          "id": "pzilW8MqbnSPMznapnbOSD",
+          "title": "citron",
+          "track": 2,
+          "duration": 182
+        },
+        {
+          "id": "NNQAO2K9GQ2t8DjcAQUkYA",
+          "title": "フラフィ",
+          "track": 3,
+          "duration": 196
+        },
+        {
+          "id": "m9vdurPybvSmu5npeeQtLz",
+          "title": "蛍火の雪",
+          "track": 4,
+          "duration": 160
+        },
+        {
+          "id": "GWMIEI0I5hckNLqXNTYkh9",
+          "title": "スローアライズ",
+          "track": 5,
+          "duration": 224
+        },
+        {
+          "id": "NOXQTRvz3wu3Bu6ls80V7l",
+          "title": "COLOURS",
+          "track": 6,
+          "duration": 279
+        },
+        {
+          "id": "DIt8iDHY9wo4K5ZqPPEN27",
+          "title": "水彩のカナリア (instrumental)",
+          "track": 7,
+          "duration": 243
+        },
+        {
+          "id": "4I42ccZYi1AquC0m72aQMn",
+          "title": "citron (instrumental)",
+          "track": 8,
+          "duration": 182
+        },
+        {
+          "id": "CjeFK8Vt8uVxT5xHijwmD1",
+          "title": "フラフィ (instrumental)",
+          "track": 9,
+          "duration": 196
+        },
+        {
+          "id": "UGOonUfybcHvxppeHQX1XS",
+          "title": "蛍火の雪 (instrumental)",
+          "track": 10,
+          "duration": 160
+        },
+        {
+          "id": "YlXTaWvMaPbJFRsWbULy4g",
+          "title": "スローアライズ (instrumental)",
+          "track": 11,
+          "duration": 224
+        },
+        {
+          "id": "9n5CkaeYrW0rHCRRBV2IVq",
+          "title": "COLOURS (instrumental)",
+          "track": 12,
+          "duration": 278
+        }
+      ]
+    },
+    {
+      "id": "1pC2vdkrOwCQFWmUzu6fMe",
+      "name": "Dream Blue",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2025,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2508,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1pC2vdkrOwCQFWmUzu6fMe.jpg",
+      "tracks": [
+        {
+          "id": "d7ShebQYlYrQj80ot3z78x",
+          "title": "空白少女",
+          "track": 1,
+          "duration": 199
+        },
+        {
+          "id": "5NimgEPIeM0DgiC7yzpgjW",
+          "title": "Focus on",
+          "track": 2,
+          "duration": 201
+        },
+        {
+          "id": "SciLLQYSuWnCmtV5Dp0dAe",
+          "title": "ゴースト・マキアート",
+          "track": 3,
+          "duration": 214
+        },
+        {
+          "id": "7TkZqPxQCAB7wSRhbdvp2N",
+          "title": "Draw World!",
+          "track": 4,
+          "duration": 178
+        },
+        {
+          "id": "PQ2kDSDOnyoz9PqaQySglH",
+          "title": "タイニーソング",
+          "track": 5,
+          "duration": 226
+        },
+        {
+          "id": "9MknCLuyaHo7vW9E492Y0B",
+          "title": "ドリームブルー",
+          "track": 6,
+          "duration": 236
+        },
+        {
+          "id": "kC4s5WMznF5E5nbKPT11dR",
+          "title": "空白少女 (Instrumental)",
+          "track": 7,
+          "duration": 198
+        },
+        {
+          "id": "U9TZ5nmcPW8vkSGgfKV0go",
+          "title": "Focus on (Instrumental)",
+          "track": 8,
+          "duration": 202
+        },
+        {
+          "id": "gTrgQ5JrxN11Yn7ByyRe1O",
+          "title": "ゴースト・マキアート (Instrumental)",
+          "track": 9,
+          "duration": 213
+        },
+        {
+          "id": "csMrGh2jrsRUILG1ULSINP",
+          "title": "Draw World! (Instrumental)",
+          "track": 10,
+          "duration": 178
+        },
+        {
+          "id": "ySGKiz5xWtT75b1AnZdVKv",
+          "title": "タイニーソング (Instrumental)",
+          "track": 11,
+          "duration": 226
+        },
+        {
+          "id": "5oUTxCLex8n6ZxgE1l7iRU",
+          "title": "ドリームブルー (Instrumental)",
+          "track": 12,
+          "duration": 233
+        }
+      ]
+    },
+    {
+      "id": "1P5nfm361jJJrTMze4w6Ck",
+      "name": "Horizon Note",
+      "artist": "Endorfin.",
+      "artistId": "7fRUuTst5zKqsGjlRqskeI",
+      "year": 2016,
+      "genre": null,
+      "songCount": 14,
+      "duration": 3180,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1P5nfm361jJJrTMze4w6Ck.jpg",
+      "tracks": [
+        {
+          "id": "zvAagn4IoWgo2TJgnByoAm",
+          "title": "Horizon Note",
+          "track": 1,
+          "duration": 241
+        },
+        {
+          "id": "oEwO8c9rrYWZPf7YVsghLJ",
+          "title": "桜色プリズム",
+          "track": 2,
+          "duration": 270
+        },
+        {
+          "id": "DTtqHygIda5NT9vhsVRPnk",
+          "title": "Luminous Rage",
+          "track": 3,
+          "duration": 216
+        },
+        {
+          "id": "LAmxjgXdTamaIqZMf9NM44",
+          "title": "一粒ノ今",
+          "track": 4,
+          "duration": 100
+        },
+        {
+          "id": "chvNsnhC3TPzX5BzjBsgXh",
+          "title": "Spica",
+          "track": 5,
+          "duration": 217
+        },
+        {
+          "id": "TYgqGhtEsQJW2KRyNzYuAI",
+          "title": "コトノハ",
+          "track": 6,
+          "duration": 281
+        },
+        {
+          "id": "Ncfht2EX7FxlmdmIqlxaAd",
+          "title": "海月",
+          "track": 7,
+          "duration": 260
+        },
+        {
+          "id": "wd8mqKudbUoQKJz0jBiY5K",
+          "title": "Horizon Note -instrumental-",
+          "track": 8,
+          "duration": 241
+        },
+        {
+          "id": "EdMIPRn1a2iLwUF24W1n3Z",
+          "title": "桜色プリズム -instrumental-",
+          "track": 9,
+          "duration": 271
+        },
+        {
+          "id": "ZC3LOZypYi7y7BeJTx9LpB",
+          "title": "Luminous Rage -instrumental-",
+          "track": 10,
+          "duration": 216
+        },
+        {
+          "id": "sfs5fFCUUGPFDdgGtjCweG",
+          "title": "一粒ノ今 -instrumental-",
+          "track": 11,
+          "duration": 101
+        },
+        {
+          "id": "jLlK515qHHpqD3lpGp8Ayz",
+          "title": "Spica -instrumental-",
+          "track": 12,
+          "duration": 218
+        },
+        {
+          "id": "AvmYZKUg8qOgIZfB2WkdFQ",
+          "title": "コトノハ -instrumental-",
+          "track": 13,
+          "duration": 282
+        },
+        {
+          "id": "QRyTVzMf2ThvSMxTnQgguc",
+          "title": "海月 -instrumental-",
+          "track": 14,
+          "duration": 259
+        }
+      ]
+    },
+    {
+      "id": "1iwAX6tTYJ7F6EwWHGGxHS",
+      "name": "Oxydlate",
+      "artist": "Feryquitous feat. 藍月なくる",
+      "artistId": "7dnExLWlUS0C8vR93GPvwf",
+      "year": 2021,
+      "genre": "Pop",
+      "songCount": 2,
+      "duration": 606,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1iwAX6tTYJ7F6EwWHGGxHS.jpg",
+      "tracks": [
+        {
+          "id": "q8AChatWAsfp8Bqx0kEaVc",
+          "title": "Oxydlate",
+          "track": 1,
+          "duration": 304
+        },
+        {
+          "id": "zdKEKq3tCXImvQhhllfTEP",
+          "title": "Oxydlate",
+          "track": 1,
+          "duration": 302
+        }
+      ]
+    },
+    {
+      "id": "5l9pHqgTiY5rK3irZdMLFf",
+      "name": "THE SEVENS CODE - Single",
+      "artist": "Feryquitous",
+      "artistId": "7dnExLWlUS0C8vR93GPvwf",
+      "year": 2020,
+      "genre": "Vocal",
+      "songCount": 1,
+      "duration": 134,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5l9pHqgTiY5rK3irZdMLFf.jpg",
+      "tracks": [
+        {
+          "id": "Trl9cIBmOGvlSgNc1Na3YY",
+          "title": "THE SEVENS CODE",
+          "track": 1,
+          "duration": 134
+        }
+      ]
+    },
+    {
+      "id": "0iloopQrALpGntzVlbCk5X",
+      "name": "Mizlecca",
+      "artist": "Hagali",
+      "artistId": "6ggOZy5aGx8EtaNkGAA5Vq",
+      "year": 2024,
+      "genre": null,
+      "songCount": 7,
+      "duration": 1530,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0iloopQrALpGntzVlbCk5X.jpg",
+      "tracks": [
+        {
+          "id": "VNxlYs2MYiGhfyRyLK9S2e",
+          "title": "Dense Silver Ash Forest",
+          "track": 1,
+          "duration": 83
+        },
+        {
+          "id": "mvHlzhUhCOKJSNhpNh6vcV",
+          "title": "Mizlecca",
+          "track": 2,
+          "duration": 245
+        },
+        {
+          "id": "zSpjB0X4ceYeCqzvcLhYDQ",
+          "title": "Spinning Sugw Yarn",
+          "track": 3,
+          "duration": 152
+        },
+        {
+          "id": "02rruQYt9wuIiGQy4Z1gm3",
+          "title": "Zephyr on a Silent Hill",
+          "track": 4,
+          "duration": 257
+        },
+        {
+          "id": "CAkxtBzNMaG27hqCDX5klc",
+          "title": "For Those Who Remain",
+          "track": 5,
+          "duration": 272
+        },
+        {
+          "id": "5wAX3DY4msDAJQuMUu9z9r",
+          "title": "Mizlecca (offvocal ver.)",
+          "track": 6,
+          "duration": 245
+        },
+        {
+          "id": "6AqxuNFJDby2uTTowRxa0r",
+          "title": "For Those Who Remain (offvocal ver.)",
+          "track": 7,
+          "duration": 272
+        }
+      ]
+    },
+    {
+      "id": "2khb1EfHqgwtTcXOy7mJ1c",
+      "name": "SPD GAR",
+      "artist": "MEGAREX",
+      "artistId": "2pod57E0kSezU6Ge9IS24U",
+      "year": 2018,
+      "genre": null,
+      "songCount": 13,
+      "duration": 3113,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2khb1EfHqgwtTcXOy7mJ1c.jpg",
+      "tracks": [
+        {
+          "id": "bbA8ZhDCsUIvkf8nkOwlSL",
+          "title": "feel",
+          "track": 1,
+          "duration": 284
+        },
+        {
+          "id": "JB32NLyU3AaiUrGTPv5LMI",
+          "title": "All Night Long",
+          "track": 2,
+          "duration": 245
+        },
+        {
+          "id": "NbBxJxGZsAt9d56qMYFz3U",
+          "title": "Day by Day",
+          "track": 3,
+          "duration": 236
+        },
+        {
+          "id": "2IVMpiJb5Ry1sWUR1Jw5Du",
+          "title": "Don't you want me",
+          "track": 4,
+          "duration": 284
+        },
+        {
+          "id": "J01BIh88X3G7rBbMe2zbh7",
+          "title": "Falling Down",
+          "track": 5,
+          "duration": 217
+        },
+        {
+          "id": "jDwXGsbK7gDpqPzIKMIpYm",
+          "title": "Night Fog",
+          "track": 6,
+          "duration": 297
+        },
+        {
+          "id": "7gw4hIEc97k1swmSFCGx8E",
+          "title": "DreaMilk tea",
+          "track": 7,
+          "duration": 238
+        },
+        {
+          "id": "KJ5qlE1YdKfcViOPUaJhX6",
+          "title": "GOURMET RACE",
+          "track": 8,
+          "duration": 208
+        },
+        {
+          "id": "OvTynsdpp1i8uDHzUzcWQR",
+          "title": "Universe",
+          "track": 9,
+          "duration": 251
+        },
+        {
+          "id": "JANlP3GFqFSoFGtqAht9uV",
+          "title": "It's gonna be alright",
+          "track": 10,
+          "duration": 196
+        },
+        {
+          "id": "q3XnBEOAtDBsAkTTRVQKz9",
+          "title": "Sunny After Rain",
+          "track": 11,
+          "duration": 229
+        },
+        {
+          "id": "ReArGBePE0aMOv9BC03Ndr",
+          "title": "Stray cat",
+          "track": 12,
+          "duration": 222
+        },
+        {
+          "id": "sXEjHeidP4hGUNSkwYaNed",
+          "title": "Midnight grow",
+          "track": 13,
+          "duration": 204
+        }
+      ]
+    },
+    {
+      "id": "7x6PYSBM4qfjDzlxMXQhAH",
+      "name": "SPD GAR 002",
+      "artist": "MEGAREX",
+      "artistId": "2pod57E0kSezU6Ge9IS24U",
+      "year": 2019,
+      "genre": null,
+      "songCount": 14,
+      "duration": 3011,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7x6PYSBM4qfjDzlxMXQhAH.jpg",
+      "tracks": [
+        {
+          "id": "XSXv4pAQU8PBnVBBro85qF",
+          "title": "Gloomy Flash",
+          "track": 1,
+          "duration": 211
+        },
+        {
+          "id": "qCm0LmoIcuRhIUSSAe89VR",
+          "title": "Are you kidding me",
+          "track": 2,
+          "duration": 240
+        },
+        {
+          "id": "JCAxKqTN08pEXxOL965Avi",
+          "title": "lovesick",
+          "track": 3,
+          "duration": 259
+        },
+        {
+          "id": "eZmYd4bqSxFJQSeXu2n5gG",
+          "title": "Bite the Bullet",
+          "track": 4,
+          "duration": 201
+        },
+        {
+          "id": "espdYRyIL89qgY9gvsCdUt",
+          "title": "YUMEUTSUTSU",
+          "track": 5,
+          "duration": 231
+        },
+        {
+          "id": "6WTOavhfUDBiocnc2afIBk",
+          "title": "Canvas",
+          "track": 6,
+          "duration": 209
+        },
+        {
+          "id": "EUOz1gVj5jM5nxBKWpWJda",
+          "title": "Cloud Finding",
+          "track": 7,
+          "duration": 181
+        },
+        {
+          "id": "mLZfSLCgY6nJe2Kz02tdd6",
+          "title": "Backwards",
+          "track": 8,
+          "duration": 280
+        },
+        {
+          "id": "3Cy34462lFv9kMBBU29gKu",
+          "title": "Light",
+          "track": 9,
+          "duration": 178
+        },
+        {
+          "id": "9KsNyOrHsCyoeMMRi6J5pf",
+          "title": "Sunrise",
+          "track": 10,
+          "duration": 182
+        },
+        {
+          "id": "BE7u5ml1e7yaTBoxjtdMhm",
+          "title": "Last Dialogue",
+          "track": 11,
+          "duration": 177
+        },
+        {
+          "id": "YeoKwq1YT2guOFqXV3wzel",
+          "title": "Can u feel my heart",
+          "track": 12,
+          "duration": 211
+        },
+        {
+          "id": "B7A9NTvocyh5T6Cq6mFCXO",
+          "title": "Trigger",
+          "track": 13,
+          "duration": 249
+        },
+        {
+          "id": "0fmKanwM2PYd4xDnAeLkiJ",
+          "title": "Intergalactic",
+          "track": 14,
+          "duration": 195
+        }
+      ]
+    },
+    {
+      "id": "5BAGP2WFqiSgdLqWOWLMFe",
+      "name": "SPD GAR 003",
+      "artist": "MEGAREX",
+      "artistId": "2pod57E0kSezU6Ge9IS24U",
+      "year": 2020,
+      "genre": "Electronic",
+      "songCount": 15,
+      "duration": 3359,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5BAGP2WFqiSgdLqWOWLMFe.jpg",
+      "tracks": [
+        {
+          "id": "Ciyp9VGO0yM5xN9qWBh2Z1",
+          "title": "Sunday Night",
+          "track": 1,
+          "duration": 166
+        },
+        {
+          "id": "UO5U6wFBIsJ3BDwMRW1DwJ",
+          "title": "Broken Light",
+          "track": 2,
+          "duration": 182
+        },
+        {
+          "id": "lY0gRsb2JE4CML48xHoe0b",
+          "title": "Continue",
+          "track": 3,
+          "duration": 286
+        },
+        {
+          "id": "0EXTNllfwUyuzfbDqFgwJu",
+          "title": "On The West Coastline",
+          "track": 4,
+          "duration": 339
+        },
+        {
+          "id": "1XGvQ7gQQagtXtIxnXzDHS",
+          "title": "Gone Days",
+          "track": 5,
+          "duration": 267
+        },
+        {
+          "id": "3dlsvSmLX6grBzs0akaRae",
+          "title": "Melting",
+          "track": 6,
+          "duration": 193
+        },
+        {
+          "id": "JmjyyuI3XvT2Re6Tdolhx4",
+          "title": "Feedback",
+          "track": 7,
+          "duration": 194
+        },
+        {
+          "id": "5rAZjKgyfvU1WL91jP9BnL",
+          "title": "シグナル",
+          "track": 8,
+          "duration": 210
+        },
+        {
+          "id": "xCR2YMqtw8DqM3va7jWzvR",
+          "title": "Point of No Return",
+          "track": 9,
+          "duration": 217
+        },
+        {
+          "id": "g7ZpaxCij6ix4eXBCYJOfS",
+          "title": "ideal you",
+          "track": 10,
+          "duration": 223
+        },
+        {
+          "id": "2o59KtnTDgl7XWs6NICxwN",
+          "title": "Galaxy Vacation",
+          "track": 11,
+          "duration": 181
+        },
+        {
+          "id": "TSg2fBgrh3NTw3UgxwxQj1",
+          "title": "Square Connection",
+          "track": 12,
+          "duration": 270
+        },
+        {
+          "id": "rd8PX96rUU3fDYR4Qqach7",
+          "title": "Sprout",
+          "track": 13,
+          "duration": 191
+        },
+        {
+          "id": "hoEO6cMqla4mVNu2hNEphV",
+          "title": "Open Your Heart",
+          "track": 14,
+          "duration": 259
+        },
+        {
+          "id": "KDUnUUfexxursZnJ1ZxFLi",
+          "title": "illumination",
+          "track": 15,
+          "duration": 173
+        }
+      ]
+    },
+    {
+      "id": "7dBgFYxyJrgvukvALrJDEK",
+      "name": "SPD GAR 004",
+      "artist": "MEGAREX",
+      "artistId": "2pod57E0kSezU6Ge9IS24U",
+      "year": 2025,
+      "genre": null,
+      "songCount": 9,
+      "duration": 1742,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7dBgFYxyJrgvukvALrJDEK.jpg",
+      "tracks": [
+        {
+          "id": "IGcgSUOlJ5C7FA0VhoUJRf",
+          "title": "Fly Away",
+          "track": 1,
+          "duration": 176
+        },
+        {
+          "id": "BFImlp3iq4HBjYYaWKFxa3",
+          "title": "My life is mine alone!",
+          "track": 2,
+          "duration": 218
+        },
+        {
+          "id": "fNNs36Du00heo4a4No1pbY",
+          "title": "ボーイ・ミート・ミー!",
+          "track": 3,
+          "duration": 167
+        },
+        {
+          "id": "tTXwTAv4LTPbgAWEAX0Dqj",
+          "title": "ハロー・アンド・グッバイ",
+          "track": 4,
+          "duration": 153
+        },
+        {
+          "id": "XiMBWyuqtG7W2ovqt3d9Td",
+          "title": "hollow note",
+          "track": 5,
+          "duration": 214
+        },
+        {
+          "id": "vo6sOL3ocyVa3EkYvThxRD",
+          "title": "NoEscape",
+          "track": 6,
+          "duration": 235
+        },
+        {
+          "id": "YSswqL0nYx62hcIq8a4p7t",
+          "title": "Lov3 Me!",
+          "track": 7,
+          "duration": 168
+        },
+        {
+          "id": "JTNEFC80FzeJc1v9MJX1ir",
+          "title": "DON'T",
+          "track": 8,
+          "duration": 184
+        },
+        {
+          "id": "jJvXpjZ4uqzZCVEMRH3dsX",
+          "title": "wiz Satellite",
+          "track": 9,
+          "duration": 223
+        }
+      ]
+    },
+    {
+      "id": "68YAKsmaZfX0cUmnm7WONX",
+      "name": "過惰幻",
+      "artist": "MyGO!!!!!",
+      "artistId": "3tP1eykd3TFvbmJzeOX2dd",
+      "year": 2024,
+      "genre": "Anime",
+      "songCount": 1,
+      "duration": 237,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/68YAKsmaZfX0cUmnm7WONX.jpg",
+      "tracks": [
+        {
+          "id": "xqjbb9rpmqLEfReVr98CX1",
+          "title": "過惰幻",
+          "track": 1,
+          "duration": 237
+        }
+      ]
+    },
+    {
+      "id": "7LLPUjsNgAxM1Hx34tgeNi",
+      "name": "ArtemIs",
+      "artist": "nayuta",
+      "artistId": "2owipZ7QS3mNQccxvtMLbA",
+      "year": 2024,
+      "genre": "Pop",
+      "songCount": 7,
+      "duration": 1727,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7LLPUjsNgAxM1Hx34tgeNi.jpg",
+      "tracks": [
+        {
+          "id": "yJoXpmnHhmY9No4IUueOvk",
+          "title": "Nameless Moon",
+          "track": 1,
+          "duration": 103
+        },
+        {
+          "id": "0TMWmi3c3XQEXfJUofAtqC",
+          "title": "Determinism [Mechanical Heart]",
+          "track": 2,
+          "duration": 241
+        },
+        {
+          "id": "z22UGM1kNDJ9BH1GlDntAQ",
+          "title": "Ne / Ne [Our Humanity]",
+          "track": 3,
+          "duration": 291
+        },
+        {
+          "id": "VbCbV84Ok5w2dIixJopYLd",
+          "title": "Upon a Star [Negaigoto]",
+          "track": 4,
+          "duration": 316
+        },
+        {
+          "id": "TvqNXfxwU3Fw7qO3wZdldR",
+          "title": "Beside You [Sequel to the Dream]",
+          "track": 5,
+          "duration": 314
+        },
+        {
+          "id": "i0AlMszV4KgfBcq613kMSA",
+          "title": "Until My Last Breath [Proof of Life]",
+          "track": 6,
+          "duration": 334
+        },
+        {
+          "id": "VLozBHOZdLN50HLneRMzWl",
+          "title": "ArtemIs",
+          "track": 7,
+          "duration": 126
+        }
+      ]
+    },
+    {
+      "id": "75EUGB8WuUsgl6Hig8cidF",
+      "name": "Echoes",
+      "artist": "nayuta",
+      "artistId": "2owipZ7QS3mNQccxvtMLbA",
+      "year": 2024,
+      "genre": "Pop",
+      "songCount": 14,
+      "duration": 3675,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/75EUGB8WuUsgl6Hig8cidF.jpg",
+      "tracks": [
+        {
+          "id": "u3ZABy6Ch2WyGlKD78gB1K",
+          "title": "Echoes Calling",
+          "track": 1,
+          "duration": 260
+        },
+        {
+          "id": "C1nqsZNeni4Qhupb0Z94jf",
+          "title": "恋、夏めく。",
+          "track": 2,
+          "duration": 216
+        },
+        {
+          "id": "gD4Xm7hY3a0Ygh1i88O9TW",
+          "title": "コネクトメモリー",
+          "track": 3,
+          "duration": 243
+        },
+        {
+          "id": "b3sLxiLE2KZfPWwFUz5BDn",
+          "title": "Smiles Left Behind",
+          "track": 4,
+          "duration": 273
+        },
+        {
+          "id": "wQUPvtCiBrqbJgrdqqWJg2",
+          "title": "瑠璃も玻璃も照らせば光る",
+          "track": 5,
+          "duration": 279
+        },
+        {
+          "id": "jlCo1xh52bLOSY7E5IysOn",
+          "title": "Sinking in the Rain",
+          "track": 6,
+          "duration": 259
+        },
+        {
+          "id": "rNo8Hla8Kqy0mZKF6v5v2p",
+          "title": "靉靆",
+          "track": 7,
+          "duration": 298
+        },
+        {
+          "id": "K1jfWOKWCUUeeYeJGk5clx",
+          "title": "Echoes Calling（Instrumental）",
+          "track": 8,
+          "duration": 262
+        },
+        {
+          "id": "gx3ZypbbZ6UM3fKpgHimDP",
+          "title": "恋、夏めく。（Instrumental）",
+          "track": 9,
+          "duration": 216
+        },
+        {
+          "id": "xQe0Rv4NBdskwivLPPdnxA",
+          "title": "コネクトメモリー（Instrumental）",
+          "track": 10,
+          "duration": 244
+        },
+        {
+          "id": "2nr5ZBruify5gsuPvvZsDI",
+          "title": "Smiles Left Behind（Instrumental）",
+          "track": 11,
+          "duration": 278
+        },
+        {
+          "id": "WlybtbhmBwNxw3k6cSCO3x",
+          "title": "瑠璃も玻璃も照らせば光る（Instrumental）",
+          "track": 12,
+          "duration": 279
+        },
+        {
+          "id": "lnHbiZeIE62PI244W06tng",
+          "title": "Sinking in the Rain（Instrumental）",
+          "track": 13,
+          "duration": 261
+        },
+        {
+          "id": "H9CzbatjRGh4xovFAgZcSn",
+          "title": "靉靆（Instrumental）",
+          "track": 14,
+          "duration": 298
+        }
+      ]
+    },
+    {
+      "id": "7baTydPNSTmHZcFMKQHgOr",
+      "name": "Neko Hacker",
+      "artist": "Neko Hacker",
+      "artistId": "0EzVbDRfzLSVczGncK2Zfd",
+      "year": 2020,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2624,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7baTydPNSTmHZcFMKQHgOr.jpg",
+      "tracks": [
+        {
+          "id": "wGRtaSAwazLFXSrq99wnF2",
+          "title": "From Zero",
+          "track": 1,
+          "duration": 220
+        },
+        {
+          "id": "vsDGP4vpTVvqrzY1COygW4",
+          "title": "くいしんぼハッカー",
+          "track": 2,
+          "duration": 199
+        },
+        {
+          "id": "i077oZI6dyOQZoOE0OA0xn",
+          "title": "Home Sweet Home",
+          "track": 3,
+          "duration": 229
+        },
+        {
+          "id": "OIBzcmNG914aYENSksYdTr",
+          "title": "Hack You",
+          "track": 4,
+          "duration": 233
+        },
+        {
+          "id": "lcdsx0nhDCH9UaR2Z1wJrE",
+          "title": "Daydream",
+          "track": 5,
+          "duration": 247
+        },
+        {
+          "id": "ilmOVozz18mT37a8xG3bHL",
+          "title": "Sweet Dreams",
+          "track": 6,
+          "duration": 210
+        },
+        {
+          "id": "FLXRnsvhzHqTHn6XUTbyvQ",
+          "title": "Circulation",
+          "track": 7,
+          "duration": 57
+        },
+        {
+          "id": "41LD5ostDHO5aYRUfZqoTK",
+          "title": "Erased",
+          "track": 8,
+          "duration": 263
+        },
+        {
+          "id": "Xp1YqC3Ga0XQNKq1TujlgV",
+          "title": "ガチで恋するお前らへ",
+          "track": 9,
+          "duration": 210
+        },
+        {
+          "id": "ovpPqk816FJR9iDtnDYQQK",
+          "title": "Night Sky",
+          "track": 10,
+          "duration": 277
+        },
+        {
+          "id": "ekfhtbFUaSST1B8Oc7V1rD",
+          "title": "Chocolate Adventure",
+          "track": 11,
+          "duration": 203
+        },
+        {
+          "id": "9i7Ge6WkdFy8BGVpRLbfTP",
+          "title": "Rainbow In The Dark",
+          "track": 12,
+          "duration": 272
+        }
+      ]
+    },
+    {
+      "id": "5Uear2HnABLYepetYDLnp3",
+      "name": "Innocent Proof",
+      "artist": "Risa Yuzuki",
+      "artistId": "6JXR31dHtl8q58Vt5Seyqo",
+      "year": 2024,
+      "genre": null,
+      "songCount": 14,
+      "duration": 3011,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5Uear2HnABLYepetYDLnp3.jpg",
+      "tracks": [
+        {
+          "id": "oKKT92m6rZPwJxDkFIrTAY",
+          "title": "Innocent Proof",
+          "track": 1,
+          "duration": 224
+        },
+        {
+          "id": "e5BhU7gNKgMSpNEhsgwBxs",
+          "title": "prismatic",
+          "track": 2,
+          "duration": 205
+        },
+        {
+          "id": "Epj83SyHA9tsOnoSgtC9jz",
+          "title": "らいかねっこ",
+          "track": 3,
+          "duration": 226
+        },
+        {
+          "id": "WmXSo9PjgkaOXuAPOciXDx",
+          "title": "kill the clown",
+          "track": 4,
+          "duration": 198
+        },
+        {
+          "id": "rhYDF2J5mGGrUebaKcjy9k",
+          "title": "AZA",
+          "track": 5,
+          "duration": 184
+        },
+        {
+          "id": "Nqqmd98SCL4YKqetXVUZ3G",
+          "title": "Oneway hwy.",
+          "track": 6,
+          "duration": 236
+        },
+        {
+          "id": "TXtBcecizVxRaH7GBM0mAp",
+          "title": "My Farewell",
+          "track": 7,
+          "duration": 229
+        },
+        {
+          "id": "XB6z2bleh4r2e6pmFBx37k",
+          "title": "Innocent Proof -Instrumental-",
+          "track": 8,
+          "duration": 224
+        },
+        {
+          "id": "DWH0Y7euUsMHwhZamjuZtR",
+          "title": "prismatic -Instrumental-",
+          "track": 9,
+          "duration": 205
+        },
+        {
+          "id": "TQqQxW6cKyROYiA4R89bp3",
+          "title": "らいかねっこ -Instrumental-",
+          "track": 10,
+          "duration": 226
+        },
+        {
+          "id": "dXqlmRu5AIn76x6CKGFYuS",
+          "title": "kill the clown -Instrumental-",
+          "track": 11,
+          "duration": 198
+        },
+        {
+          "id": "s9wEfH0yeQiAfPcVvdre0l",
+          "title": "AZA -Instrumental-",
+          "track": 12,
+          "duration": 184
+        },
+        {
+          "id": "pqTrN25KLAS3pqHHbMbP2O",
+          "title": "Oneway hwy. -Instrumental-",
+          "track": 13,
+          "duration": 236
+        },
+        {
+          "id": "HUxxy4IJpBt6jMV5Z1lXVR",
+          "title": "My Farewell -Instrumental-",
+          "track": 14,
+          "duration": 229
+        }
+      ]
+    },
+    {
+      "id": "5q12Q7fHS9wZhnKubbQlSy",
+      "name": "Wahl",
+      "artist": "Roselia",
+      "artistId": "76Nq2j9av0plYMI5MiTEc6",
+      "year": 2020,
+      "genre": null,
+      "songCount": 12,
+      "duration": 3404,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5q12Q7fHS9wZhnKubbQlSy.jpg",
+      "tracks": [
+        {
+          "id": "O2lzMb3jvlmeTzxV7dTclJ",
+          "title": "R",
+          "track": 1,
+          "duration": 285
+        },
+        {
+          "id": "SDRXAQmC86aLvcF1gLBIIT",
+          "title": "BRAVE JEWEL",
+          "track": 2,
+          "duration": 247
+        },
+        {
+          "id": "JKwB4Gwa4ykBq0R3moPwnd",
+          "title": "Determination Symphony",
+          "track": 3,
+          "duration": 282
+        },
+        {
+          "id": "ocCk2pVmAxlhScgPiNlaf1",
+          "title": "FIRE BIRD",
+          "track": 4,
+          "duration": 325
+        },
+        {
+          "id": "QgoYB9AM7Tosoy2VspV9LM",
+          "title": "Safe and Sound",
+          "track": 5,
+          "duration": 258
+        },
+        {
+          "id": "MQwX0t2bdjyTJBvzDZHuIa",
+          "title": "Avant-garde HISTORY",
+          "track": 6,
+          "duration": 306
+        },
+        {
+          "id": "63YV0uoLqAyJpZ8AFqTcuF",
+          "title": "Break your desire",
+          "track": 7,
+          "duration": 261
+        },
+        {
+          "id": "aqPjKcfPpAM83ASjOTwda6",
+          "title": "Re:birth day",
+          "track": 8,
+          "duration": 267
+        },
+        {
+          "id": "NxWEIavAOgmqebi91C0H4N",
+          "title": "Neo-Aspect",
+          "track": 9,
+          "duration": 310
+        },
+        {
+          "id": "AH7FaTqduN2EmqAbAjPRs0",
+          "title": "約束",
+          "track": 10,
+          "duration": 305
+        },
+        {
+          "id": "Go4M7GNhJMcEUyuzkgVDPN",
+          "title": "“UNIONS” Road",
+          "track": 11,
+          "duration": 310
+        },
+        {
+          "id": "ftmE8XOZNFtJ3w8LiXjmJ6",
+          "title": "Song I am.",
+          "track": 12,
+          "duration": 242
+        }
+      ]
+    },
+    {
+      "id": "2kGM5JJP5Mu9pqqtHyStqq",
+      "name": "Ex-Otogibanashi",
+      "artist": "ryo (supercell) / かぐや(cv.夏吉ゆうこ), 月見ヤチヨ(cv.早見沙織)",
+      "artistId": "28zMXfDhk4oBV73ERNYi6v",
+      "year": 2026,
+      "genre": null,
+      "songCount": 6,
+      "duration": 1138,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2kGM5JJP5Mu9pqqtHyStqq.jpg",
+      "tracks": [
+        {
+          "id": "fcWCiseRJZaOMIEV9fjF6g",
+          "title": "Ex-Otogibanashi",
+          "track": 1,
+          "duration": 217
+        },
+        {
+          "id": "6cl26fyEmguZaZ3cLINTUm",
+          "title": "ワールドイズマイン CPK! Remix (かぐや&月見ヤチヨ ver.)",
+          "track": 2,
+          "duration": 226
+        },
+        {
+          "id": "4BIhqepRIg0RaEJnqwEgSi",
+          "title": "メルト CPK! Remix (かぐや ver.)",
+          "track": 3,
+          "duration": 270
+        },
+        {
+          "id": "53xt66Fw8DYabF8fg5Li0J",
+          "title": "Ex-Otogibanashi (月見ヤチヨ ver.)",
+          "track": 4,
+          "duration": 217
+        },
+        {
+          "id": "y7hOVUaDsGIfKdIaAPJZ95",
+          "title": "ワールドイズマイン CPK! Remix (Anime ver.)",
+          "track": 5,
+          "duration": 100
+        },
+        {
+          "id": "j6u3DRdFlfZb7OHf9DpeKs",
+          "title": "Ex-Otogibanashi (Anime ver.)",
+          "track": 6,
+          "duration": 108
+        }
+      ]
+    },
+    {
+      "id": "0G7R1XFiQbMEjtLSUr9MxU",
+      "name": "Everlasting Voyager",
+      "artist": "satella + Foxtail-Grass Studio",
+      "artistId": "3y9RuQuXBF4Z5kifCHwa6h",
+      "year": 2025,
+      "genre": null,
+      "songCount": 9,
+      "duration": 1683,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0G7R1XFiQbMEjtLSUr9MxU.jpg",
+      "tracks": [
+        {
+          "id": "hhXToqvj56cVvoM2m4L7vp",
+          "title": "Introduction",
+          "track": 1,
+          "duration": 83
+        },
+        {
+          "id": "pkG2OvCqm6mvSNocRwWjlQ",
+          "title": "Everlasting Voyager",
+          "track": 2,
+          "duration": 227
+        },
+        {
+          "id": "a5XuoPfU5irCLSoleRSyLx",
+          "title": "どれにしようかな？",
+          "track": 3,
+          "duration": 195
+        },
+        {
+          "id": "GQSkkjBxWT8WM6j2nNunOJ",
+          "title": "いつか見た青空",
+          "track": 4,
+          "duration": 208
+        },
+        {
+          "id": "8LEzFZNPVM5VRZmngo2zWR",
+          "title": "千紫万紅",
+          "track": 5,
+          "duration": 223
+        },
+        {
+          "id": "ppalcr0BkznNFEBGb2F4S3",
+          "title": "花簪",
+          "track": 6,
+          "duration": 194
+        },
+        {
+          "id": "29DA1by4J3EX8rzqgqdlNi",
+          "title": "波間の月影",
+          "track": 7,
+          "duration": 235
+        },
+        {
+          "id": "nri99BLij57ResjGyjaPiq",
+          "title": "カフネ",
+          "track": 8,
+          "duration": 200
+        },
+        {
+          "id": "OHiBZZ4a7yREkEXKFC7QSm",
+          "title": "ほしをみにいく",
+          "track": 9,
+          "duration": 115
+        }
+      ]
+    },
+    {
+      "id": "3FXjCYMPpE4XuWXT1msCSv",
+      "name": "Moment of Bloom",
+      "artist": "Sennzai",
+      "artistId": "3Au1NylzpAnQbnmjqjSBfs",
+      "year": 2025,
+      "genre": null,
+      "songCount": 6,
+      "duration": 1536,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3FXjCYMPpE4XuWXT1msCSv.jpg",
+      "tracks": [
+        {
+          "id": "ommfrTc3KpTeQ8KVj0CHRr",
+          "title": "Years",
+          "track": 1,
+          "duration": 78
+        },
+        {
+          "id": "n7AgzTkNtbVNL7N1hit1j7",
+          "title": "Moment of Bloom",
+          "track": 2,
+          "duration": 310
+        },
+        {
+          "id": "I4QLQCL7VCrb6hEG1Y3Ra6",
+          "title": "失楽園",
+          "track": 3,
+          "duration": 291
+        },
+        {
+          "id": "GWtowJwiy8zy3idlAUGxXN",
+          "title": "露となる",
+          "track": 4,
+          "duration": 273
+        },
+        {
+          "id": "1uxtqCqaeezWreEhTpttmj",
+          "title": "Moment of Bloom (Instrumental Ver.)",
+          "track": 5,
+          "duration": 310
+        },
+        {
+          "id": "76N3044toYO3Y5GlYK2YVe",
+          "title": "露となる (Instrumental Ver.)",
+          "track": 6,
+          "duration": 273
+        }
+      ]
+    },
+    {
+      "id": "76pCD0Ox6gypJFIXPeA954",
+      "name": "Proud Echoes",
+      "artist": "Sennzai",
+      "artistId": "3Au1NylzpAnQbnmjqjSBfs",
+      "year": 2024,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2256,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/76pCD0Ox6gypJFIXPeA954.jpg",
+      "tracks": [
+        {
+          "id": "C12glgcObO6DBKgxPiXCO0",
+          "title": "白蓮華",
+          "track": 1,
+          "duration": 237
+        },
+        {
+          "id": "wjraMKYZDvARBuno87khQa",
+          "title": "全知全能",
+          "track": 2,
+          "duration": 162
+        },
+        {
+          "id": "XuG9pUl1rOypaNzX4EqH6B",
+          "title": "沈黙の塔",
+          "track": 3,
+          "duration": 257
+        },
+        {
+          "id": "2AFy7DkwN3Ld47TqCN9PiX",
+          "title": "Dimension",
+          "track": 4,
+          "duration": 181
+        },
+        {
+          "id": "4mC9aqKfs7tSc6eRrBPoaU",
+          "title": "春宵胡蝶",
+          "track": 5,
+          "duration": 289
+        },
+        {
+          "id": "TryUzNKYvAWvbJa8q8Zqze",
+          "title": "白蓮華 (Instrumental Ver.)",
+          "track": 6,
+          "duration": 237
+        },
+        {
+          "id": "uQrzdG7raO3oTXMHUw60WP",
+          "title": "全知全能 (Instrumental Ver.)",
+          "track": 7,
+          "duration": 162
+        },
+        {
+          "id": "LXCbazsr8Y4tXbuLHadnJD",
+          "title": "沈黙の塔 (Instrumental Ver.)",
+          "track": 8,
+          "duration": 257
+        },
+        {
+          "id": "vgOtIofoExQkMf4mp9hXfb",
+          "title": "Dimension (Instrumental Ver.)",
+          "track": 9,
+          "duration": 181
+        },
+        {
+          "id": "i9Q2KfjRrej6g71dKDa6N9",
+          "title": "春宵胡蝶 (Instrumental Ver.)",
+          "track": 10,
+          "duration": 289
+        }
+      ]
+    },
+    {
+      "id": "7tOs7jkJLMitUHHVKw8geH",
+      "name": "UTSUROI",
+      "artist": "Sennzai",
+      "artistId": "3Au1NylzpAnQbnmjqjSBfs",
+      "year": 2026,
+      "genre": null,
+      "songCount": 9,
+      "duration": 2238,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7tOs7jkJLMitUHHVKw8geH.jpg",
+      "tracks": [
+        {
+          "id": "h0J0OOpgO0wAi8IQqU7W8a",
+          "title": "Echoes of the Seasons",
+          "track": 1,
+          "duration": 127
+        },
+        {
+          "id": "oYTw8GliFC5oa7b46BfCVB",
+          "title": "雪解けの序奏",
+          "track": 2,
+          "duration": 277
+        },
+        {
+          "id": "Dga10pop9anCMD3mcSA46C",
+          "title": "群青の先へ",
+          "track": 3,
+          "duration": 246
+        },
+        {
+          "id": "ogUKmWZ6YZq5Oeu9mcPZp5",
+          "title": "Autumn Leaves",
+          "track": 4,
+          "duration": 282
+        },
+        {
+          "id": "p2fEJjVHNrcrM25yn3aYzL",
+          "title": "Aftersnow",
+          "track": 5,
+          "duration": 249
+        },
+        {
+          "id": "W0jpDdmRoyOBeilpKcO1rU",
+          "title": "雪解けの序奏(Instrumental Ver.)",
+          "track": 6,
+          "duration": 277
+        },
+        {
+          "id": "MGEBJNZLciVdBJkVL6tQ8m",
+          "title": "群青の先へ(Instrumental Ver.)",
+          "track": 7,
+          "duration": 246
+        },
+        {
+          "id": "4WlnZGP6TaUO1f0iUkQg2F",
+          "title": "Autumn Leaves(Instrumental Ver.)",
+          "track": 8,
+          "duration": 282
+        },
+        {
+          "id": "FqncWPbWnhzxcz5cwyeGVF",
+          "title": "Aftersnow(Instrumental Ver.)",
+          "track": 9,
+          "duration": 248
+        }
+      ]
+    },
+    {
+      "id": "2lzVMfvuE9z3skN79MNtb4",
+      "name": "形藻土",
+      "artist": "ずっと真夜中でいいのに。",
+      "artistId": "00ebKa0CbYOi2kX5bFrred",
+      "year": 2026,
+      "genre": null,
+      "songCount": 18,
+      "duration": 4118,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2lzVMfvuE9z3skN79MNtb4.jpg",
+      "tracks": [
+        {
+          "id": "BczUPqHGQwSPxDn6QO1cxr",
+          "title": "地球存在しない説",
+          "track": 1,
+          "duration": 67
+        },
+        {
+          "id": "UDHMKSOynaXsQ1qOhqlOmj",
+          "title": "間人間",
+          "track": 2,
+          "duration": 244
+        },
+        {
+          "id": "C7hKOJZjyBAtyzl4SMKRtE",
+          "title": "メディアノーチェ",
+          "track": 3,
+          "duration": 228
+        },
+        {
+          "id": "4wyCjTUMu5mJIlPLoFjHQV",
+          "title": "TAIDADA",
+          "track": 4,
+          "duration": 223
+        },
+        {
+          "id": "EQowHmOl3L0SPta9lDBoCH",
+          "title": "蟹しゃぶふぁんく",
+          "track": 5,
+          "duration": 114
+        },
+        {
+          "id": "Gn6YCvAyeYqRDMfhvdlZez",
+          "title": "微熱魔",
+          "track": 6,
+          "duration": 214
+        },
+        {
+          "id": "Id2ITK3M26jHNYWZ1ZeKhh",
+          "title": "CREAM (Disco Re-Edit)",
+          "track": 7,
+          "duration": 233
+        },
+        {
+          "id": "co00N2lorYSkAY4g1tad23",
+          "title": "またね幻 (Live in Studio_80光年先の君へ)",
+          "track": 8,
+          "duration": 306
+        },
+        {
+          "id": "1tHBy9EIU22BFipao78UHb",
+          "title": "シェードの埃は延長",
+          "track": 9,
+          "duration": 230
+        },
+        {
+          "id": "fhbEt8Motj3kgHRP25ZXvp",
+          "title": "形",
+          "track": 10,
+          "duration": 199
+        },
+        {
+          "id": "ylxijiIFDnELbv0zRREEe8",
+          "title": "ultra魂",
+          "track": 11,
+          "duration": 79
+        },
+        {
+          "id": "mL1p0rsJ5e7CTYNjyns2jY",
+          "title": "不死身の訓練",
+          "track": 12,
+          "duration": 167
+        },
+        {
+          "id": "Akrgo1g67AaQUS5MmVaDq0",
+          "title": "海馬成長痛",
+          "track": 13,
+          "duration": 187
+        },
+        {
+          "id": "7rQD25MRuZHjUyGinULid0",
+          "title": "アンチモン",
+          "track": 14,
+          "duration": 187
+        },
+        {
+          "id": "cnkhBARY8wLfbEUkF7Eulu",
+          "title": "よもすがら",
+          "track": 15,
+          "duration": 213
+        },
+        {
+          "id": "DVWruc2v5nCLSeVdkqSnKT",
+          "title": "クズリ念 (Live in Studio_温蔵庫)",
+          "track": 16,
+          "duration": 321
+        },
+        {
+          "id": "H3HghuZfNtU0R2ACjjaaA5",
+          "title": "嘘じゃない",
+          "track": 17,
+          "duration": 256
+        },
+        {
+          "id": "bwdK8IkGDiVoLrBTNCjkmW",
+          "title": "lowmotion algae",
+          "track": 18,
+          "duration": 640
+        }
+      ]
+    },
+    {
+      "id": "2H0fljhv44rKkOTBKPDyYX",
+      "name": "朗らかな皮膚とて不服",
+      "artist": "ずっと真夜中でいいのに。",
+      "artistId": "00ebKa0CbYOi2kX5bFrred",
+      "year": 2020,
+      "genre": "Miscellaneous",
+      "songCount": 8,
+      "duration": 1932,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2H0fljhv44rKkOTBKPDyYX.jpg",
+      "tracks": [
+        {
+          "id": "Flf7l83chUIG3ILnxy9HNC",
+          "title": "低血ボルト",
+          "track": 1,
+          "duration": 214
+        },
+        {
+          "id": "Yn3ZIQc1J7IJ8PC8rWwEyA",
+          "title": "低血ボルト",
+          "track": 1,
+          "duration": 213
+        },
+        {
+          "id": "psy0rMznOLvG4tOyLQl1cQ",
+          "title": "お勉強しといてよ",
+          "track": 2,
+          "duration": 279
+        },
+        {
+          "id": "j8Jnet2vG3cEzT2YgE8rB4",
+          "title": "Ham",
+          "track": 3,
+          "duration": 220
+        },
+        {
+          "id": "8vyj4fSkGjxiTu4LjF4i0k",
+          "title": "JK BOMBER",
+          "track": 4,
+          "duration": 235
+        },
+        {
+          "id": "jcXsy7lIspWxnlKAEuMmVY",
+          "title": "マリンブルーの庭園",
+          "track": 5,
+          "duration": 214
+        },
+        {
+          "id": "qMxdkJWc6TFSkWVyUPxkG1",
+          "title": "MILABO",
+          "track": 6,
+          "duration": 268
+        },
+        {
+          "id": "xCx8mgwaUUFQWj8apDKbwW",
+          "title": "蹴っ飛ばした毛布 [Bathroom Twin Piano Live(2020.05.06) ver.]",
+          "track": 7,
+          "duration": 286
+        }
+      ]
+    },
+    {
+      "id": "5tP3bnXbsZGqxrRU0bJUa4",
+      "name": "沈香学",
+      "artist": "ずっと真夜中でいいのに。",
+      "artistId": "00ebKa0CbYOi2kX5bFrred",
+      "year": 2023,
+      "genre": "Rock",
+      "songCount": 13,
+      "duration": 3234,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5tP3bnXbsZGqxrRU0bJUa4.jpg",
+      "tracks": [
+        {
+          "id": "rKQCvXs3D7yIrB4fxBeniX",
+          "title": "花一匁",
+          "track": 1,
+          "duration": 250
+        },
+        {
+          "id": "fe2ICTRl1wyqZAIINh1KtV",
+          "title": "残機",
+          "track": 2,
+          "duration": 230
+        },
+        {
+          "id": "rn0pvTJbL4EokcDexsX5Ge",
+          "title": "猫リセット",
+          "track": 3,
+          "duration": 246
+        },
+        {
+          "id": "fajwyYFPVQMG4XEx33iGDm",
+          "title": "綺羅キラー",
+          "track": 4,
+          "duration": 253
+        },
+        {
+          "id": "mnLwIzdclM6Qnej2fBeeKT",
+          "title": "馴れ合いサーブ",
+          "track": 5,
+          "duration": 237
+        },
+        {
+          "id": "tvsJ73Q1Cxa0r2aYT3uV7u",
+          "title": "あいつら全員同窓会",
+          "track": 6,
+          "duration": 254
+        },
+        {
+          "id": "LQ9DVTb3dLpCkNsCLTcQCi",
+          "title": "夏枯れ",
+          "track": 7,
+          "duration": 235
+        },
+        {
+          "id": "ILcZJ6Cjq26GbYZrG4nX1A",
+          "title": "袖のキルト",
+          "track": 8,
+          "duration": 254
+        },
+        {
+          "id": "kHujaaZ8V0SJbR8kwrPIPF",
+          "title": "不法侵入",
+          "track": 9,
+          "duration": 260
+        },
+        {
+          "id": "b58tAr6WdxR4xuA2HvjJQC",
+          "title": "ばかじゃないのに",
+          "track": 10,
+          "duration": 254
+        },
+        {
+          "id": "49osTla2z0eNyEmFRxl41Q",
+          "title": "消えてしまいそうです",
+          "track": 11,
+          "duration": 258
+        },
+        {
+          "id": "PMLumj3pqVfJXfRLAwfwN7",
+          "title": "ミラーチューン",
+          "track": 12,
+          "duration": 249
+        },
+        {
+          "id": "YL3n7ftyzBtdok4Jibzf4l",
+          "title": "上辺の私自身なんだよ",
+          "track": 13,
+          "duration": 247
+        }
+      ]
+    },
+    {
+      "id": "2YsWU4c70lqQkkO9pC8jjA",
+      "name": "潜潜話",
+      "artist": "ずっと真夜中でいいのに。",
+      "artistId": "00ebKa0CbYOi2kX5bFrred",
+      "year": 2019,
+      "genre": "Pop",
+      "songCount": 26,
+      "duration": 6720,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2YsWU4c70lqQkkO9pC8jjA.jpg",
+      "tracks": [
+        {
+          "id": "8dNy5neeirXrekYBOlLb7R",
+          "title": "脳裏上のクラッカー",
+          "track": 1,
+          "duration": 270
+        },
+        {
+          "id": "WvdZgcuE5onJLG25yTGUV5",
+          "title": "勘冴えて悔しいわ",
+          "track": 2,
+          "duration": 236
+        },
+        {
+          "id": "EyzDxNdTUQrYeAAt8mCIgw",
+          "title": "居眠り遠征隊",
+          "track": 3,
+          "duration": 218
+        },
+        {
+          "id": "p8QspK6MEhdtE4v1trwRgK",
+          "title": "ハゼ馳せる果てるまで",
+          "track": 4,
+          "duration": 244
+        },
+        {
+          "id": "uDCMmHWZtPF6PL6GIeR7SJ",
+          "title": "蹴っ飛ばした毛布",
+          "track": 5,
+          "duration": 266
+        },
+        {
+          "id": "KU7bt0BIj5ApgFAWutLb3Z",
+          "title": "Dear Mr 「F」",
+          "track": 6,
+          "duration": 326
+        },
+        {
+          "id": "MofN3wgVeVIcykExlLAhvf",
+          "title": "こんなこと騒動",
+          "track": 7,
+          "duration": 297
+        },
+        {
+          "id": "LJ7bUGjM488SjoCkjtef2Y",
+          "title": "眩しいDNAだけ",
+          "track": 8,
+          "duration": 227
+        },
+        {
+          "id": "DPN9KW4VfqUaQVfHCeFT3f",
+          "title": "ヒューマノイド",
+          "track": 9,
+          "duration": 259
+        },
+        {
+          "id": "etxHsudumvQnrRj6p9kx98",
+          "title": "グラスとラムレーズン",
+          "track": 10,
+          "duration": 234
+        },
+        {
+          "id": "N1CoAoQHm4qwt4qfn7qrXN",
+          "title": "正義",
+          "track": 11,
+          "duration": 271
+        },
+        {
+          "id": "Q7oRudvzK6TGJ6yKxMHEzC",
+          "title": "優しくLAST SMILE",
+          "track": 12,
+          "duration": 245
+        },
+        {
+          "id": "ZDDwlOPQscYHusbRJfX3B7",
+          "title": "秒針を噛む",
+          "track": 13,
+          "duration": 260
+        },
+        {
+          "id": "0rRbEDjSD23jb4WFDYp6lW",
+          "title": "脳裏上のクラッカー (Instrumental)",
+          "track": 1,
+          "duration": 270
+        },
+        {
+          "id": "lAnlN2EbZDTOqDumVDqfHK",
+          "title": "勘冴えて悔しいわ (Instrumental)",
+          "track": 2,
+          "duration": 236
+        },
+        {
+          "id": "XgsBWmPZk8xu6fUC30icaP",
+          "title": "居眠り遠征隊 (Instrumental)",
+          "track": 3,
+          "duration": 218
+        },
+        {
+          "id": "sFUCSh2DCRk9I9riqARxO2",
+          "title": "ハゼ馳せる果てるまで (Instrumental)",
+          "track": 4,
+          "duration": 244
+        },
+        {
+          "id": "lRsdf9CiQxtSDiyZUIU0WA",
+          "title": "蹴っ飛ばした毛布 (Instrumental)",
+          "track": 5,
+          "duration": 266
+        },
+        {
+          "id": "n8ypQdmaj9z1dnk5Zn2XEx",
+          "title": "Dear Mr 「F」 (Instrumental)",
+          "track": 6,
+          "duration": 326
+        },
+        {
+          "id": "29u01UM8o3Vq4d4NPn1Ob1",
+          "title": "こんなこと騒動 (Instrumental)",
+          "track": 7,
+          "duration": 297
+        },
+        {
+          "id": "kTG85BlqYgzlkqVtId8yfW",
+          "title": "眩しいDNAだけ (Instrumental)",
+          "track": 8,
+          "duration": 227
+        },
+        {
+          "id": "XMEwz6KoqgHkXxFpHpSX60",
+          "title": "ヒューマノイド (Instrumental)",
+          "track": 9,
+          "duration": 259
+        },
+        {
+          "id": "DUrtcCstlolQvworgCpKz6",
+          "title": "グラスとラムレーズン (Instrumental)",
+          "track": 10,
+          "duration": 234
+        },
+        {
+          "id": "6bJp3y87xE8elp22IAYKyS",
+          "title": "正義 (Instrumental)",
+          "track": 11,
+          "duration": 271
+        },
+        {
+          "id": "LyQYUU4cB94eYfZkh89CNX",
+          "title": "優しくLAST SMILE (Instrumental)",
+          "track": 12,
+          "duration": 245
+        },
+        {
+          "id": "XFGkjVq4RODS0GBwXBxW7X",
+          "title": "秒針を噛む (Instrumental)",
+          "track": 13,
+          "duration": 260
+        }
+      ]
+    },
+    {
+      "id": "2aylkCFHuFQEsNTQcDMVwH",
+      "name": "RedemptioN",
+      "artist": "せんざい",
+      "artistId": "0TtA1aP89dnusGkxoUKMgP",
+      "year": 2021,
+      "genre": null,
+      "songCount": 14,
+      "duration": 4153,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2aylkCFHuFQEsNTQcDMVwH.jpg",
+      "tracks": [
+        {
+          "id": "801egXV17zpFpMgd5wzIeS",
+          "title": "lar ililia",
+          "track": 1,
+          "duration": 329
+        },
+        {
+          "id": "ez8mM7SETKAOmcV1cXLzD5",
+          "title": "可能性の少女",
+          "track": 2,
+          "duration": 317
+        },
+        {
+          "id": "vLREXA4zzsQkTwY29Iaz5z",
+          "title": "アンヒューマナイズ",
+          "track": 3,
+          "duration": 240
+        },
+        {
+          "id": "fqR4USIQZYlvmUln5weAFA",
+          "title": "Lure",
+          "track": 4,
+          "duration": 221
+        },
+        {
+          "id": "WdQSFy0UFcPKRTb0Zu1bHw",
+          "title": "Compensation",
+          "track": 5,
+          "duration": 342
+        },
+        {
+          "id": "q09fG8H4ret2xI2KMsTGMn",
+          "title": "思想＝夢想",
+          "track": 6,
+          "duration": 284
+        },
+        {
+          "id": "3jItbMeqxLqC0NaB3ZN8r4",
+          "title": "RedemptioN",
+          "track": 7,
+          "duration": 343
+        },
+        {
+          "id": "CELrBcvR88AoGUIi6hRF97",
+          "title": "lar ililia (Instrumental Ver.)",
+          "track": 8,
+          "duration": 329
+        },
+        {
+          "id": "FWlor8SizMisTz4fTZg51T",
+          "title": "可能性の少女 (Instrumental Ver.)",
+          "track": 9,
+          "duration": 317
+        },
+        {
+          "id": "rAdKTrXKibXRIgxZvis3nP",
+          "title": "アンヒューマナイズ (Instrumental Ver.)",
+          "track": 10,
+          "duration": 240
+        },
+        {
+          "id": "LwkesdmAIaNrPY0BjixriI",
+          "title": "Lure (Instrumental Ver.)",
+          "track": 11,
+          "duration": 221
+        },
+        {
+          "id": "PPqkwBqrkUIq5NXrnb36uo",
+          "title": "Compensation (Instrumental Ver.)",
+          "track": 12,
+          "duration": 342
+        },
+        {
+          "id": "eQCQi33pAv0jsTzERuF1Zt",
+          "title": "思想＝夢想(Instrumental Ver.)",
+          "track": 13,
+          "duration": 284
+        },
+        {
+          "id": "aB8Gl3n6ca5NVgEE1PbFsV",
+          "title": "RedemptioN(Instrumental Ver.)",
+          "track": 14,
+          "duration": 341
+        }
+      ]
+    },
+    {
+      "id": "3graXQtWG2Dx6VF9gBHCCQ",
+      "name": "Good night, Dreamer.",
+      "artist": "ななひら",
+      "artistId": "6lm59tgk4f9OxsJRyN80i8",
+      "year": 2024,
+      "genre": "Pop",
+      "songCount": 6,
+      "duration": 1157,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3graXQtWG2Dx6VF9gBHCCQ.jpg",
+      "tracks": [
+        {
+          "id": "Uu0GlsOU0J5IqthmurIvjN",
+          "title": "はっぴーどりーむ☆りあらいず！",
+          "track": 1,
+          "duration": 151
+        },
+        {
+          "id": "Ws6v0fFP5cu5fe4r5jYadm",
+          "title": "ミラクルキャンディファンシー",
+          "track": 2,
+          "duration": 252
+        },
+        {
+          "id": "MVMaDj0l8u4bQtyCjznSoR",
+          "title": "ラブりんりんぐ！",
+          "track": 3,
+          "duration": 147
+        },
+        {
+          "id": "iConWpqQP5DNb95otPHCT8",
+          "title": "Star aster",
+          "track": 4,
+          "duration": 203
+        },
+        {
+          "id": "4FubyAonMPM1L7up0roUzb",
+          "title": "醒めない夢の眠り姫",
+          "track": 5,
+          "duration": 208
+        },
+        {
+          "id": "FPNQWQDNSoE0dd7CmbUc5i",
+          "title": "魔法なんてない世界で",
+          "track": 6,
+          "duration": 196
+        }
+      ]
+    },
+    {
+      "id": "6R5xy7QUHQA4Z0lRVq71Yt",
+      "name": "それでも雨は降るんだね",
+      "artist": "ツユ",
+      "artistId": "50oOkrqrvUVeMr4HrpotWU",
+      "year": 2024,
+      "genre": null,
+      "songCount": 1,
+      "duration": 223,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/6R5xy7QUHQA4Z0lRVq71Yt.jpg",
+      "tracks": [
+        {
+          "id": "72qBKauruyzpkQigkcFlTe",
+          "title": "それでも雨は降るんだね",
+          "track": 1,
+          "duration": 223
+        }
+      ]
+    },
+    {
+      "id": "0odB91mCbWw6b1A0iywEm3",
+      "name": "やっぱり雨は降るんだね",
+      "artist": "ツユ",
+      "artistId": "50oOkrqrvUVeMr4HrpotWU",
+      "year": 2020,
+      "genre": "JPop",
+      "songCount": 13,
+      "duration": 2540,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0odB91mCbWw6b1A0iywEm3.jpg",
+      "tracks": [
+        {
+          "id": "wGK05vdD1TfFLyicJN209y",
+          "title": "やっぱり雨は降るんだね",
+          "track": 1,
+          "duration": 245
+        },
+        {
+          "id": "Q204peyn6XJMlVSYupv1ar",
+          "title": "夏浅し",
+          "track": 2,
+          "duration": 83
+        },
+        {
+          "id": "x7ombrxShP9p0Hz08gblLT",
+          "title": "風薫る空の下",
+          "track": 3,
+          "duration": 202
+        },
+        {
+          "id": "vz7SE7QkglHUDY52WmExGk",
+          "title": "アサガオの散る頃に",
+          "track": 4,
+          "duration": 202
+        },
+        {
+          "id": "4Ai0crWtYb4kzYze9KyWfM",
+          "title": "ひとりぼっちと未来",
+          "track": 5,
+          "duration": 147
+        },
+        {
+          "id": "UvlEVt49BM3jxSuRB9SoId",
+          "title": "あの世行きのバスに乗ってさらば。",
+          "track": 6,
+          "duration": 194
+        },
+        {
+          "id": "BS18gJ8vwxemIDCcsxKFps",
+          "title": "太陽になれるかな",
+          "track": 7,
+          "duration": 243
+        },
+        {
+          "id": "1wIth2j5GdAFyBRULFtXxd",
+          "title": "羨望",
+          "track": 8,
+          "duration": 108
+        },
+        {
+          "id": "jnBnpWthbO0DLSNA6dWPd7",
+          "title": "くらべられっ子",
+          "track": 9,
+          "duration": 214
+        },
+        {
+          "id": "Z13DN3b213pAANCV2YT4t0",
+          "title": "ロックな君とはお別れだ",
+          "track": 10,
+          "duration": 208
+        },
+        {
+          "id": "XkrVC66Uwy1GQ1AIVvJL85",
+          "title": "ナミカレ",
+          "track": 11,
+          "duration": 249
+        },
+        {
+          "id": "mJ6oCZHoZgz47BK6WDlKYt",
+          "title": "やっぱり雨は降るんだね Acoustic arrange ver.",
+          "track": 1,
+          "duration": 214
+        },
+        {
+          "id": "Y7mS6yL5JPSCPXdm3QvsLB",
+          "title": "くらべられっ子 Acoustic arrange ver.",
+          "track": 2,
+          "duration": 226
+        }
+      ]
+    },
+    {
+      "id": "0Qfu172v6dSHHeRbv3KFma",
+      "name": "アンダーメンタリティ",
+      "artist": "ツユ",
+      "artistId": "50oOkrqrvUVeMr4HrpotWU",
+      "year": 2023,
+      "genre": null,
+      "songCount": 12,
+      "duration": 1681,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0Qfu172v6dSHHeRbv3KFma.jpg",
+      "tracks": [
+        {
+          "id": "q85yx2TuCWgo7Qug0bHOiZ",
+          "title": "Under Mentality",
+          "track": 1,
+          "duration": 81
+        },
+        {
+          "id": "Qj82dCwAx1kbrjYlDx7MBY",
+          "title": "不平不満の病",
+          "track": 2,
+          "duration": 20
+        },
+        {
+          "id": "DiRMq6lP0JgzLabHdRrcj9",
+          "title": "アンダーキッズ",
+          "track": 3,
+          "duration": 205
+        },
+        {
+          "id": "MtZU3O2JiL3qNN3ia23Rsg",
+          "title": "腹黒女の戯言",
+          "track": 4,
+          "duration": 17
+        },
+        {
+          "id": "E3mnCQSkanI5SO26xNkgJP",
+          "title": "アンダーヒロイン",
+          "track": 5,
+          "duration": 166
+        },
+        {
+          "id": "BLKmj61zdkb2vZq7kdOgB0",
+          "title": "いつかオトナになれるといいね。",
+          "track": 6,
+          "duration": 174
+        },
+        {
+          "id": "8QR5rwxHprFKZ7jeP8i3tX",
+          "title": "雨宿り",
+          "track": 7,
+          "duration": 75
+        },
+        {
+          "id": "XMnwlaS29Ad0PTbObNcc85",
+          "title": "雨模様",
+          "track": 8,
+          "duration": 161
+        },
+        {
+          "id": "OOjVJF1s0PAmhB9X0AVv6v",
+          "title": "レインフォール",
+          "track": 9,
+          "duration": 225
+        },
+        {
+          "id": "UbiGMn8bXstrZbPBme4r2L",
+          "title": "これだからやめらんない!",
+          "track": 10,
+          "duration": 163
+        },
+        {
+          "id": "dE6RoiVsXV4hXtHlOgXsm4",
+          "title": "傷つけど、愛してる。",
+          "track": 11,
+          "duration": 203
+        },
+        {
+          "id": "GaaS7mzmzXCB9XhYW80id2",
+          "title": "朧月夜物語",
+          "track": 12,
+          "duration": 186
+        }
+      ]
+    },
+    {
+      "id": "2fMeq5EojtcFMSaKne8gEV",
+      "name": "棘アリ",
+      "artist": "トゲナシトゲアリ",
+      "artistId": "6Cb6Yry9dJloNo3HqsfMO7",
+      "year": 2024,
+      "genre": "General",
+      "songCount": 10,
+      "duration": 1910,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2fMeq5EojtcFMSaKne8gEV.jpg",
+      "tracks": [
+        {
+          "id": "iDyTa0Dkd86TcbSbK8S0vV",
+          "title": "名もなき何もかも",
+          "track": 1,
+          "duration": 189
+        },
+        {
+          "id": "TeTo1uMKFAIeSKWW6q6Ci7",
+          "title": "偽りの理",
+          "track": 2,
+          "duration": 191
+        },
+        {
+          "id": "koyoWCmAYnVpr89eXNaU2m",
+          "title": "気鬱、白濁す",
+          "track": 3,
+          "duration": 185
+        },
+        {
+          "id": "RFgdzfap7ipTtGqvQtxh8a",
+          "title": "理想的パラドクスとは",
+          "track": 4,
+          "duration": 228
+        },
+        {
+          "id": "oblbo7qCGoEs0CkVLRg9lh",
+          "title": "爆ぜて咲く",
+          "track": 5,
+          "duration": 223
+        },
+        {
+          "id": "CUyeopuwM9qB9MPVd0EFP9",
+          "title": "黎明を穿つ",
+          "track": 6,
+          "duration": 189
+        },
+        {
+          "id": "665Ju8a5YegRvrEeHho9UM",
+          "title": "極私的極彩色アンサー",
+          "track": 7,
+          "duration": 155
+        },
+        {
+          "id": "1QvpYZjERrfEQ2FUE4xDnv",
+          "title": "傷つき傷つけ痛くて辛い",
+          "track": 8,
+          "duration": 196
+        },
+        {
+          "id": "1c45QZRkQSh4PccLPnyYkQ",
+          "title": "運命に賭けたい論理",
+          "track": 9,
+          "duration": 196
+        },
+        {
+          "id": "6x9PsJMIhFGO7CmUK4JArA",
+          "title": "サヨナラサヨナラサヨナラ",
+          "track": 10,
+          "duration": 155
+        }
+      ]
+    },
+    {
+      "id": "563nXAq12FOOREDQCCXyoz",
+      "name": "無知のち私",
+      "artist": "トゲナシトゲアリ",
+      "artistId": "6Cb6Yry9dJloNo3HqsfMO7",
+      "year": 2024,
+      "genre": "Anime",
+      "songCount": 2,
+      "duration": 365,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/563nXAq12FOOREDQCCXyoz.jpg",
+      "tracks": [
+        {
+          "id": "3hNfvBNwEXGQdvXAOtYWX3",
+          "title": "無知のち私",
+          "track": 1,
+          "duration": 183
+        },
+        {
+          "id": "60mHQTtiPl8XvbVU9ZlqVg",
+          "title": "無知のち私(Instrumental)",
+          "track": 2,
+          "duration": 181
+        }
+      ]
+    },
+    {
+      "id": "3qK5mbIOQKbRTZwAeGxUbf",
+      "name": "Dreamścape",
+      "artist": "ミツキヨ , shnva",
+      "artistId": "5QxBJ80NblwMJ2I292YQrt",
+      "year": 2023,
+      "genre": "Instrumental",
+      "songCount": 6,
+      "duration": 1232,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3qK5mbIOQKbRTZwAeGxUbf.jpg",
+      "tracks": [
+        {
+          "id": "OFyblPyI8nRJ0YSaZSUiVg",
+          "title": "Dreamścape",
+          "track": 1,
+          "duration": 244
+        },
+        {
+          "id": "UW12CBkxPKptXvPHPh1TmQ",
+          "title": "帰り道の微風",
+          "track": 2,
+          "duration": 209
+        },
+        {
+          "id": "uHRfCI5WbVdbB319qTFrIJ",
+          "title": "レイニーヘルツ",
+          "track": 3,
+          "duration": 202
+        },
+        {
+          "id": "sAvLlrKjq4NXx3E8N4UJIT",
+          "title": "夢見るアトリエ",
+          "track": 4,
+          "duration": 214
+        },
+        {
+          "id": "ZOD3FX1zGPzk9grbpShvib",
+          "title": "Gradient Paradise",
+          "track": 5,
+          "duration": 182
+        },
+        {
+          "id": "BU4kH5XDmqBDOcMOblmxbr",
+          "title": "にゃ〜もの喫茶店",
+          "track": 6,
+          "duration": 178
+        }
+      ]
+    },
+    {
+      "id": "5PMWJZuyxGd7qTr38vbG8o",
+      "name": "ガールズブルー・ハッピーサッド",
+      "artist": "三月のパンタシア",
+      "artistId": "2CzDBEzFXAALoaKMicTQnn",
+      "year": 2019,
+      "genre": null,
+      "songCount": 12,
+      "duration": 3032,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5PMWJZuyxGd7qTr38vbG8o.jpg",
+      "tracks": [
+        {
+          "id": "Kh6WssQBlGtSxY85pYDEo2",
+          "title": "三月がずっと続けばいい",
+          "track": 1,
+          "duration": 237
+        },
+        {
+          "id": "88Q6fYfxtf5TbvwY33pLTi",
+          "title": "ピンクレモネード",
+          "track": 2,
+          "duration": 276
+        },
+        {
+          "id": "sTkUjPtO134bHEBKI1tUza",
+          "title": "風の声を聴きながら",
+          "track": 3,
+          "duration": 241
+        },
+        {
+          "id": "Asqi65rHdPaewDkktNICiP",
+          "title": "パステルレイン",
+          "track": 4,
+          "duration": 212
+        },
+        {
+          "id": "2PAv5PUrHwgZHp4gNglwz5",
+          "title": "青春なんていらないわ",
+          "track": 5,
+          "duration": 230
+        },
+        {
+          "id": "D5v1bb8XvC9XVwn5rYFJwF",
+          "title": "ソーダアイス",
+          "track": 6,
+          "duration": 228
+        },
+        {
+          "id": "FARBTNXmAGdLDdc83m42Ac",
+          "title": "ビタースイート",
+          "track": 7,
+          "duration": 265
+        },
+        {
+          "id": "KfHKTpEjzrI1Y8kpe9k2EW",
+          "title": "ラフスケッチ",
+          "track": 8,
+          "duration": 299
+        },
+        {
+          "id": "TTE0S5uNTbjXWFgNdEJpwQ",
+          "title": "ルビコン",
+          "track": 9,
+          "duration": 236
+        },
+        {
+          "id": "XhmVA9kDyICNnUmMlu3ydW",
+          "title": "街路、ライトの灯りだけ",
+          "track": 10,
+          "duration": 245
+        },
+        {
+          "id": "1KND4LXgLWCUBNuLtpSLwR",
+          "title": "コラージュ",
+          "track": 11,
+          "duration": 268
+        },
+        {
+          "id": "9NoZoFvLWNcpxeOIfCa0ec",
+          "title": "東京",
+          "track": 12,
+          "duration": 289
+        }
+      ]
+    },
+    {
+      "id": "0oGthgak0cwl2hInxQU91G",
+      "name": "水気を謳う",
+      "artist": "八木海莉",
+      "artistId": "1qlQbWxEEN3MANtDt9fOHb",
+      "year": 2022,
+      "genre": "JPop",
+      "songCount": 6,
+      "duration": 1231,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0oGthgak0cwl2hInxQU91G.jpg",
+      "tracks": [
+        {
+          "id": "7lbWkMa0NL7wpkJlfcnT8E",
+          "title": "お茶でも飲んで",
+          "track": 1,
+          "duration": 199
+        },
+        {
+          "id": "K5LxrNd3RB2FxKb0NmV5bd",
+          "title": "SELF HELP",
+          "track": 2,
+          "duration": 213
+        },
+        {
+          "id": "rvkq0d25nwwbleKod7dQSI",
+          "title": "Sugar morning",
+          "track": 3,
+          "duration": 167
+        },
+        {
+          "id": "HrGrDJ4RyW9oSUXJVRRSKc",
+          "title": "海が乾く頃",
+          "track": 4,
+          "duration": 246
+        },
+        {
+          "id": "YmmgusfO46rnY9UtrFTqdp",
+          "title": "お茶でも飲んで -Chinese tea ver-",
+          "track": 5,
+          "duration": 230
+        },
+        {
+          "id": "c9u41fEBzWEqOE6UHDxiJf",
+          "title": "ダダリラ",
+          "track": 6,
+          "duration": 174
+        }
+      ]
+    },
+    {
+      "id": "61xf5fgzKxaTX1Mk4PLnor",
+      "name": "Luna say maybe",
+      "artist": "初星学園",
+      "artistId": "5jJqPHtyc0rkJ5hpoWkBab",
+      "year": 2024,
+      "genre": "Game",
+      "songCount": 2,
+      "duration": 530,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/61xf5fgzKxaTX1Mk4PLnor.jpg",
+      "tracks": [
+        {
+          "id": "iExTUtaGrp6Ruawxz7LMcf",
+          "title": "Luna say maybe",
+          "track": 1,
+          "duration": 265
+        },
+        {
+          "id": "ZmTQuX7UhrVlWrmbShXfMu",
+          "title": "Luna say maybe (instrumental)",
+          "track": 2,
+          "duration": 265
+        }
+      ]
+    },
+    {
+      "id": "0A4CMZxo20eP2zXP2P97nH",
+      "name": "君の在処",
+      "artist": "宝石楽団 feat. Sennzai",
+      "artistId": "3oLhE5fdFJUhfe9Z2CQogM",
+      "year": 2026,
+      "genre": null,
+      "songCount": 1,
+      "duration": 270,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0A4CMZxo20eP2zXP2P97nH.jpg",
+      "tracks": [
+        {
+          "id": "IKr0t1mdOMjYhjwJGQbYXG",
+          "title": "君の在処",
+          "track": 1,
+          "duration": 270
+        }
+      ]
+    },
+    {
+      "id": "2Ks7BJKp2jmQZxSWRSirPK",
+      "name": "ASU",
+      "artist": "明透",
+      "artistId": "5vh0yN2YiuuJ2jhczGgbsh",
+      "year": 2023,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2216,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2Ks7BJKp2jmQZxSWRSirPK.jpg",
+      "tracks": [
+        {
+          "id": "42Z416CCsvV0rH7QmdRXCr",
+          "title": "太陽 (Instrumental)",
+          "track": 1,
+          "duration": 37
+        },
+        {
+          "id": "uIURJtx0n6ZwwJDfpBQtPC",
+          "title": "スロウリー",
+          "track": 2,
+          "duration": 192
+        },
+        {
+          "id": "Wf6UWjVi36WiuZUSpMJx8J",
+          "title": "インパーフェクト",
+          "track": 3,
+          "duration": 194
+        },
+        {
+          "id": "tCAE9oQ9NoFR4YWnaWNrNQ",
+          "title": "オレンジ",
+          "track": 4,
+          "duration": 181
+        },
+        {
+          "id": "NsKURYMglqEkMvPztxpt0C",
+          "title": "ライトイヤーズ",
+          "track": 5,
+          "duration": 177
+        },
+        {
+          "id": "uKQ4RZU3RPSkzugkg6YQoQ",
+          "title": "アンダーブーケ",
+          "track": 6,
+          "duration": 186
+        },
+        {
+          "id": "D4CLRh0svIlaKYFlMLtH8l",
+          "title": "モノローグ",
+          "track": 7,
+          "duration": 237
+        },
+        {
+          "id": "Q9Jlg5aB3wLoMeImjw5tab",
+          "title": "ピアス",
+          "track": 8,
+          "duration": 207
+        },
+        {
+          "id": "8igGzhum7LHrnUo05gdgif",
+          "title": "エンゼルフィッシュ",
+          "track": 9,
+          "duration": 160
+        },
+        {
+          "id": "m7D772QwFrLZEkIJcyC8Lw",
+          "title": "リンカーネイション",
+          "track": 10,
+          "duration": 220
+        },
+        {
+          "id": "Gazog4S8POnqeaFqXpMKLd",
+          "title": "ソラゴト",
+          "track": 11,
+          "duration": 205
+        },
+        {
+          "id": "wRnncXCQ4JjwdWai2ydyA5",
+          "title": "ソラゴト - Piano arr. -",
+          "track": 12,
+          "duration": 215
+        }
+      ]
+    },
+    {
+      "id": "7z8GA5X7gVLYPUdvOwGTmD",
+      "name": "ray of hope",
+      "artist": "明透",
+      "artistId": "5vh0yN2YiuuJ2jhczGgbsh",
+      "year": 2025,
+      "genre": null,
+      "songCount": 10,
+      "duration": 1991,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7z8GA5X7gVLYPUdvOwGTmD.jpg",
+      "tracks": [
+        {
+          "id": "5SnORgpqt05hLJ3bSuVwDy",
+          "title": "Spiral",
+          "track": 1,
+          "duration": 166
+        },
+        {
+          "id": "79pM9AG3AocRtDaGKZtUMn",
+          "title": "0g",
+          "track": 2,
+          "duration": 226
+        },
+        {
+          "id": "DCZF74EDOOM3rt6FJw4FnB",
+          "title": "ブルーナイトダーリン",
+          "track": 3,
+          "duration": 173
+        },
+        {
+          "id": "zPZ0Uwofj2uxo0jVyCuHNw",
+          "title": "アンメルト・アンブレラ",
+          "track": 4,
+          "duration": 198
+        },
+        {
+          "id": "s79bfqXh3lDycbVKvXDj0b",
+          "title": "HEAVEN IS GONE",
+          "track": 5,
+          "duration": 176
+        },
+        {
+          "id": "TPtsDVIR18E5GdNIrhan6R",
+          "title": "illumina",
+          "track": 6,
+          "duration": 172
+        },
+        {
+          "id": "qRTFBdB3X8YVoXIHutLrzJ",
+          "title": "Shiny",
+          "track": 7,
+          "duration": 208
+        },
+        {
+          "id": "UMIwvbxbBmqDTVSAsyyPnN",
+          "title": "Dazzling",
+          "track": 8,
+          "duration": 201
+        },
+        {
+          "id": "496u40X2du6txQ2zSh5KyH",
+          "title": "Winter Sparkler",
+          "track": 9,
+          "duration": 215
+        },
+        {
+          "id": "I2H8W5vSoOR4aVDBTkemKn",
+          "title": "Aster",
+          "track": 10,
+          "duration": 252
+        }
+      ]
+    },
+    {
+      "id": "7BH1Yd7yOPPO20gzHtpBy8",
+      "name": "twilight",
+      "artist": "明透",
+      "artistId": "5vh0yN2YiuuJ2jhczGgbsh",
+      "year": 2024,
+      "genre": "流行歌曲演唱",
+      "songCount": 7,
+      "duration": 1357,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7BH1Yd7yOPPO20gzHtpBy8.jpg",
+      "tracks": [
+        {
+          "id": "03ALFS1rzafKRq9448NM22",
+          "title": "アンメルト・アンブレラ",
+          "track": 1,
+          "duration": 198
+        },
+        {
+          "id": "8cd9BRiAvE79p9yIvckWEV",
+          "title": "Spiral",
+          "track": 2,
+          "duration": 167
+        },
+        {
+          "id": "h7uCjNDpFE5M04qVOkMhON",
+          "title": "ブルーナイトダーリン",
+          "track": 3,
+          "duration": 174
+        },
+        {
+          "id": "SrkotNzlc6TBcj7cTapHb9",
+          "title": "illumina",
+          "track": 4,
+          "duration": 173
+        },
+        {
+          "id": "fJccbczyPVtLDN3ByCw4Kh",
+          "title": "Dazzling",
+          "track": 5,
+          "duration": 202
+        },
+        {
+          "id": "rFv8SDS4zPXWanUTDM6YqB",
+          "title": "スロウリー - Acoustic Arrange -",
+          "track": 6,
+          "duration": 223
+        },
+        {
+          "id": "JQLeGRlANd31qoRoZUChzj",
+          "title": "ソラゴト - Acoustic Arrange -",
+          "track": 7,
+          "duration": 217
+        }
+      ]
+    },
+    {
+      "id": "2PAaEwNkbKzfQsq8leXyMh",
+      "name": "Specter",
+      "artist": "星街すいせい",
+      "artistId": "7wFTRm8e9oyqR01et3oHjr",
+      "year": 2023,
+      "genre": "Miscellaneous",
+      "songCount": 11,
+      "duration": 2455,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2PAaEwNkbKzfQsq8leXyMh.jpg",
+      "tracks": [
+        {
+          "id": "p5PntCzHAWDjkTR9VSBoN5",
+          "title": "灼熱にて純情(wii‐wii‐woo)",
+          "track": 1,
+          "duration": 228
+        },
+        {
+          "id": "Tz9d1SaMxw2fA54M9ppTFY",
+          "title": "TEMPLATE",
+          "track": 2,
+          "duration": 187
+        },
+        {
+          "id": "LXBapDTackArVtWN6YSLGC",
+          "title": "みちづれ",
+          "track": 3,
+          "duration": 193
+        },
+        {
+          "id": "yE2kzNUfr5VpPeZsbD3BRF",
+          "title": "褪せたハナミドリ",
+          "track": 4,
+          "duration": 217
+        },
+        {
+          "id": "33rqDPGRVpjrIpE9wQQqlq",
+          "title": "TRUE GIRL SHOW",
+          "track": 5,
+          "duration": 229
+        },
+        {
+          "id": "hZXI79IwUU6ukWNhiyNGFP",
+          "title": "放送室",
+          "track": 6,
+          "duration": 209
+        },
+        {
+          "id": "kkEurplfXhAdoL8joPPdiF",
+          "title": "デビュタントボール",
+          "track": 7,
+          "duration": 348
+        },
+        {
+          "id": "G9ARqSnK2Uz8vH90x7XNsP",
+          "title": "7days",
+          "track": 8,
+          "duration": 214
+        },
+        {
+          "id": "0DMDUj4SdzStxmAMmkYIQ5",
+          "title": "Damn Good Day",
+          "track": 9,
+          "duration": 182
+        },
+        {
+          "id": "sRpqxkI85c3kzeCFuGYFLH",
+          "title": "ソワレ",
+          "track": 10,
+          "duration": 227
+        },
+        {
+          "id": "E1bJNDDK7OGoeQOI22TtEa",
+          "title": "Newton",
+          "track": 11,
+          "duration": 216
+        }
+      ]
+    },
+    {
+      "id": "3Wpz0cYRZN3Z8yVRAJziPt",
+      "name": "Still Still Stellar",
+      "artist": "星街すいせい",
+      "artistId": "7wFTRm8e9oyqR01et3oHjr",
+      "year": 2021,
+      "genre": "Miscellaneous",
+      "songCount": 12,
+      "duration": 2981,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3Wpz0cYRZN3Z8yVRAJziPt.jpg",
+      "tracks": [
+        {
+          "id": "caj2CId4pgYWCAZObKp9WI",
+          "title": "Stellar Stellar",
+          "track": 1,
+          "duration": 301
+        },
+        {
+          "id": "351G56MiOKAvaT7hU6tfax",
+          "title": "NEXT COLOR PLANET",
+          "track": 2,
+          "duration": 259
+        },
+        {
+          "id": "CRRXxDrzgAol7j9tkPmgSX",
+          "title": "天球、彗星は夜を跨いで",
+          "track": 3,
+          "duration": 255
+        },
+        {
+          "id": "VB9j5yayXOVpHLC6fwGfMH",
+          "title": "GHOST",
+          "track": 4,
+          "duration": 283
+        },
+        {
+          "id": "dxMFoOshf8Csx6eY7nnv9G",
+          "title": "バイバイレイニー",
+          "track": 5,
+          "duration": 213
+        },
+        {
+          "id": "lwM1dF5biHXJyhefL6XDVr",
+          "title": "自分勝手Dazzling",
+          "track": 6,
+          "duration": 219
+        },
+        {
+          "id": "UkWhk1VkmdZUXmCRotRWDz",
+          "title": "Bluerose",
+          "track": 7,
+          "duration": 224
+        },
+        {
+          "id": "VQATBz7lBUQF1k4OO7GLe5",
+          "title": "comet",
+          "track": 8,
+          "duration": 244
+        },
+        {
+          "id": "IjdGm2htf6HXoVVyrvzVDP",
+          "title": "Andromeda",
+          "track": 9,
+          "duration": 294
+        },
+        {
+          "id": "oegLV0TMnq10ikgpUYGFXt",
+          "title": "Je t’aime",
+          "track": 10,
+          "duration": 201
+        },
+        {
+          "id": "77BUKBmpbSDrXkAiI9rcE0",
+          "title": "Starry Jet",
+          "track": 11,
+          "duration": 250
+        },
+        {
+          "id": "O3QqpaJOUL6hrtivlP0Eiq",
+          "title": "駆けろ",
+          "track": 12,
+          "duration": 232
+        }
+      ]
+    },
+    {
+      "id": "00HOOdUOluF5wsl5hfYVaI",
+      "name": "月に向かって撃て",
+      "artist": "星街すいせい",
+      "artistId": "7wFTRm8e9oyqR01et3oHjr",
+      "year": 2026,
+      "genre": null,
+      "songCount": 5,
+      "duration": 946,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/00HOOdUOluF5wsl5hfYVaI.jpg",
+      "tracks": [
+        {
+          "id": "KaHDvnNd4U121yN6EQ66PE",
+          "title": "月に向かって撃て",
+          "track": 1,
+          "duration": 193
+        },
+        {
+          "id": "dfUESIxyFbBmUx8nOb2oKs",
+          "title": "彗星 (Nor ver.)",
+          "track": 2,
+          "duration": 230
+        },
+        {
+          "id": "ND1sjdeFOu64oDYKWZACOR",
+          "title": "comet (TAKU INOUE remix)",
+          "track": 3,
+          "duration": 240
+        },
+        {
+          "id": "o4FmNBbCyv6B9Y0KLQQQGL",
+          "title": "月に向かって撃て (TVアニメ ver.)",
+          "track": 4,
+          "duration": 89
+        },
+        {
+          "id": "TcZn90G4klBo5CYssYKKlL",
+          "title": "月に向かって撃て (instrumental)",
+          "track": 5,
+          "duration": 193
+        }
+      ]
+    },
+    {
+      "id": "3fUh7E7ruoCDbeSrhUleQg",
+      "name": "Cloud9",
+      "artist": "棗いつき",
+      "artistId": "2FK1fqmnBYcpLhaLTdhN4c",
+      "year": 2025,
+      "genre": null,
+      "songCount": 12,
+      "duration": 2417,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3fUh7E7ruoCDbeSrhUleQg.jpg",
+      "tracks": [
+        {
+          "id": "gXyPuL9veoIk5LlFNqaLvi",
+          "title": "Rage Against The Euphoria",
+          "track": 1,
+          "duration": 184
+        },
+        {
+          "id": "tb6CmEfKO9HXmF2CIB7znm",
+          "title": "フロートガール",
+          "track": 2,
+          "duration": 168
+        },
+        {
+          "id": "Bt9D8qA4UIRbQakQ2dyMvz",
+          "title": "思春期は延長戦",
+          "track": 3,
+          "duration": 208
+        },
+        {
+          "id": "ruUAQzY72mjhmoItM8dxBA",
+          "title": "SNOW DOME",
+          "track": 4,
+          "duration": 184
+        },
+        {
+          "id": "n86rfMmeAM7rgpik6a5ayk",
+          "title": "9i",
+          "track": 5,
+          "duration": 201
+        },
+        {
+          "id": "0V3EVMjx8gTSEqh7KrkP16",
+          "title": "Stay Alive",
+          "track": 6,
+          "duration": 263
+        },
+        {
+          "id": "yPaFDgLCmzXkBHvC95LaTj",
+          "title": "Rage Against The Euphoria(instrumental)",
+          "track": 7,
+          "duration": 184
+        },
+        {
+          "id": "n3kM9SsiLtF3eCGCKoOFgU",
+          "title": "フロートガール(instrumental)",
+          "track": 8,
+          "duration": 168
+        },
+        {
+          "id": "vjnor34633L21GYsGqmrIv",
+          "title": "思春期は延長戦(instrumental)",
+          "track": 9,
+          "duration": 208
+        },
+        {
+          "id": "7vB3s8IffKI38SRcmp9NNR",
+          "title": "SNOW DOME(instrumental)",
+          "track": 10,
+          "duration": 182
+        },
+        {
+          "id": "T7j46uNOMZtcliOJPDQxo9",
+          "title": "9i(instrumental)",
+          "track": 11,
+          "duration": 201
+        },
+        {
+          "id": "iAqeHSMHxW3JyGRHkJTSEj",
+          "title": "Stay Alive(instrumental)",
+          "track": 12,
+          "duration": 262
+        }
+      ]
+    },
+    {
+      "id": "2IhB2s7mqzpiSELIsrlhHn",
+      "name": "ENIGMA",
+      "artist": "棗いつき",
+      "artistId": "2FK1fqmnBYcpLhaLTdhN4c",
+      "year": 2024,
+      "genre": "アニメ",
+      "songCount": 6,
+      "duration": 1535,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/2IhB2s7mqzpiSELIsrlhHn.jpg",
+      "tracks": [
+        {
+          "id": "7e9YEtcKzkIXxgHraSaByX",
+          "title": "Kyokousei Prologue",
+          "track": 1,
+          "duration": 254
+        },
+        {
+          "id": "Wxyb1KJ8tbsxX0lMsweQ4R",
+          "title": "Hajimari wa Destiny",
+          "track": 2,
+          "duration": 251
+        },
+        {
+          "id": "Bc4wdcF1ychzCbQcX54gh3",
+          "title": "Ai no Telomere",
+          "track": 3,
+          "duration": 228
+        },
+        {
+          "id": "vwyqQYQNnrjz2grkYYql03",
+          "title": "Uzumaki",
+          "track": 4,
+          "duration": 242
+        },
+        {
+          "id": "B8Q67q1mgeJHBrYIBmNke3",
+          "title": "Chaotic Birth",
+          "track": 5,
+          "duration": 220
+        },
+        {
+          "id": "BKNV9W549VXNcltYJwUjyl",
+          "title": "Shiawase no Mahou",
+          "track": 6,
+          "duration": 337
+        }
+      ]
+    },
+    {
+      "id": "3iLx8h2qDQ7wRiU5oHn2R0",
+      "name": "狐雨",
+      "artist": "棗いつき",
+      "artistId": "2FK1fqmnBYcpLhaLTdhN4c",
+      "year": 2026,
+      "genre": null,
+      "songCount": 4,
+      "duration": 827,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3iLx8h2qDQ7wRiU5oHn2R0.jpg",
+      "tracks": [
+        {
+          "id": "r6GUGxf4yj413zEXDRu845",
+          "title": "狐雨",
+          "track": 1,
+          "duration": 209
+        },
+        {
+          "id": "OAoTAVOqkH55KqbQ8jn76A",
+          "title": "ミッドナイト・スクワッド",
+          "track": 2,
+          "duration": 204
+        },
+        {
+          "id": "v9alGGZyzLdvsqURXr4D2W",
+          "title": "狐雨 - instrumental",
+          "track": 3,
+          "duration": 209
+        },
+        {
+          "id": "OLaHONskDW7OL5pj8N73BY",
+          "title": "ミッドナイト・スクワッド - instrumental",
+          "track": 4,
+          "duration": 204
+        }
+      ]
+    },
+    {
+      "id": "4RZF7TZG9s2yqsbWWUE8en",
+      "name": "シンクロ",
+      "artist": "森羅万象",
+      "artistId": "5nPuRMPvIGJJIwsZ3BcAkx",
+      "year": 2017,
+      "genre": "Game",
+      "songCount": 10,
+      "duration": 2614,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/4RZF7TZG9s2yqsbWWUE8en.jpg",
+      "tracks": [
+        {
+          "id": "vFjW4pI4bYP77zxl1Pa20t",
+          "title": "有頂天ドリーマーズ",
+          "track": 1,
+          "duration": 254
+        },
+        {
+          "id": "ioh7cruuoolPspuIMpQELS",
+          "title": "エピック·リカバリー",
+          "track": 2,
+          "duration": 244
+        },
+        {
+          "id": "hfpBNwOJmBg9t1Rq8KAO2H",
+          "title": "○×△□",
+          "track": 3,
+          "duration": 234
+        },
+        {
+          "id": "tFxtTvMLFOHkkha8tfEQ61",
+          "title": "Dear...",
+          "track": 4,
+          "duration": 265
+        },
+        {
+          "id": "tZTyMhQb1bBcUVzmtwmMKS",
+          "title": "signal flare",
+          "track": 5,
+          "duration": 269
+        },
+        {
+          "id": "xCBn65faRaDnjXpAOv5a8m",
+          "title": "銀河超夢重力エトワール",
+          "track": 6,
+          "duration": 235
+        },
+        {
+          "id": "E8q9S6i6NX39oclGEjpvae",
+          "title": "ラピッド★プリンセス",
+          "track": 7,
+          "duration": 268
+        },
+        {
+          "id": "EAOcFAS1GgeoqDpyzhyFmX",
+          "title": "純情アルメリア",
+          "track": 8,
+          "duration": 275
+        },
+        {
+          "id": "KkvfpY0avbjibufSkWBLti",
+          "title": "ヨスズメロディハート",
+          "track": 9,
+          "duration": 299
+        },
+        {
+          "id": "MwpMbPd98ayVrG84d6NrGD",
+          "title": "これからの「　」",
+          "track": 10,
+          "duration": 267
+        }
+      ]
+    },
+    {
+      "id": "1uGH2ZjluoMbqXRoImySQo",
+      "name": "結束バンド",
+      "artist": "結束バンド",
+      "artistId": "761WIBBzoHw5YeOyEu5Za4",
+      "year": 2022,
+      "genre": "Soundtrack",
+      "songCount": 28,
+      "duration": 6497,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1uGH2ZjluoMbqXRoImySQo.jpg",
+      "tracks": [
+        {
+          "id": "HKYpfqPevB7665dB7kSjgm",
+          "title": "青春コンプレックス",
+          "track": 1,
+          "duration": 203
+        },
+        {
+          "id": "wgKInWU5qOmLoQvwzlBwXt",
+          "title": "青春コンプレックス",
+          "track": 1,
+          "duration": 203
+        },
+        {
+          "id": "ypOBmUxGGkrZSogrk5Hrew",
+          "title": "ひとりぼっち東京",
+          "track": 2,
+          "duration": 232
+        },
+        {
+          "id": "8x8AO6x6qLUmG4RDWrrqfr",
+          "title": "ひとりぼっち東京",
+          "track": 2,
+          "duration": 232
+        },
+        {
+          "id": "lhQOLyAIhHz8jUesfVK3VJ",
+          "title": "Distortion!!",
+          "track": 3,
+          "duration": 203
+        },
+        {
+          "id": "M4SojvLMWbzsSm09lMpkdz",
+          "title": "Distortion!!",
+          "track": 3,
+          "duration": 203
+        },
+        {
+          "id": "1a8cURoAehKIrPxIAl4adf",
+          "title": "ひみつ基地",
+          "track": 4,
+          "duration": 232
+        },
+        {
+          "id": "wYwCdJzUCkCj3Xwkl7fjTL",
+          "title": "ひみつ基地",
+          "track": 4,
+          "duration": 232
+        },
+        {
+          "id": "nJxzP1mjNOi5kgM9ZkHmrg",
+          "title": "ギターと孤独と蒼い惑星",
+          "track": 5,
+          "duration": 228
+        },
+        {
+          "id": "hFc4fB73z42AqHffej2GGa",
+          "title": "ギターと孤独と蒼い惑星",
+          "track": 5,
+          "duration": 228
+        },
+        {
+          "id": "D7DyUYwvsqKZUfgF2liNy7",
+          "title": "ラブソングが歌えない",
+          "track": 6,
+          "duration": 188
+        },
+        {
+          "id": "yXq8PwGrKgta8qDtuBYrVe",
+          "title": "ラブソングが歌えない",
+          "track": 6,
+          "duration": 188
+        },
+        {
+          "id": "WVhQrbONv33cfv0fhu2KZu",
+          "title": "あのバンド",
+          "track": 7,
+          "duration": 213
+        },
+        {
+          "id": "bP0PcWpbzkpfUnpWgjJ6jy",
+          "title": "あのバンド",
+          "track": 7,
+          "duration": 213
+        },
+        {
+          "id": "BOXQjKUJTv6q3wlnFv5rny",
+          "title": "カラカラ",
+          "track": 8,
+          "duration": 265
+        },
+        {
+          "id": "TjsG7VZH8xH8jQleJjtMDt",
+          "title": "カラカラ",
+          "track": 8,
+          "duration": 265
+        },
+        {
+          "id": "8ZRU5K9Hk3lbH4G1h6uLBK",
+          "title": "小さな海",
+          "track": 9,
+          "duration": 223
+        },
+        {
+          "id": "A86GT76fFjzsaaD5RMfx8v",
+          "title": "小さな海",
+          "track": 9,
+          "duration": 223
+        },
+        {
+          "id": "P36Mls2ec9Mz73Izh6tQh1",
+          "title": "なにが悪い",
+          "track": 10,
+          "duration": 227
+        },
+        {
+          "id": "GXtzSFrWBFUERIx8e3PAwY",
+          "title": "なにが悪い",
+          "track": 10,
+          "duration": 227
+        },
+        {
+          "id": "0sy9Gmux7QKIYLzwyT2vbk",
+          "title": "忘れてやらない",
+          "track": 11,
+          "duration": 223
+        },
+        {
+          "id": "79Yp4IOZjJrqJJLxU5RcdB",
+          "title": "忘れてやらない",
+          "track": 11,
+          "duration": 223
+        },
+        {
+          "id": "FA0rxIX15hCbDFa4BkhwlT",
+          "title": "星座になれたら",
+          "track": 12,
+          "duration": 258
+        },
+        {
+          "id": "DFkRaHGABP3SUg2l7iv1Bj",
+          "title": "星座になれたら",
+          "track": 12,
+          "duration": 258
+        },
+        {
+          "id": "6IxHZjUTWWZh1RdiJXffIt",
+          "title": "フラッシュバッカー",
+          "track": 13,
+          "duration": 275
+        },
+        {
+          "id": "g7cR6Zh71uINnKU8Uz5FHp",
+          "title": "フラッシュバッカー",
+          "track": 13,
+          "duration": 275
+        },
+        {
+          "id": "W75f7YLGPqEAn8ahGA71pn",
+          "title": "転がる岩、君に朝が降る",
+          "track": 14,
+          "duration": 271
+        },
+        {
+          "id": "RN2W8ZoBjzHLAjDFDWXkI4",
+          "title": "転がる岩、君に朝が降る",
+          "track": 14,
+          "duration": 271
+        }
+      ]
+    },
+    {
+      "id": "7qsMwO1HXo4E77EMpOrtup",
+      "name": "真相",
+      "artist": "藍月なくる",
+      "artistId": "6SzZ8BSGdslpxeBqKOgK8I",
+      "year": 2025,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2428,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/7qsMwO1HXo4E77EMpOrtup.jpg",
+      "tracks": [
+        {
+          "id": "vF9k9N74JSIYqGTzrNoyS6",
+          "title": "真相",
+          "track": 1,
+          "duration": 257
+        },
+        {
+          "id": "FhfLH7DZX0nwQCvJ55Qxs3",
+          "title": "ご注文はえいえんに",
+          "track": 2,
+          "duration": 241
+        },
+        {
+          "id": "y7rsGgYzmgVDgcchDcJaSl",
+          "title": "Bubble Bubble Boy",
+          "track": 3,
+          "duration": 144
+        },
+        {
+          "id": "WGvuBTqcbm098USSR56CqL",
+          "title": "エモーション・キャプチャー",
+          "track": 4,
+          "duration": 231
+        },
+        {
+          "id": "X1M6N2S5DrHmsq3R0HNYjE",
+          "title": "愛の残滓",
+          "track": 5,
+          "duration": 218
+        },
+        {
+          "id": "5z8M90sIeMpCLPopgEJTdk",
+          "title": "Mirroring Mirage",
+          "track": 6,
+          "duration": 215
+        },
+        {
+          "id": "dIjJkoaKKVS9gVVXv13Cy6",
+          "title": "乖離光 (2025 arrange ver)",
+          "track": 7,
+          "duration": 281
+        },
+        {
+          "id": "aGeM0BrZf1jtrMM07f3mqE",
+          "title": "永劫不可逆",
+          "track": 8,
+          "duration": 259
+        },
+        {
+          "id": "kRnLOUSCeN9VV2Hbco8KlN",
+          "title": "Cirsium",
+          "track": 9,
+          "duration": 300
+        },
+        {
+          "id": "THGT3l9UTiJh1QNPBlmuJC",
+          "title": "クラリムステラ",
+          "track": 10,
+          "duration": 277
+        }
+      ]
+    },
+    {
+      "id": "1FcQTEmeC7YC4Fx6OHpULm",
+      "name": "soleil de minuit",
+      "artist": "藍月なくる × Sennzai",
+      "artistId": "7cLmMtDqdomkHhPpQnSExk",
+      "year": 2017,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2719,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/1FcQTEmeC7YC4Fx6OHpULm.jpg",
+      "tracks": [
+        {
+          "id": "R9mmPDNlM8JyYCyVgTCekk",
+          "title": "soleil de minuit",
+          "track": 1,
+          "duration": 274
+        },
+        {
+          "id": "NEkZJPTdyeZHzRm8eG16W2",
+          "title": "乖離光",
+          "track": 2,
+          "duration": 260
+        },
+        {
+          "id": "BFuDeT1kVujuWZSN38m1HM",
+          "title": "Deep End",
+          "track": 3,
+          "duration": 247
+        },
+        {
+          "id": "gSB0WNmRpJxqmR5kJoHLrb",
+          "title": "Rare Checkmate",
+          "track": 4,
+          "duration": 287
+        },
+        {
+          "id": "BK9XgkB0dqbne2srEYabaj",
+          "title": "緋の青 (藍月なくる Cover Ver.)",
+          "track": 5,
+          "duration": 299
+        },
+        {
+          "id": "m6BLyL819DY5VgHhv0o5en",
+          "title": "コトノハ ─ (Sennzai Cover Ver.)",
+          "track": 6,
+          "duration": 280
+        },
+        {
+          "id": "wdnHkKRD9Wa3CLGByBsORZ",
+          "title": "soleil de minuit (Instrumental Ver.)",
+          "track": 7,
+          "duration": 274
+        },
+        {
+          "id": "LIz8GQyA4ajlQ7gH5jjfdx",
+          "title": "乖離光 (Instrumental Ver.)",
+          "track": 8,
+          "duration": 259
+        },
+        {
+          "id": "lRR3JMSWW1rqxvXKjvopuh",
+          "title": "Deep End (Instrumental Ver.)",
+          "track": 9,
+          "duration": 247
+        },
+        {
+          "id": "oVEMTNoUrB0aZWXCiUZJLV",
+          "title": "Rare Checkmate (Instrumental Ver.)",
+          "track": 10,
+          "duration": 287
+        }
+      ]
+    },
+    {
+      "id": "00wcNwPLLeNhC80w5fB2nO",
+      "name": "Prisma",
+      "artist": "Various Artists",
+      "artistId": "63sqASlAfjbGMuLP4JhnZU",
+      "year": 2022,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2010,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/00wcNwPLLeNhC80w5fB2nO.jpg",
+      "tracks": [
+        {
+          "id": "NOrjuclaXDxCAlWZutHbnR",
+          "title": "Blue Lemonade",
+          "track": 1,
+          "duration": 205
+        },
+        {
+          "id": "GcQ5Gi5i6l5kWZcpOWAqIC",
+          "title": "All My Friends",
+          "track": 2,
+          "duration": 230
+        },
+        {
+          "id": "Ul5a7t11IbqGjkRMiFcD8h",
+          "title": "By My Side",
+          "track": 3,
+          "duration": 200
+        },
+        {
+          "id": "dLSx2xMPZ0mbEJ4m1hi3gT",
+          "title": "Meteor",
+          "track": 4,
+          "duration": 188
+        },
+        {
+          "id": "bOAfirUrP01e6QV5fIO9vZ",
+          "title": "Why Can't You Let Me Be",
+          "track": 5,
+          "duration": 226
+        },
+        {
+          "id": "Tn2vmcWfUsoxHamWiFv4xv",
+          "title": "Coldhearted",
+          "track": 6,
+          "duration": 221
+        },
+        {
+          "id": "ZDF3fjzyxpeK5RYx9u6ekO",
+          "title": "To My Dearest Friend",
+          "track": 7,
+          "duration": 185
+        },
+        {
+          "id": "W13Y9HH2H09pEPSllkAI0t",
+          "title": "Faith",
+          "track": 8,
+          "duration": 156
+        },
+        {
+          "id": "R5m7oZElfysxO9a7fov0zW",
+          "title": "Never Let Go",
+          "track": 9,
+          "duration": 211
+        },
+        {
+          "id": "jhpeAvTNuYt6rc9jEiKcQN",
+          "title": "Temptation",
+          "track": 10,
+          "duration": 184
+        }
+      ]
+    }
+  ],
+  "stream": {
+    "user": "guest",
+    "token": "6a929b083ed732af4798e08e1acbb4d9",
+    "salt": "2ow03nlbre",
+    "client": "silentcage-blog"
+  }
+}

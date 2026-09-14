@@ -27,7 +27,11 @@ const searchList = sortedPosts.map(({ data, id }) => ({
 
 <Layout title={`搜索 | ${SITE.title}`}>
   <Header activeNav="search" />
-  <Main pageTitle="搜寻" pageDesc="在我写下的字句里，找到你想要的内容。">
+  <Main
+    pageTitle="搜寻"
+    pageDesc="在我写下的字句里，找到你想要的内容。"
+    icon="search"
+  >
     <SearchBar client:load searchJson={JSON.stringify(searchList)} />
   </Main>
   <Footer />

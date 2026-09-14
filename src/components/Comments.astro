@@ -1,0 +1,171 @@
+---
+import { COMMENTS } from "@config";
+
+/**
+ * 文章底部评论区（Waline）。
+ *
+ * 只在 COMMENTS.provider === "waline" 且填了服务端地址时才渲染 —— 没配置就整块消失，
+ * 不会在页面里留下一个空标题或"加载失败"。
+ *
+ * 不引入 npm 依赖：Waline 的 JS / CSS 都从 CDN 按需拉取，而且滚动到评论区附近
+ * 才开始下载（首屏不为一段一年也用不到几次的组件多付 180KB）。
+ */
+const enabled =
+  COMMENTS.provider === "waline" && COMMENTS.waline.server.trim() !== "";
+
+const { server, lang, pageview, emoji, requiredMeta } = COMMENTS.waline;
+
+const CDN = "https://cdn.jsdelivr.net/npm/@waline/client@3.8.0/dist";
+---
+
+{
+  enabled && (
+    <>
+      <link rel="stylesheet" href={`${CDN}/waline.css`} />
+      <section
+        class="comments"
+        data-comments
+        data-server={server}
+        data-lang={lang}
+        data-pageview={String(pageview)}
+        data-emoji={emoji.join(",")}
+        data-required-meta={requiredMeta.join(",")}
+      >
+        <h2 class="comments-title">评论</h2>
+        <div id="waline" class="comments-body" />
+        <noscript>
+          <p class="comments-fallback">
+            评论区需要 JavaScript，打开后就能看到留言。
+          </p>
+        </noscript>
+      </section>
+    </>
+  )
+}
+
+<script is:inline data-astro-rerun>
+  (() => {
+    const section = document.querySelector("[data-comments]");
+    if (!section) return;
+
+    const mount = section.querySelector("#waline");
+    const serverURL = section.dataset.server;
+    if (!mount || !serverURL) return;
+
+    // 站内跳转时上一个实例还挂在 window 上，先销毁，避免评论框叠两份
+    if (window.__walineCleanup) {
+      window.__walineCleanup();
+      window.__walineCleanup = undefined;
+    }
+
+    const CDN = "https://cdn.jsdelivr.net/npm/@waline/client@3.8.0/dist";
+    let started = false;
+
+    const start = async () => {
+      if (started) return;
+      started = true;
+
+      try {
+        const { init } = await import(CDN + "/waline.js?v=3.8.0");
+
+        const emoji = (section.dataset.emoji || "")
+          .split(",")
+          .filter(Boolean)
+          .map(
+            preset =>
+              "https://cdn.jsdelivr.net/npm/@waline/emojis@1.2.0/" + preset
+          );
+
+        const instance = init({
+          el: mount,
+          // 去掉结尾斜杠：/posts/foo/ 和 /posts/foo 指向同一条评论
+          path: window.location.pathname.replace(/\/+$/, "") || "/",
+          serverURL,
+          lang: section.dataset.lang || "zh-CN",
+          pageview: section.dataset.pageview === "true",
+          search: false,
+          imageUploader: false,
+          // 不用注册登录，填昵称 + 邮箱就能留言
+          login: "disable",
+          requiredMeta: (section.dataset.requiredMeta || "nick")
+            .split(",")
+            .filter(Boolean),
+          ...(emoji.length ? { emoji } : {}),
+        });
+
+        window.__walineCleanup = () => instance?.destroy();
+      } catch {
+        started = false;
+        mount.innerHTML =
+          '<p class="comments-fallback">评论组件加载失败，请刷新页面重试。</p>';
+      }
+    };
+
+    // 距评论区还有一屏时再加载
+    if (!("IntersectionObserver" in window)) {
+      start();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.disconnect();
+          start();
+        }
+      },
+      { rootMargin: "420px 0px" }
+    );
+
+    observer.observe(section);
+  })();
+</script>
+
+<style>
+  @reference "../styles/base.css";
+
+  .comments {
+    @apply mt-12 border-t pt-8;
+    border-color: rgb(var(--palette-border));
+  }
+  .comments-title {
+    @apply mb-5 text-lg font-semibold tracking-wider;
+    color: rgb(var(--palette-text));
+  }
+  .comments-fallback {
+    margin: 0;
+    font-size: 0.875rem;
+    color: rgb(var(--palette-muted-text));
+  }
+
+  /*
+    Waline 自带样式只提供浅色一套（官方 CSS 里没有任何 dark 规则），
+    所以把它的变量映射到站点色板：--palette-* 本身会随主题变，
+    夜间模式无需再写一套覆盖规则。
+    CSS 变量会继承到 Waline 生成的 DOM 里，所以写在容器上就够。
+  */
+  .comments-body {
+    --waline-font-size: 0.9375rem;
+    --waline-white: rgb(var(--palette-fill));
+    --waline-light-grey: rgb(var(--palette-muted-text));
+    --waline-dark-grey: rgb(var(--palette-text));
+    --waline-theme-color: rgb(var(--palette-accent));
+    --waline-active-color: rgb(var(--palette-accent));
+    --waline-color: rgb(var(--palette-text));
+    --waline-bg-color: rgb(var(--palette-fill));
+    --waline-bg-color-light: rgb(var(--palette-muted));
+    --waline-bg-color-hover: rgb(var(--palette-muted));
+    --waline-border-color: rgb(var(--palette-border));
+    --waline-disable-bg-color: rgb(var(--palette-muted));
+    --waline-disable-color: rgb(var(--palette-muted-text));
+    --waline-info-bg-color: rgb(var(--palette-muted));
+    --waline-info-color: rgb(var(--palette-muted-text));
+    --waline-badge-color: rgb(var(--palette-border));
+    --waline-badge-font-size: 0.75em;
+    --waline-avatar-size: 2.75rem;
+    --waline-border: 1px solid var(--waline-border-color);
+    --waline-avatar-radius: 50%;
+    --waline-box-shadow: none;
+  }
+</style>

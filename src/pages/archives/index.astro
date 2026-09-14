@@ -48,7 +48,7 @@ function getChineseNumber(num: number): string {
 
 <Layout title={`归档 | ${SITE.title}`}>
   <Header activeNav="archives" />
-  <Main pageTitle="🗄️归档" pageDesc="所有已归档文章">
+  <Main pageTitle="归档" pageDesc="所有已归档文章" icon="archive">
     {
       Object.entries(
         getPostsByGroupCondition(posts, post =>
@@ -57,9 +57,15 @@ function getChineseNumber(num: number): string {
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
         .map(([year, yearGroup]) => (
-          <div>
-            <span class="text-2xl font-bold">{year}</span>
-            <sup class="text-sm">{yearGroup.length}</sup>
+          <div class="year-group">
+            <div class="year-head">
+              {/* 装饰用的巨大年份水印，压在标题下面 */}
+              <span class="year-ghost" aria-hidden="true">
+                {year}
+              </span>
+              <span class="year-label">{year}</span>
+              <sup class="year-count">{yearGroup.length}</sup>
+            </div>
             {Object.entries(
               getPostsByGroupCondition(
                 yearGroup,
@@ -89,3 +95,40 @@ function getChineseNumber(num: number): string {
 
   <Footer />
 </Layout>
+
+<style>
+  @reference "../../styles/base.css";
+
+  /*
+    年份水印：给标题单独留出一条高带，让放大的年份整个待在带内，
+    这样它只和「2026」这个标题叠在一起，不会糊到下面的月份和文章列表上。
+    带高 2.75rem(≈49px) + 标题行高，水印 4.5rem(≈72px)，刚好收在带里。
+  */
+  .year-head {
+    position: relative;
+    padding-top: 2.75rem;
+  }
+  .year-ghost {
+    position: absolute;
+    top: 0;
+    left: -0.05em;
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: rgb(var(--palette-text));
+    opacity: 0.06;
+    pointer-events: none;
+    user-select: none;
+  }
+  .year-label {
+    position: relative;
+    z-index: 1;
+    @apply text-2xl font-bold;
+  }
+  .year-count {
+    position: relative;
+    z-index: 1;
+    @apply text-sm;
+  }
+</style>

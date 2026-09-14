@@ -7,6 +7,7 @@ import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
+import BlogStats from "@components/BlogStats.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
 
@@ -56,16 +57,21 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
     <Hr />
 
+    <section id="stats">
+      <BlogStats blogStartDate={new Date("2020-11-30")} />
+    </section>
+
     {
       featuredPosts.length > 0 && (
         <>
           <section id="featured">
             <h2>置顶文章</h2>
             <ul>
-              {featuredPosts.map(({ data, id }) => (
+              {featuredPosts.map(post => (
                 <Card
-                  href={`/posts/${id}/`}
-                  frontmatter={data}
+                  href={`/posts/${post.id}/`}
+                  frontmatter={post.data}
+                  body={post.body}
                   secHeading={false}
                 />
               ))}
@@ -82,11 +88,12 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           <h2>最近文章</h2>
           <ul>
             {recentPosts.map(
-              ({ data, id }, index) =>
+              (post, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/posts/${id}/`}
-                    frontmatter={data}
+                    href={`/posts/${post.id}/`}
+                    frontmatter={post.data}
+                    body={post.body}
                     secHeading={false}
                   />
                 )
@@ -120,7 +127,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   @reference "../styles/base.css";
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-6 pt-8;
+    @apply pt-8 pb-6;
   }
   #hero h1 {
     @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
@@ -129,7 +136,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     @apply mb-6;
   }
   #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
+    @apply fill-skin-accent mb-2 h-6 w-6 scale-110 sm:mb-3 sm:scale-125;
   }
   #hero p {
     @apply my-2;
@@ -138,13 +145,16 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;
   }
   .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
+    @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
   }
 
   /* ===== Featured & Recent Posts Sections ===== */
+  #stats {
+    @apply pt-10 pb-2;
+  }
   #featured,
   #recent-posts {
-    @apply pb-6 pt-12;
+    @apply pt-12 pb-6;
   }
   #featured h2,
   #recent-posts h2 {

@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import { countWords } from "@utils/getReadingTime";
+import getSortedPosts from "@utils/getSortedPosts";
+import postFilter from "@utils/postFilter";
+import StatsStrip from "@components/StatsStrip.astro";
+
+/**
+ * 首页统计卡：在线天数 / 最后更新 / 总字数 / 文章数。
+ * 全部在构建时算好，运行时零开销。
+ */
+interface Props {
+  /** 站点开始运营的日期 */
+  blogStartDate?: Date;
+}
+
+const { blogStartDate = new Date("2020-11-30") } = Astro.props;
+
+const posts = (await getCollection("blog")).filter(postFilter);
+const sortedPosts = getSortedPosts(posts);
+
+const daysOnline = Math.max(
+  0,
+  Math.floor((Date.now() - blogStartDate.getTime()) / 86_400_000)
+);
+
+const latest = sortedPosts[0];
+const lastUpdated = latest
+  ? new Date(latest.data.modDatetime ?? latest.data.pubDatetime)
+  : null;
+
+const totalWords = posts.reduce(
+  (sum, post) => sum + countWords(post.body ?? ""),
+  0
+);
+
+const formatNumber = (value: number) => {
+  if (value >= 10_000) return `${Math.round(value / 1_000) / 10}w`;
+  if (value >= 1_000) return `${Math.round(value / 100) / 10}k`;
+  return value.toString();
+};
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const stats = [
+  { value: daysOnline.toString(), label: "已运营天数" },
+  {
+    value: lastUpdated ? formatDate(lastUpdated) : "—",
+    label: "最后更新",
+  },
+  { value: formatNumber(totalWords), label: "总字数" },
+  { value: posts.length.toString(), label: "篇文章" },
+];
+---
+
+<StatsStrip items={stats} />

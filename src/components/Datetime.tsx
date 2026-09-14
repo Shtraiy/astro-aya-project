@@ -14,6 +14,8 @@ interface EditPostProps {
 interface Props extends DatetimesProps, EditPostProps {
   size?: "sm" | "lg";
   className?: string;
+  /** 只显示日期，不显示具体时间（列表卡片用） */
+  dateOnly?: boolean;
 }
 
 export default function Datetime({
@@ -23,6 +25,7 @@ export default function Datetime({
   className = "",
   editPost,
   postId,
+  dateOnly = false,
 }: Props) {
   return (
     <div
@@ -32,7 +35,7 @@ export default function Datetime({
         xmlns="http://www.w3.org/2000/svg"
         className={`${
           size === "sm" ? "scale-90" : "scale-100"
-        } inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base`}
+        } fill-skin-base inline-block h-6 w-6 min-w-[1.375rem]`}
         aria-hidden="true"
       >
         <path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path>
@@ -49,6 +52,7 @@ export default function Datetime({
         <FormattedDatetime
           pubDatetime={pubDatetime}
           modDatetime={modDatetime}
+          dateOnly={dateOnly}
         />
         {size === "lg" && <EditPost editPost={editPost} postId={postId} />}
       </span>
@@ -56,7 +60,11 @@ export default function Datetime({
   );
 }
 
-const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
+const FormattedDatetime = ({
+  pubDatetime,
+  modDatetime,
+  dateOnly = false,
+}: DatetimesProps & { dateOnly?: boolean }) => {
   const myDatetime = new Date(
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
@@ -75,9 +83,13 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
   return (
     <>
       <time dateTime={myDatetime.toISOString()}>{date}</time>
-      <span aria-hidden="true"> | </span>
-      <span className="sr-only">&nbsp;at&nbsp;</span>
-      <span className="text-nowrap">{time}</span>
+      {!dateOnly && (
+        <>
+          <span aria-hidden="true"> | </span>
+          <span className="sr-only">&nbsp;at&nbsp;</span>
+          <span className="text-nowrap">{time}</span>
+        </>
+      )}
     </>
   );
 };
@@ -104,7 +116,7 @@ const EditPost = ({ editPost, postId }: EditPostProps) => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icons-tabler-outline icon-tabler-edit inline-block !scale-90 fill-skin-base"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-edit fill-skin-base inline-block !scale-90"
             aria-hidden="true"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
