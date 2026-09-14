@@ -1,0 +1,335 @@
+---
+import Icon from "@components/Icon.astro";
+
+/**
+ * 文章底部版权卡：标题 / 原文链接 / 作者 / 日期 / 许可协议，
+ * 外加复制链接、二维码、分享三个动作。
+ *
+ * 二维码库（qrcodejs）不预加载，第一次点「二维码」才去 jsDelivr 取，
+ * 免得每篇文章都为一个小按钮多下 20KB。
+ */
+interface Props {
+  title: string;
+  author: string;
+  pubDatetime: Date;
+  /** 文章的真实地址，默认取当前页面 */
+  url: string;
+  /** 许可协议，默认 CC BY-NC-SA 4.0 */
+  license?: { name: string; href: string };
+}
+
+const {
+  title,
+  author,
+  pubDatetime,
+  url,
+  license = {
+    name: "CC BY-NC-SA 4.0",
+    href: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  },
+} = Astro.props;
+
+const publishedAt = pubDatetime.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const shareText = encodeURIComponent(title);
+const shareUrl = encodeURIComponent(url);
+
+const shares = [
+  {
+    label: "微博",
+    href: `https://service.weibo.com/share/share.php?url=${shareUrl}&title=${shareText}`,
+  },
+  {
+    label: "X",
+    href: `https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}`,
+  },
+];
+---
+
+<aside class="post-copyright" data-copyright data-url={url}>
+  <Icon name="copyright" size={76} class="post-copyright-mark" />
+
+  <div class="post-copyright-head">
+    <span class="post-copyright-title">{title}</span>
+    <span class="post-copyright-url">{url}</span>
+  </div>
+
+  <dl class="post-copyright-meta">
+    <div>
+      <dt>作者</dt>
+      <dd>{author}</dd>
+    </div>
+    <div>
+      <dt>发布于</dt>
+      <dd>{publishedAt}</dd>
+    </div>
+    <div>
+      <dt>许可</dt>
+      <dd>
+        <a href={license.href} target="_blank" rel="noopener noreferrer">
+          {license.name}
+        </a>
+      </dd>
+    </div>
+  </dl>
+
+  <div class="post-copyright-actions">
+    <button type="button" class="copyright-action" data-copy-link>
+      <Icon name="link" size={16} />
+      <span>复制链接</span>
+      <span class="copyright-flag">已复制</span>
+    </button>
+
+    <button
+      type="button"
+      class="copyright-action"
+      data-qrcode-toggle
+      aria-expanded="false"
+    >
+      <Icon name="qrcode" size={16} />
+      <span>二维码</span>
+    </button>
+
+    {
+      shares.map(share => (
+        <a
+          class="copyright-action"
+          href={share.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="share" size={16} />
+          <span>{share.label}</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <div class="post-qrcode" data-qrcode hidden>
+    <p class="post-qrcode-hint">扫码在手机上打开这篇</p>
+    <div class="post-qrcode-box" data-qrcode-box></div>
+  </div>
+</aside>
+
+<script is:inline data-astro-rerun>
+  (() => {
+    const root = document.querySelector("[data-copyright]");
+    if (!root) return;
+
+    const url = root.dataset.url || window.location.href;
+
+    // 复制链接：按钮上原地显示「已复制」
+    const copyButton = root.querySelector("[data-copy-link]");
+    if (copyButton && copyButton.dataset.bound !== "true") {
+      copyButton.dataset.bound = "true";
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          return;
+        }
+        copyButton.classList.add("is-copied");
+        setTimeout(() => copyButton.classList.remove("is-copied"), 1400);
+      });
+    }
+
+    // 二维码：第一次展开时才去取 qrcodejs
+    const toggle = root.querySelector("[data-qrcode-toggle]");
+    const panel = root.querySelector("[data-qrcode]");
+    const box = root.querySelector("[data-qrcode-box]");
+
+    const loadQrcode = () =>
+      new Promise((resolve, reject) => {
+        if (window.QRCode) return resolve();
+        const script = document.createElement("script");
+        script.src =
+          "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("qrcode load failed"));
+        document.head.append(script);
+      });
+
+    toggle?.addEventListener("click", async () => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      panel.hidden = expanded;
+      if (expanded || !box || box.childElementCount > 0) return;
+
+      try {
+        await loadQrcode();
+        new window.QRCode(box, { text: url, width: 132, height: 132 });
+      } catch {
+        box.textContent = url;
+      }
+    });
+  })();
+</script>
+
+<style>
+  @reference "../styles/base.css";
+
+  .post-copyright {
+    position: relative;
+    margin-top: 2.5rem;
+    overflow: hidden;
+    padding: 1rem 1.125rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 1rem;
+  }
+  /* 右上角一枚放大的版权符号水印 */
+  .post-copyright-mark {
+    position: absolute;
+    top: 0.75rem;
+    inset-inline-end: 1rem;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  .post-copyright-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-bottom: 0.875rem;
+    /* 给水印留出位置，标题太长也不会压上去 */
+    padding-inline-end: 4rem;
+  }
+  .post-copyright-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: rgb(var(--palette-text));
+  }
+  .post-copyright-url {
+    font-family: "IBM Plex Mono", Consolas, monospace;
+    font-size: 0.75rem;
+    color: rgb(var(--palette-muted-text));
+    overflow-wrap: anywhere;
+  }
+  .post-copyright-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 2rem;
+    margin: 0 0 1rem;
+  }
+  .post-copyright-meta > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .post-copyright-meta dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: rgb(var(--palette-muted-text));
+  }
+  .post-copyright-meta dd {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(var(--palette-text));
+  }
+  .post-copyright-meta a {
+    color: rgb(var(--palette-text));
+    text-decoration: underline;
+    text-decoration-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted-text)) 60%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+  }
+  .post-copyright-meta a:hover {
+    text-decoration: none;
+    color: rgb(var(--palette-accent));
+  }
+
+  .post-copyright-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .copyright-action {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.75rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 999px;
+    background: none;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: rgb(var(--palette-muted-text));
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+  .copyright-action:hover {
+    color: rgb(var(--palette-accent));
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 45%,
+      transparent
+    );
+  }
+  .copyright-action svg {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+  /* 「已复制」小标：复制成功后从按钮里浮出来 */
+  .copyright-flag {
+    position: absolute;
+    inset-inline-start: 50%;
+    bottom: calc(100% + 0.375rem);
+    padding: 0.125rem 0.4375rem;
+    border-radius: 0.375rem;
+    font-size: 0.6875rem;
+    color: rgb(var(--palette-fill));
+    background-color: rgb(var(--palette-accent));
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.25rem);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    pointer-events: none;
+  }
+  .copyright-action.is-copied .copyright-flag {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .post-qrcode {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+  }
+  .post-qrcode[hidden] {
+    display: none;
+  }
+  .post-qrcode-hint {
+    margin: 0;
+    font-size: 0.75rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .post-qrcode-box {
+    display: grid;
+    place-items: center;
+    width: 9.25rem;
+    min-height: 9.25rem;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    background-color: #fff;
+    overflow-wrap: anywhere;
+    font-size: 0.6875rem;
+    color: #333;
+  }
+  .post-qrcode-box img {
+    display: block;
+  }
+</style>

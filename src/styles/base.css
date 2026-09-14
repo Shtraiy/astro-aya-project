@@ -160,8 +160,10 @@
     正文链接的 hover 反白：平时是虚线强调的普通链接，指上去整段变成
     「深底浅字」的小色块（参考主题的做法）。padding/margin 相抵，不产生位移；
     显式排除标题锚点（.heading-link），否则标题右侧的 # 也会被反白。
+    另外排除 .card-link —— 那是「整块卡片」级别的链接（比如关于页的
+    学校卡片），反白会把整张卡的底色刷成深色，看着像坏掉了。
   */
-  .prose a:not(.heading-link):hover {
+  .prose a:not(.heading-link):not(.card-link):hover {
     color: rgb(var(--palette-fill)) !important;
     background-color: rgb(var(--palette-text));
     text-decoration: none;
@@ -636,4 +638,222 @@ html[data-theme="dark"] .prose img:hover {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+/* ===== 文章里可嵌入的块 =====
+   Steps / Tabs / Collapse / Spoiler。
+   正文是 .md，写不了组件，所以这几块都用「原生 HTML + 这里的全局样式」实现，
+   不引入任何依赖、也不需要 MDX。作者侧写法见 README「文章里可嵌入的块」。
+
+   布局用到的圆点、竖线都跟 --palette-* 走，深浅色自动跟随。
+*/
+
+/* --- Steps：外层包一个 class="steps"，里面照常写有序列表 --- */
+.steps > ol {
+  --step-bullet: 1.75rem;
+  counter-reset: steps-counter var(--steps-start, 0);
+  padding-inline-start: 0;
+  list-style: none;
+}
+.steps > ol > li {
+  counter-increment: steps-counter;
+  position: relative;
+  min-height: calc(var(--step-bullet) + 0.375rem);
+  padding-inline-start: calc(var(--step-bullet) + 1rem);
+  /* 让 li 内部的 margin-bottom 留在 padding box 内，竖线才不会断开 */
+  padding-bottom: 1px;
+}
+.steps > ol > li + li {
+  margin-top: 0;
+}
+/* 序号圆点 */
+.steps > ol > li::before {
+  content: counter(steps-counter);
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  display: grid;
+  width: var(--step-bullet);
+  height: var(--step-bullet);
+  place-items: center;
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgb(var(--palette-text));
+  background-color: rgb(var(--palette-fill));
+}
+/* 连接圆点的竖线 */
+.steps > ol > li::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--step-bullet) + 0.375rem);
+  bottom: 0.375rem;
+  inset-inline-start: calc(var(--step-bullet) / 2);
+  width: 1px;
+  background-color: rgb(var(--palette-border));
+}
+.steps > ol > li:last-child::after {
+  display: none;
+}
+/* 第一行内容跟圆点垂直对齐 */
+.steps > ol > li > :first-child {
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* --- Tabs：<div class="tabs" data-tabs> 里放若干 <div data-tab="标签名"> --- */
+.tabs {
+  margin: 1.5rem 0;
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+/* 没有 JS 时：面板直接堆叠，data-tab 的值当小标题显示 */
+.tabs > [data-tab] {
+  padding: 1rem 1.125rem;
+}
+.tabs > [data-tab] + [data-tab] {
+  border-top: 1px solid rgb(var(--palette-border));
+}
+/* 还没有 JS 接管时，用 data-tab 的值当小标题；JS 生成标签栏后就不再需要 */
+.tabs:not([data-ready="true"]) > [data-tab]::before {
+  content: attr(data-tab);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgb(var(--palette-muted-text));
+}
+.tabs > [data-tab][hidden] {
+  display: none;
+}
+.tabs-tablist {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  padding: 0.375rem;
+  border-bottom: 1px solid rgb(var(--palette-border));
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-muted)) 55%,
+    transparent
+  );
+}
+.tabs-tab {
+  flex: none;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: none;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgb(var(--palette-muted-text));
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.tabs-tab:hover {
+  color: rgb(var(--palette-text));
+}
+.tabs-tab[aria-selected="true"] {
+  color: rgb(var(--palette-accent));
+  border-color: color-mix(in srgb, rgb(var(--palette-accent)) 35%, transparent);
+  background-color: rgb(var(--palette-fill));
+  font-weight: 600;
+}
+
+/* --- Collapse：直接用原生 <details>，无需 JS ---
+   类名叫 .collapsible 而不是 .collapse：Tailwind 自带一个
+   `.collapse { visibility: collapse }` 工具类，同名会把 summary 直接藏掉。 */
+details.collapsible {
+  margin: 1.5rem 0;
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+details.collapsible > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  color: rgb(var(--palette-text));
+  cursor: pointer;
+  list-style: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+details.collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+details.collapsible > summary:hover {
+  color: rgb(var(--palette-accent));
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-muted)) 50%,
+    transparent
+  );
+}
+/* 自己画一个箭头，展开时转 90° */
+details.collapsible > summary::before {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.25s ease;
+}
+details.collapsible[open] > summary::before {
+  transform: rotate(45deg);
+}
+details.collapsible[open] > summary {
+  border-bottom: 1px solid rgb(var(--palette-border));
+}
+details.collapsible > *:not(summary) {
+  padding-inline: 1rem;
+}
+details.collapsible > :last-child {
+  padding-bottom: 0.75rem;
+}
+/* 折叠里的第一个元素不要顶到标题栏 */
+details.collapsible > summary + * {
+  margin-top: 0.875rem;
+}
+
+/* --- Spoiler：默认糊掉，悬停或点击后显形 --- */
+.spoiler {
+  padding-inline: 0.25rem;
+  border-radius: 0.25rem;
+  /* 保留文字颜色、只糊掉：看起来是「被遮住的一段话」而不是一块空白 */
+  color: inherit;
+  background-color: rgb(var(--palette-muted));
+  filter: blur(0.35rem);
+  opacity: 0.75;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease,
+    background-color 0.2s ease;
+  user-select: none;
+}
+.spoiler:hover,
+.spoiler:focus-visible,
+.spoiler.is-revealed {
+  filter: none;
+  opacity: 1;
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-accent)) 12%,
+    transparent
+  );
+  user-select: auto;
 }

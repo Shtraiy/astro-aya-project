@@ -14,8 +14,11 @@
 - 追番（`/anime`）：从 Bangumi 同步的收藏快照，按在看 / 想看 / 看过 / 搁置 / 抛弃分组，
   带评分角标与「看到第几话」进度
 - 文章页：目录、阅读进度条、代码块语言标签与一键复制、图片灯箱
-- 友链页面（`/links`）
+- 文章底部版权卡：作者 / 日期 / CC 协议，复制链接、二维码、微博与 X 分享
+- 文章内的步骤条、标签页、可折叠块、剧透（见下方「文章里可嵌入的块」）
+- 友链页面（`/links`）：卡片随机排序 + 头像渐隐背景 + 本站信息点击复制
 - 关于页：站长信息 + 教育经历卡片
+- 首页「左标签 · 右内容」分区版式（关于我 / 统计 / 置顶 / 最近文章）
 - RSS、sitemap、robots.txt
 - 每篇文章在构建时自动生成 OG 分享图，站点另有默认图 `/og.png`
 - 浅色 / 深色主题，中文排版（霞鹜文楷屏幕版）
@@ -84,6 +87,7 @@ npm run preview
 │   ├── layouts/
 │   ├── data/navidrome.json      # Navidrome 收藏快照（由 sync:navidrome 生成）
 │   ├── data/bangumi.json        # Bangumi 追番快照（由 sync:bangumi 生成）
+│   ├── data/links.ts            # 友链列表与本站信息（友链页数据源）
 │   ├── pages/                   # 路由：posts / tags / archives / collection / anime / links …
 │   ├── styles/base.css          # Tailwind 主题与全局样式
 │   ├── utils/                   # 排序、标签、OG 图片生成等
@@ -204,6 +208,79 @@ canonicalURL: "" # 可选
 ```
 
 专辑放在 `src/content/albums/`，字段为 `title` / `artist` / `theme`（`#RRGGBB` 主题色）/ `cover` / `date` / `tracks[]` / `lyrics[]`。
+
+### 关于页（个人介绍）
+
+个人信息集中在 `src/data/profile.ts`，关于页和**首页的「关于我」分区**共用这一份，
+**改数据就行，页面结构不用动**：
+
+| 常量         | 内容                                                                                            |
+| :----------- | :---------------------------------------------------------------------------------------------- |
+| `PROFILE`    | 头像、网名、副标题、一句话简介、坐标、自我介绍段落（一段一项），以及首页用的一句话 `shortIntro` |
+| `EDUCATION`  | 教育经历（倒序）：学位状态、学校、专业、起止、官网、校徽图片与底色                              |
+| `FAVORITES`  | 「喜欢的东西」：两列表，值可以挂链接                                                            |
+| `ABOUT_SITE` | 「关于本站」：两列表                                                                            |
+
+校徽图片放在 `public/images/education/`（现在是 GUET / GLUT 官方白版徽标裁出来的方形图）。
+名片上的社交标签直接来自 `src/config.ts` 的 `SOCIALS`，加一条链接就多一枚标签。
+
+> 页面样式里那条 `.card-link` 的说明：`base.css` 有一条「正文链接 hover 反白」的规则
+> （`.prose a:hover`），整块卡片级别的链接要加 `class="card-link"` 豁免，
+> 否则鼠标移上去整张卡的底色会被刷成深色。
+
+### 文章里可嵌入的块
+
+正文是 `.md`，写不了 Astro 组件，所以这几块用「原生 HTML + `src/styles/base.css`
+里的全局样式」实现，不依赖 MDX，也不用装任何东西。注意每个外层标签后面要空一行，
+里面的内容才会按 markdown 解析。
+
+**带序号的步骤条**（外层 `class="steps"`，里边照常写有序列表）：
+
+```html
+<div class="steps">
+  1. **准备环境**：确认 Node 版本。 2. **装依赖**：`npm ci`。
+</div>
+```
+
+**标签页**（每个面板用 `data-tab="标签名"`，标签栏由脚本自动生成；没有 JS 时就是顺序排列）：
+
+````html
+<div class="tabs" data-tabs>
+  <div data-tab="Debian / Ubuntu">```bash sudo apt install foo</div>
+</div>
+````
+
+</div>
+
+<div data-tab="Arch Linux">
+
+```bash
+sudo pacman -S foo
+```
+
+</div>
+
+</div>
+```
+
+**可折叠块**（原生 `<details>`，类名必须是 `collapsible`）：
+
+```html
+<details class="collapsible">
+  <summary>展开看完整配置</summary>
+
+  正文照常写 markdown。
+</details>
+```
+
+> 类名不能叫 `collapse` —— Tailwind 自带一个 `.collapse { visibility: collapse }`
+> 的工具类，会把 summary 直接藏掉。
+
+**剧透**（默认糊成一团，悬停或点击显形）：
+
+```html
+结局是<span class="spoiler">主角其实早就把坑填完了</span>，先别急着看。
+```
 
 ## OG 图片
 

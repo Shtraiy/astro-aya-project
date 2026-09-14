@@ -38,8 +38,13 @@ const { items, class: className = "" } = Astro.props;
     border-radius: 0.875rem;
     overflow: hidden;
   }
-  /* 48rem（媒体查询里按 16px 算）才排成四列，再窄「2026年9月13日」会被挤成两行 */
-  @media (min-width: 48rem) {
+  /*
+    用容器查询而不是媒体查询：这条统计条既可能铺满 48rem 的正文栏（收藏 / 追番页），
+    也可能被塞进「左标签 · 右内容」的窄栏里（首页）。按视口宽度判断会在首页把
+    「2026年9月13日」挤成两行，按容器宽度判断才准。
+    容器由 Main.astro 的 #main-content 和 Section.astro 的 .section-row-body 提供。
+  */
+  @container (min-width: 760px) {
     .stats-strip {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
@@ -58,7 +63,7 @@ const { items, class: className = "" } = Astro.props;
   .stats-strip-item:nth-child(n + 3) {
     border-top: 1px solid rgb(var(--palette-border));
   }
-  @media (min-width: 48rem) {
+  @container (min-width: 760px) {
     .stats-strip-item:nth-child(n + 3) {
       border-top: none;
     }
@@ -83,7 +88,7 @@ const { items, class: className = "" } = Astro.props;
     @apply text-muted-foreground;
     font-size: 0.75rem;
   }
-  @media (max-width: 48rem) {
+  @container (max-width: 759px) {
     .stats-strip-item {
       padding: 0.625rem 0.75rem;
     }

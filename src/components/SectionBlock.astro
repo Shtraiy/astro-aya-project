@@ -1,0 +1,88 @@
+---
+import Icon from "@components/Icon.astro";
+import type { IconName } from "@components/Icon.astro";
+
+/**
+ * 带标题的分区：左边一枚图标块，右边标题 + 一句说明，下面放内容。
+ * 关于页、友链页都用它，保证同一套排版节奏。
+ *
+ * 注意这里用 <section> 但把 base.css 里 `section { max-w-3xl px-4 mx-auto }`
+ * 那套尺寸重置掉了 —— 因为外层 Main 已经限过一次宽度，不然会双重内缩。
+ */
+interface Props {
+  title: string;
+  desc?: string;
+  icon: IconName;
+  class?: string;
+}
+
+const { title, desc, icon, class: className = "" } = Astro.props;
+---
+
+<section class:list={["section-block", className]}>
+  <div class="block-head">
+    <span class="block-icon" aria-hidden="true">
+      <Icon name={icon} size={18} />
+    </span>
+    <span class="block-text">
+      <h2 class="block-title">{title}</h2>
+      {desc && <span class="block-desc">{desc}</span>}
+    </span>
+  </div>
+  <div class="block-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  @reference "../styles/base.css";
+
+  .section-block {
+    /* 重置 base.css 给所有 section 的宽度与内缩 */
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  /* 相邻分区之间留出节奏 */
+  .section-block + .section-block {
+    margin-top: 2.25rem;
+  }
+  .block-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .block-icon {
+    display: grid;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    color: rgb(var(--palette-accent));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 12%,
+      transparent
+    );
+    border: 1px solid
+      color-mix(in srgb, rgb(var(--palette-accent)) 26%, transparent);
+  }
+  .block-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .block-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgb(var(--palette-text));
+  }
+  .block-desc {
+    font-size: 0.8125rem;
+    color: rgb(var(--palette-muted-text));
+  }
+</style>

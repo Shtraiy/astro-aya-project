@@ -4,20 +4,17 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
 import BlogStats from "@components/BlogStats.astro";
+import Section from "@components/Section.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { SITE, SOCIALS } from "@config";
+import { SITE } from "@config";
 
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-
-const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
 <Layout>
@@ -44,48 +41,33 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       <p>
         欢迎来到无言的鸟笼，这个站点没有固定的主题，更像是一片随意生长的花园，记录了一些随笔以及一些技术相关的内容
       </p>
-      {
-        // only display if at least one social link is enabled
-        socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">社交链接:</div>
-            <Socials />
-          </div>
-        )
-      }
     </section>
 
-    <Hr />
-
-    <section id="stats">
+    {/* 下面几块统一走「左标签 · 右内容」版式，分区更清楚 */}
+    <Section title="统计">
       <BlogStats blogStartDate={new Date("2020-11-30")} />
-    </section>
+    </Section>
 
     {
       featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
-            <h2>置顶文章</h2>
-            <ul>
-              {featuredPosts.map(post => (
-                <Card
-                  href={`/posts/${post.id}/`}
-                  frontmatter={post.data}
-                  body={post.body}
-                  secHeading={false}
-                />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
+        <Section title="置顶文章">
+          <ul>
+            {featuredPosts.map(post => (
+              <Card
+                href={`/posts/${post.id}/`}
+                frontmatter={post.data}
+                body={post.body}
+                secHeading={false}
+              />
+            ))}
+          </ul>
+        </Section>
       )
     }
 
     {
       recentPosts.length > 0 && (
-        <section id="recent-posts">
-          <h2>最近文章</h2>
+        <Section title="最近文章">
           <ul>
             {recentPosts.map(
               (post, index) =>
@@ -99,25 +81,26 @@ const socialCount = SOCIALS.filter(social => social.active).length;
                 )
             )}
           </ul>
-        </section>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton
+              href="/posts/"
+              className="inline-flex items-center gap-1"
+            >
+              全部文章
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                class="h-5 w-5"
+              >
+                <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+              </svg>
+            </LinkButton>
+          </div>
+        </Section>
       )
     }
-
-    <div class="all-posts-btn-wrapper">
-      <LinkButton href="/posts/" className="inline-flex items-center gap-1">
-        全部文章
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          class="h-5 w-5"
-          ><path
-            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-          ></path>
-        </svg>
-      </LinkButton>
-    </div>
   </main>
 
   <Footer />
@@ -141,26 +124,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   #hero p {
     @apply my-2;
   }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mr-2 mb-1 whitespace-nowrap sm:mb-0;
-  }
 
-  /* ===== Featured & Recent Posts Sections ===== */
-  #stats {
-    @apply pt-10 pb-2;
-  }
-  #featured,
-  #recent-posts {
-    @apply pt-12 pb-6;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
-  }
+  /* ===== 分区（左标签 · 右内容，见 Section.astro） ===== */
   .all-posts-btn-wrapper {
-    @apply mx-auto my-8 max-w-3xl px-4 text-center;
+    @apply mt-6 flex justify-end;
   }
 </style>

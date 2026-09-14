@@ -1,0 +1,488 @@
+---
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import SectionBlock from "@components/SectionBlock.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { APPLY_RULES, FRIENDS, SITE_INFO } from "@data/links";
+---
+
+<Layout title={`友链 | SilentCage`}>
+  <Header activeNav="links" />
+
+  <Main
+    pageTitle="友情链接"
+    pageDesc="本站的朋友们 · 想交换友链可以先看看下面的须知"
+    icon="link"
+  >
+    <p class="links-note">
+      友情链接（简称“友链”）是指两个网站之间相互放置对方网站链接的行为。这种做法的主要目的是通过互相推荐，增加彼此网站的访问量和搜索引擎排名。友链通常位于网站首页或专门的友链页面，是一种常见的网络推广手段。
+    </p>
+
+    <SectionBlock
+      title="朋友们"
+      desc="精选友链 · 一起探索有趣的世界"
+      icon="link"
+    >
+      <ul class="friend-grid" data-friends>
+        {
+          FRIENDS.map(friend => (
+            <li>
+              <a
+                class="friend-card"
+                href={friend.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={
+                  friend.theme
+                    ? [
+                        friend.theme.background &&
+                          `--friend-bg:${friend.theme.background}`,
+                        friend.theme.text &&
+                          `--friend-text:${friend.theme.text}`,
+                      ]
+                        .filter(Boolean)
+                        .join(";")
+                    : undefined
+                }
+              >
+                <span
+                  class="friend-cover"
+                  style={`background-image:url("${friend.avatar}")`}
+                  aria-hidden="true"
+                />
+                <span class="friend-avatar">
+                  <img
+                    src={friend.avatar}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="friend-arrow" aria-hidden="true">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="friend-text">
+                  <span class="friend-name">{friend.name}</span>
+                  <span class="friend-intro">{friend.intro}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </SectionBlock>
+
+    <SectionBlock title="申请友链" desc="让我们成为朋友吧" icon="clipboard">
+      <ol class="apply-rules">
+        {APPLY_RULES.map(rule => <li>{rule}</li>)}
+      </ol>
+
+      <p class="apply-contact">
+        觉得能接受上面这些的话，可以通过
+        <a
+          href="https://github.com/Shtraiy/Blog"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub 提 issue
+        </a>
+        或
+        <a href="mailto:resalia@wynio.pw">邮件</a>
+        联系我交换友链。
+      </p>
+
+      <div class="copy-card">
+        <p class="copy-card-title">
+          <span class="copy-dot" aria-hidden="true">i</span>
+          本站信息（点击任意一行复制）
+        </p>
+        <dl class="copy-list">
+          {
+            SITE_INFO.map(item => (
+              <div class="copy-row">
+                <dt>{item.label}</dt>
+                <dd>
+                  <button
+                    type="button"
+                    class="copy-value"
+                    data-copy={item.value}
+                  >
+                    {item.value}
+                    <span class="copy-flag" aria-hidden="true">
+                      已复制
+                    </span>
+                  </button>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <p class="links-outro">最后，感谢相遇！</p>
+    </SectionBlock>
+  </Main>
+
+  <Footer />
+</Layout>
+
+<script>
+  /**
+   * 1) 友链卡片每次进页面随机排序：静态构建只能给出固定顺序，
+   *    所以在前端打乱一次（无 JS 时保持原顺序，不影响可用）。
+   * 2) 本站信息点击复制，按钮上原地反馈「已复制」。
+   */
+  function initLinks() {
+    const grid = document.querySelector<HTMLElement>("[data-friends]");
+    if (grid && !grid.dataset.shuffled) {
+      grid.dataset.shuffled = "true";
+      const items = Array.from(grid.children);
+      for (let i = items.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      for (const item of items) grid.append(item);
+    }
+
+    for (const button of document.querySelectorAll<HTMLElement>(
+      "[data-copy]"
+    )) {
+      if (button.dataset.bound === "true") continue;
+      button.dataset.bound = "true";
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(button.dataset.copy ?? "");
+        } catch {
+          return;
+        }
+        button.classList.add("is-copied");
+        window.setTimeout(() => button.classList.remove("is-copied"), 1400);
+      });
+    }
+  }
+
+  initLinks();
+  document.addEventListener("astro:page-load", initLinks);
+</script>
+
+<style>
+  @reference "../styles/base.css";
+
+  .links-note {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.8;
+    color: rgb(var(--palette-muted-text));
+  }
+
+  /* 分区标题（图标块 + 标题 + 说明）走 <SectionBlock>，样式在组件里 */
+
+  /* ── 友链卡片 ── */
+  .friend-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 40rem) {
+    .friend-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 52rem) {
+    .friend-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .friend-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 100%;
+    overflow: hidden;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 1rem;
+    /* 单卡配色：卡片上带 --friend-bg / --friend-text 就用对方的主题色 */
+    background-color: var(--friend-bg, transparent);
+    color: var(--friend-text, inherit);
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .friend-card:hover {
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted-text)) 55%,
+      transparent
+    );
+    /* 有自定义底色的卡片保持自己的颜色，只让描边亮一点 */
+    background-color: var(--friend-bg, rgb(var(--palette-muted)));
+  }
+  /* 头像放大后做背景，带一层由左到右的渐隐遮罩 */
+  .friend-cover {
+    position: absolute;
+    top: 0;
+    inset-inline-start: -0.5rem;
+    z-index: 0;
+    width: 66%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.14;
+    pointer-events: none;
+    mask-image: linear-gradient(
+      to left,
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 1) 100%
+    );
+  }
+  .friend-avatar {
+    position: relative;
+    z-index: 1;
+    display: block;
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+  }
+  .friend-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 999px;
+    background-color: rgb(var(--palette-fill));
+    object-fit: cover;
+  }
+  /* 悬停时头像上浮出一层箭头遮罩 */
+  .friend-arrow {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: rgb(var(--palette-fill));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-text)) 55%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .friend-arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+  }
+  .friend-card:hover .friend-arrow {
+    opacity: 1;
+  }
+  .friend-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+  .friend-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--friend-text, rgb(var(--palette-text)));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .friend-intro {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--friend-text, rgb(var(--palette-muted-text)));
+    /* 介绍比站名淡一档，和原来友链页的写法一致 */
+    opacity: 0.75;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── 申请须知 ── */
+  .apply-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: rules;
+  }
+  .apply-rules li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: rgb(var(--palette-muted-text));
+  }
+  .apply-rules li::before {
+    counter-increment: rules;
+    content: counter(rules);
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.25rem;
+    display: grid;
+    width: 1.125rem;
+    height: 1.125rem;
+    place-items: center;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: rgb(var(--palette-accent));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 12%,
+      transparent
+    );
+  }
+  .apply-contact {
+    margin: 0 0 1.25rem;
+    font-size: 0.875rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .apply-contact a {
+    color: rgb(var(--palette-accent));
+    text-decoration: underline;
+    text-decoration-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 40%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+  }
+
+  /* ── 本站信息（点击复制） ── */
+  .copy-card {
+    padding: 1rem 1.125rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 1rem;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 45%,
+      transparent
+    );
+  }
+  .copy-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.8125rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .copy-dot {
+    display: grid;
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    place-items: center;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-style: normal;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 18%,
+      transparent
+    );
+    color: rgb(var(--palette-accent));
+  }
+  .copy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+  }
+  .copy-row {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .copy-row dt {
+    font-size: 0.8125rem;
+    text-align: right;
+    color: rgb(var(--palette-muted-text));
+  }
+  .copy-row dd {
+    margin: 0;
+    min-width: 0;
+  }
+  .copy-value {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: "IBM Plex Mono", Consolas, monospace;
+    font-size: 0.8125rem;
+    text-align: left;
+    color: rgb(var(--palette-text));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-fill)) 70%,
+      transparent
+    );
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .copy-value:hover {
+    background-color: rgb(var(--palette-muted));
+  }
+  .copy-flag {
+    position: absolute;
+    inset-inline-end: 0.5rem;
+    top: 50%;
+    padding: 0 0.375rem;
+    border-radius: 0.375rem;
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: rgb(var(--palette-fill));
+    background-color: rgb(var(--palette-accent));
+    opacity: 0;
+    transform: translateY(-50%) translateX(0.25rem);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+  .copy-value.is-copied .copy-flag {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .links-outro {
+    margin: 1.5rem 0 0;
+    font-size: 0.9375rem;
+    color: rgb(var(--palette-text));
+  }
+</style>

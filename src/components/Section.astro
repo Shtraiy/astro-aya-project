@@ -1,0 +1,58 @@
+---
+/**
+ * 「左标签 · 右内容」版式。
+ *
+ * 参考主题（Astro-Axi）用这套骨架排首页：左边一列窄栏只放 section 名，
+ * 右边放内容，比一路上下堆叠更有杂志感，分区也更清楚。
+ * 窄屏自动变成上下排列。
+ *
+ * 注意 base.css 里 `section { mx-auto max-w-3xl px-4 }` 会把每个 section
+ * 收到和导航栏一样的宽度，所以这里不用再管宽度，只排内部的左右两栏。
+ */
+interface Props {
+  title: string;
+  /** 标签下的一行小字说明，可选 */
+  desc?: string;
+  class?: string;
+}
+
+const { title, desc, class: className = "" } = Astro.props;
+---
+
+<section class:list={["section-row", className]}>
+  <div class="section-row-label">
+    <h2>{title}</h2>
+    {desc && <p>{desc}</p>}
+  </div>
+  <div class="section-row-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  @reference "../styles/base.css";
+
+  .section-row {
+    @apply flex flex-col gap-3 py-7 md:flex-row md:gap-8;
+  }
+  .section-row-label {
+    @apply md:w-24 md:shrink-0 md:pt-1;
+  }
+  .section-row-label h2 {
+    @apply text-lg font-semibold tracking-wide;
+    color: rgb(var(--palette-text));
+  }
+  .section-row-label p {
+    @apply mt-1 text-xs md:mt-1.5;
+    color: rgb(var(--palette-muted-text));
+  }
+  .section-row-body {
+    @apply min-w-0 flex-1;
+    /* 内容栏自己也是容器：放进来的组件按这一栏的宽度决定布局 */
+    container-type: inline-size;
+  }
+  /* 分区之间用一条极淡的分隔线，首尾不加 */
+  .section-row + .section-row {
+    border-top: 1px solid rgb(var(--palette-border));
+  }
+</style>

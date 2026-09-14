@@ -40,6 +40,8 @@ const { pageTitle, pageDesc, icon, iconHue } = Astro.props;
   #main-content {
     /* pt-12：以前这段留白是面包屑撑起来的，面包屑去掉后标题贴着页头分隔线了 */
     @apply mx-auto w-full max-w-3xl px-4 pt-12 pb-4;
+    /* 让页面内的组件能按「实际可用宽度」自适应（例如统计条排几列） */
+    container-type: inline-size;
   }
   /* 页面头：左侧圆角图标块 + 标题 + 说明 */
   .page-head {
