@@ -43,5 +43,8 @@ jobs:
       - name: "📝 Checking code format"
         run: npm run format:check
 
+      - name: "🖼️ Check static assets"
+        run: npm run check:assets
+
       - name: "🚀 Build the project"
         run: npm run build

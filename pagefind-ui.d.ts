@@ -33,5 +33,8 @@ declare module "@pagefind/default-ui" {
 
   export class PagefindUI {
     constructor(options: PagefindUIOptions);
+    /** 用代码触发一次搜索（`/search/?q=…` 直接出结果就靠它） */
+    triggerSearch(term: string): void;
+    destroy(): void;
   }
 }

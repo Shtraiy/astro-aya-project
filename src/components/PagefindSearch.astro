@@ -114,7 +114,7 @@ import "@pagefind/default-ui/css/ui.css";
     }
 
     initialized = true;
-    new PagefindUI({
+    const ui = new PagefindUI({
       element: "#search",
       showImages: false,
       showSubResults: true,
@@ -132,6 +132,33 @@ import "@pagefind/default-ui/css/ui.css";
         searching: "正在搜索「[SEARCH_TERM]」…",
       },
     });
+
+    /*
+      关键词同步进 URL（?q=），搜索结果就能分享、刷新后也还在。
+      replaceState 必须把 history.state 原样传回去 —— Astro 的视图过渡把自己的
+      { index, scrollX, scrollY } 存在里面，用 null 覆盖会让返回键失灵。
+    */
+    const syncUrl = (term: string) => {
+      const url = new URL(window.location.href);
+      if (term) url.searchParams.set("q", term);
+      else url.searchParams.delete("q");
+      window.history.replaceState(window.history.state, "", url);
+    };
+
+    const input = root.querySelector<HTMLInputElement>(
+      ".pagefind-ui__search-input"
+    );
+    if (input) {
+      let syncTimer: ReturnType<typeof setTimeout> | undefined;
+      input.addEventListener("input", () => {
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => syncUrl(input.value.trim()), 400);
+      });
+    }
+
+    /* 带 ?q= 进来（分享的链接、刷新）就直接出结果 */
+    const initialTerm = new URL(window.location.href).searchParams.get("q");
+    if (initialTerm) ui.triggerSearch(initialTerm);
   }
 
   initSearch();

@@ -7,7 +7,7 @@
 > **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
 > [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
 
-> 当前版本 **2.0.0**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+> 当前版本 **2.0.1**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
 
@@ -70,7 +70,8 @@ src/
 ├── utils/                 纯函数：阅读时间、slug、标签色、chip 筛选、
 │                          GitHub 活跃度、OG 图模板
 └── plugins/               markdown 管线插件（图片懒加载等）
-scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支持代理）
+scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支持代理）；
+                           check-assets.mjs 是静态资源体检（npm run check:assets）
 deploy/waline/             评论服务端部署说明（评论默认关闭）
 docs/                      详细文档：content / data-sync / deploy
 ```
@@ -143,6 +144,7 @@ docs/                      详细文档：content / data-sync / deploy
 | `npm run sync:bangumi`       | 同步追番 → `src/data/bangumi.json` + 封面         |
 | `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`        |
 | `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）    |
+| `npm run check:assets`       | 静态资源体检：坏引用报错、孤儿文件提示（CI 会跑） |
 
 ## 改哪里
 

@@ -26,7 +26,13 @@ function setPreference() {
 function reflectPreference() {
   document.firstElementChild.setAttribute("data-theme", themeValue);
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  // 无障碍名称跟着当前主题走（中文站，别让读屏器念 light / dark）
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute(
+      "aria-label",
+      themeValue === "dark" ? "深色主题" : "浅色主题"
+    );
 
   // Get a reference to the body element
   const body = document.body;

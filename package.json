@@ -1,6 +1,6 @@
 {
   "name": "astro-aya",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "SilentCage —— 个人博客：技术笔记、随笔与游记，文章按栏目筛选、按年份分组，Pagefind 全文搜索，Navidrome 音乐收藏与 Bangumi 追番",
   "author": "Resalia",
@@ -36,7 +36,8 @@
     "astro": "astro",
     "format:check": "prettier --check . --plugin=prettier-plugin-astro",
     "format": "prettier --write . --plugin=prettier-plugin-astro",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "check:assets": "node scripts/check-assets.mjs"
   },
   "engines": {
     "node": ">=22.12.0 <25",
