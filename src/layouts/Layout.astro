@@ -2,6 +2,24 @@
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import "remark-github-blockquote-alert/alert.css";
+/*
+  字体全部自托管（不再请求 Google Fonts / jsdelivr）：
+  - 西文与代码只取需要的字重、只取 latin 子集
+  - 中文用霞鹜文楷屏幕版，它按 unicode-range 切成 97 个分片，浏览器只下当前页面
+    真正用到的那些片；分片文件跟着构建产物一起发布，运行时没有第三方请求
+  - family 名字与 base.css 里的字体栈一致（Inter / IBM Plex Mono / LXGW WenKai Screen）
+*/
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-500.css";
+import "@fontsource/ibm-plex-mono/latin-600.css";
+import "@fontsource/ibm-plex-mono/latin-700.css";
+import "@fontsource/ibm-plex-mono/latin-400-italic.css";
+import "@fontsource/ibm-plex-mono/latin-600-italic.css";
+import "lxgw-wenkai-screen-webfont/lxgwwenkaiscreen.css";
 import { ClientRouter } from "astro:transitions";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -114,25 +132,6 @@ const ogLocale = (LOCALE.langTag[0] ?? LOCALE.lang).replace("-", "_");
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
-
-    <!-- Google Fonts: Inter (英文正文) + IBM Plex Mono (代码) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap"
-      rel="preload"
-      as="style"
-      onload="this.onload=null; this.rel='stylesheet';"
-      crossorigin
-    />
-    <!-- LXGW WenKai Screen: 霞鹜文楷屏幕优化版（中文正文，仅加载所需字重） -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaiscreen.css"
-      onload="this.onload=null; this.rel='stylesheet';"
-      crossorigin
-    />
 
     <meta name="theme-color" content="" />
 

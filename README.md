@@ -19,6 +19,9 @@
 - **站内搜索**：Pagefind。构建后扫一遍 HTML 生成静态索引（同源，不依赖任何第三方），
   只有标了 `data-pagefind-body` 的页面进索引：32 篇文章正文 + 关于 / 友链 / 收藏 / 追番。
   导航、栏目页、标签云这些"每页都差不多"的部分不进索引，否则搜一个词会被侧栏命中几十次。
+- **字体自托管**：中文用霞鹜文楷屏幕版（按 unicode-range 切成 97 片，浏览器只下当前页面
+  真正用到的那几片），西文与代码用 Fontsource 的 Inter / IBM Plex Mono。字体随构建产物
+  发布，运行时不请求 Google Fonts / jsdelivr。
 - **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
   Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
 - **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
@@ -133,27 +136,31 @@ docs/                      详细文档：content / data-sync / deploy
 
 ## 改哪里
 
-| 想改的东西               | 改哪里                                                                       |
-| :----------------------- | :--------------------------------------------------------------------------- |
-| 站点名 / 描述 / 社交链接 | `src/config.ts`                                                              |
-| 导航菜单                 | `src/components/Header.astro`                                                |
-| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                                     |
-| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                |
-| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                     |
-| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                       |
-| 站内搜索                 | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body` |
-| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                                    |
-| 关于页内容               | `src/data/profile.ts`                                                        |
-| 友链                     | `src/data/links.json`                                                        |
-| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                                           |
-| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                                       |
-| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                                             |
+| 想改的东西               | 改哪里                                                                               |
+| :----------------------- | :----------------------------------------------------------------------------------- |
+| 站点名 / 描述 / 社交链接 | `src/config.ts`                                                                      |
+| 导航菜单                 | `src/components/Header.astro`                                                        |
+| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                                             |
+| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                        |
+| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                             |
+| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                               |
+| 站内搜索                 | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body`         |
+| 字体（自托管）           | `src/layouts/Layout.astro` 顶部的一组 import；字体栈在 `styles/base.css` 的 `@theme` |
+| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                                            |
+| 关于页内容               | `src/data/profile.ts`                                                                |
+| 友链                     | `src/data/links.json`                                                                |
+| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                                                   |
+| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                                               |
+| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                                                     |
 
 ## 有意保留的遗留项
 
 - `src/pages/music/index.astro`：301 跳到 `/collection/`，让旧链接不 404。
 - `src/pages/archives/index.astro`：301 跳到 `/posts/`（时间轴已并入文章页第一页），
   `vercel.json` 里另有同名 301 规则，静态托管下优先走那条。
+- OG 图生成仍在构建时去 Google Fonts 取 IBM Plex Mono + Noto Sans SC（带镜像回退与
+  `node_modules/.cache/fonts` 缓存）：satori 需要单个完整字体文件，而中文 webfont 是按
+  unicode-range 分片的，要彻底离线得先做字体子集化。运行时不受影响。
 - `src/components/Comments.astro` + `deploy/waline/`：评论默认关闭，随时可开。
 - `scripts/sync-navidrome.mjs` 会往快照里写一份只读凭据（前端播放需要），
   风险与替代方案见 [docs/data-sync.md](docs/data-sync.md)。
