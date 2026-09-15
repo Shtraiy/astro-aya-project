@@ -1,0 +1,29 @@
+{
+  "syncedAt": "2026-09-15T02:15:37.816Z",
+  "posts": [
+    {
+      "friend": "Seamain",
+      "title": "我买车了",
+      "link": "https://seamain.org/posts/lynkco-z20-one-week/",
+      "date": "2026-07-02T03:05:00.000Z"
+    },
+    {
+      "friend": "Seamain",
+      "title": "关于Unity",
+      "link": "https://seamain.org/posts/fxxk-unity/",
+      "date": "2026-03-14T03:09:00.000Z"
+    },
+    {
+      "friend": "Jimmy0w0",
+      "title": "Google Authenticator: A Deep Dive into Exported Data",
+      "link": "https://jimmy0w0.me/posts/google-authenticator-a-deep-dive-into-exported-data-en/",
+      "date": "2025-02-05T11:47:00.000Z"
+    },
+    {
+      "friend": "Jimmy0w0",
+      "title": "Why did I buy a FIDO2 Key?",
+      "link": "https://jimmy0w0.me/posts/why-did-i-buy-a-fido2-key-en/",
+      "date": "2024-03-29T14:46:00.000Z"
+    }
+  ]
+}

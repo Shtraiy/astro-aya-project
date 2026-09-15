@@ -23,6 +23,11 @@ interface Item {
   date: string | null;
   eps: number | null;
   epStatus: number | null;
+  /** Bangumi 全站均分（所有用户评分的平均），页面显示的就是这个 */
+  score: number | null;
+  /** 排名（备用，目前页面上没显示） */
+  rank?: number | null;
+  /** 你自己的评分，目前页面上不显示，留着备用 */
   rate: number | null;
   updatedAt: string | null;
 }
@@ -65,14 +70,13 @@ const { user, syncedAt, items } = loadBangumi();
 const timeOf = (value: string | null) =>
   value ? new Date(value).getTime() || 0 : 0;
 
-/** 看过按评分排，其余按最近更新排 —— 和 Bangumi 自己的习惯一致 */
+/** 看过按全站均分从高到低排（这也是页面上显示的分数），其余按最近更新排 */
 const sortItems = (list: Item[]) => {
   const sorted = [...list];
-  const allDone = sorted.every(item => item.status === 2);
-  if (allDone && sorted.some(item => item.rate)) {
+  if (sorted.every(item => item.status === 2)) {
     return sorted.sort(
       (a, b) =>
-        (b.rate ?? 0) - (a.rate ?? 0) ||
+        (b.score ?? -1) - (a.score ?? -1) ||
         timeOf(b.updatedAt) - timeOf(a.updatedAt)
     );
   }
@@ -85,10 +89,12 @@ const groups = STATUS.map(status => ({
 })).filter(group => group.items.length > 0);
 
 const done = items.filter(item => item.status === 2);
-const rated = done.filter(item => item.rate);
-const averageRate = rated.length
+/** 「看过均分」用条目的全站均分算，而不是个人评分 */
+const scored = done.filter(item => item.score);
+const averageScore = scored.length
   ? Math.round(
-      (rated.reduce((sum, item) => sum + (item.rate ?? 0), 0) / rated.length) *
+      (scored.reduce((sum, item) => sum + (item.score ?? 0), 0) /
+        scored.length) *
         10
     ) / 10
   : null;
@@ -100,6 +106,9 @@ const formatDate = (iso: string) =>
     day: "numeric",
   });
 
+/** 均分统一显示一位小数（Bangumi 自己也是 7.0 这种写法） */
+const fmtScore = (value: number) => value.toFixed(1);
+
 const stats = [
   { value: items.length.toString(), label: "部收藏" },
   {
@@ -107,7 +116,10 @@ const stats = [
     label: "在看",
   },
   { value: done.length.toString(), label: "看过" },
-  { value: averageRate ? `${averageRate} 分` : "—", label: "看过的均分" },
+  {
+    value: averageScore ? `${fmtScore(averageScore)} 分` : "—",
+    label: "看过·全站均分",
+  },
 ];
 
 const displayName = (item: Item) => item.nameCN || item.name || "未命名";
@@ -136,8 +148,8 @@ const progressPercent = (item: Item) => {
 const metaLine = (item: Item) => {
   const year = item.date ? item.date.slice(0, 4) : "";
   const progress = progressText(item);
-  const rate = item.rate ? `${item.rate} 分` : "";
-  return [year, progress || rate].filter(Boolean).join(" · ");
+  // 全站均分已经显示在封面角标上，这里不再重复一遍；有进度就显示进度
+  return [year, progress].filter(Boolean).join(" · ");
 };
 ---
 
@@ -214,8 +226,10 @@ const metaLine = (item: Item) => {
                             {displayName(item).slice(0, 1)}
                           </span>
                         )}
-                        {item.rate ? (
-                          <span class="anime-rate">★ {item.rate}</span>
+                        {item.score ? (
+                          <span class="anime-score" title="Bangumi 全站均分">
+                            {fmtScore(item.score)}
+                          </span>
                         ) : null}
                         {progressPercent(item) > 0 && (
                           <span class="anime-progress" aria-hidden="true">
@@ -248,42 +262,21 @@ const metaLine = (item: Item) => {
 </Layout>
 
 <script>
+  import { initChipFilter } from "@utils/chipFilter";
+
   /*
-    分类筛选：纯前端显隐，同时把下面所有分组收成一组展示，
-    避免"全部"标签下同一个番出现两次（分组标题此时也一起收起）。
+    分类筛选：切到某个状态时，只留对应的分组（连分组标题一起），
+    避免"全部"标签下同一个番出现两次。逻辑走共用工具。
   */
   function initAnimeFilter() {
-    const buttons = Array.from(
-      document.querySelectorAll<HTMLButtonElement>("button[data-status]")
-    );
-    const cards = Array.from(
-      document.querySelectorAll<HTMLElement>(".anime[data-status]")
-    );
-    const groupSections = Array.from(
-      document.querySelectorAll<HTMLElement>(".anime-group[data-group]")
-    );
-    if (!buttons.length || !cards.length) return;
-    // 首页加载时直接调用 + astro:page-load 各绑一次，这里挡掉重复绑定
-    if (buttons.some(button => button.dataset.bound === "true")) return;
-
-    const apply = (value: string) => {
-      for (const button of buttons) {
-        button.classList.toggle("is-current", button.dataset.status === value);
-      }
-      for (const card of cards) {
-        card.hidden = value !== "all" && card.dataset.status !== value;
-      }
-      for (const section of groupSections) {
-        section.hidden = value !== "all" && section.dataset.group !== value;
-      }
-    };
-
-    for (const button of buttons) {
-      button.dataset.bound = "true";
-      button.addEventListener("click", () =>
-        apply(button.dataset.status ?? "all")
-      );
-    }
+    initChipFilter({
+      buttonSelector: "button[data-status]",
+      buttonKey: "status",
+      itemSelector: ".anime[data-status]",
+      itemKey: "status",
+      groupSelector: ".anime-group[data-group]",
+      groupKey: "group",
+    });
   }
 
   initAnimeFilter();
@@ -389,8 +382,8 @@ const metaLine = (item: Item) => {
     font-weight: 600;
     color: rgb(var(--palette-muted-text));
   }
-  /* 评分角标 */
-  .anime-rate {
+  /* 全站均分角标 */
+  .anime-score {
     position: absolute;
     top: 0.3125rem;
     right: 0.3125rem;

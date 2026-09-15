@@ -21,24 +21,35 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1>Welcome to my SilentCage</h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="rss-link"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon"
-          ><path
-            d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
-          ></path><path
-            d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
-          ></path><circle cx="6" cy="18" r="2"></circle>
-        </svg>
-        <span class="sr-only">RSS Feed</span>
-      </a>
-      <p>
+      {
+        /* 小字站点名 + 订阅按钮占一行，标题单独一行，右上角不再挂一个孤零零的图标 */
+      }
+      <div class="hero-top">
+        <p class="hero-kicker">SilentCage</p>
+        <a
+          target="_blank"
+          href="/rss.xml"
+          class="hero-rss"
+          aria-label="RSS 订阅"
+          title="RSS 订阅"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            ><path
+              d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
+            ></path><path
+              d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
+            ></path><circle cx="6" cy="18" r="2"></circle>
+          </svg>
+          <span>RSS</span>
+        </a>
+      </div>
+
+      <h1>无言的鸟笼</h1>
+
+      <p class="hero-desc">
         欢迎来到无言的鸟笼，这个站点没有固定的主题，更像是一片随意生长的花园，记录了一些随笔以及一些技术相关的内容
       </p>
     </section>
@@ -110,19 +121,53 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   @reference "../styles/base.css";
   /* ===== Hero Section ===== */
   #hero {
-    @apply pt-8 pb-6;
+    @apply pt-10 pb-8;
+  }
+  /* 站点名做成小字眉标，订阅按钮靠右，和标题错开一层 */
+  .hero-top {
+    @apply flex items-center justify-between gap-4;
+  }
+  .hero-kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgb(var(--palette-muted-text));
+  }
+  .hero-rss {
+    @apply inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1;
+    border: 1px solid rgb(var(--palette-border));
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: rgb(var(--palette-muted-text));
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .hero-rss:hover {
+    color: rgb(var(--palette-accent));
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 45%,
+      transparent
+    );
+  }
+  .hero-rss svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: currentColor;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    @apply mt-4 mb-3 text-3xl font-bold sm:mt-5 sm:text-4xl;
+    letter-spacing: 0.01em;
+    color: rgb(var(--palette-text));
   }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply fill-skin-accent mb-2 h-6 w-6 scale-110 sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2;
+  .hero-desc {
+    @apply m-0 max-w-xl text-base;
+    line-height: 1.85;
+    color: rgb(var(--palette-muted-text));
   }
 
   /* ===== 分区（左标签 · 右内容，见 Section.astro） ===== */

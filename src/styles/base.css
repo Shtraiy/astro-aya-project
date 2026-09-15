@@ -557,6 +557,12 @@ html[data-theme="dark"] .chip--tag:hover {
   margin: 1.25rem auto;
   display: block;
   cursor: zoom-in;
+  /* 懒加载期间先铺一层很淡的底色，避免出现"空白 → 突然出现"的观感 */
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-muted)) 70%,
+    transparent
+  );
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
   transition:
     transform 0.2s ease,
@@ -856,4 +862,79 @@ details.collapsible > summary + * {
     transparent
   );
   user-select: auto;
+}
+
+/* ===== 代码行标注 =====
+   写在代码行末尾、渲染时会被 shiki 的 transformers 删掉，页面上看不到它们：
+     // [!code highlight]        高亮这一行
+     // [!code focus]            聚焦这一行，其余变淡（悬停恢复）
+     // [!code ++] / [!code --]  diff 增删
+     // [!code error] / // [!code warning]
+   类名由 @shikijs/transformers 生成，注册在 astro.config.ts。
+*/
+.code-block .line {
+  display: inline-block;
+  width: 100%;
+  /* 抵消 typography 给 pre 的左右内边距，让底色铺满整行 */
+  margin-inline: -1.1428571em;
+  padding-inline: 1.1428571em;
+}
+
+/* 高亮 / diff / error 都用「左侧竖条 + 淡底色」，和正文块的观感统一 */
+.code-block .line.highlighted {
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-accent)) 14%,
+    transparent
+  );
+  box-shadow: inset 3px 0 0 rgb(var(--palette-accent));
+}
+.code-block .line.diff {
+  position: relative;
+}
+.code-block .line.diff.add {
+  background-color: rgb(34 197 94 / 0.14);
+  box-shadow: inset 3px 0 0 rgb(34 197 94);
+}
+.code-block .line.diff.remove {
+  background-color: rgb(239 68 68 / 0.14);
+  box-shadow: inset 3px 0 0 rgb(239 68 68);
+}
+/* 增删号画在左侧内边距里，不推挤代码本身 */
+.code-block .line.diff::before {
+  position: absolute;
+  inset-inline-start: 0.25em;
+  top: 0;
+  font-weight: 700;
+  opacity: 0.75;
+}
+.code-block .line.diff.add::before {
+  content: "+";
+  color: rgb(22 163 74);
+}
+.code-block .line.diff.remove::before {
+  content: "-";
+  color: rgb(220 38 38);
+}
+
+.code-block .line.highlighted.error {
+  background-color: rgb(239 68 68 / 0.16);
+  box-shadow: inset 3px 0 0 rgb(239 68 68);
+}
+.code-block .line.highlighted.warning {
+  background-color: rgb(245 158 11 / 0.16);
+  box-shadow: inset 3px 0 0 rgb(245 158 11);
+}
+
+/* 聚焦：没被点名的行淡出，鼠标移上去再全部显示 */
+.code-block pre.has-focused .line:not(.focused) {
+  opacity: 0.4;
+  filter: blur(0.35px);
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
+}
+.code-block pre.has-focused:hover .line:not(.focused) {
+  opacity: 1;
+  filter: none;
 }

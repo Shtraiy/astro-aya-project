@@ -1,18 +1,23 @@
+import linksData from "./links.json";
+
 /**
- * 友链数据。
- *
- * 单独放一个文件，加友链只改这里，不用碰页面结构。
- * 头像直接用对方站点的图片地址即可（页面里是 <img>，不参与构建期优化）。
+ * 友链数据放在 links.json 里（不是这里），因为「友链圈」同步脚本也要读它 ——
+ * 脚本是纯 Node 跑的，读不了 TS。这里只负责给它补上类型。
  *
  * theme 是可选字段：想让某张卡片保留对方站点的配色，就填它。
  * 比如原来的友链页里 Subilan 那张是 #009688 的底色配橙色字。
  * 不填就是站点默认的中性样式。
+ *
+ * feed 是可选字段：对方的 RSS/Atom 地址，用来抓「朋友们最近写了什么」。
+ * 不填的话脚本会去对方首页找 <link rel="alternate"> 或试几个常见路径。
  */
 export interface Friend {
   name: string;
   intro: string;
   link: string;
   avatar: string;
+  /** 对方站点的订阅地址 */
+  feed?: string;
   /** 这张卡单独配色（沿用对方站点的主题色） */
   theme?: {
     /** 卡片底色 */
@@ -22,29 +27,7 @@ export interface Friend {
   };
 }
 
-export const FRIENDS: Friend[] = [
-  {
-    name: "Jimmy0w0",
-    intro: "Babel Tower",
-    link: "https://jimmy0w0.me/",
-    avatar: "https://jimmy0w0.me/favicon.svg",
-  },
-  {
-    name: "Subilan's Blog",
-    intro: "Satellite yourself",
-    link: "https://subilan.win",
-    avatar: "https://subilan.win/avatar.jpg",
-    // 保持原来的单独配色
-    theme: { background: "#009688", text: "rgb(235, 171, 87)" },
-  },
-  {
-    name: "Seamain",
-    intro: "普通的 Blog",
-    link: "https://seamain.org",
-    avatar:
-      "https://pub-524ce7a864bb45428804d1b8a36d5de7.r2.dev/41C3EE1A37915E8E63F62929F89287B1.jpg",
-  },
-];
+export const FRIENDS = linksData.friends as Friend[];
 
 /**
  * 本站信息：申请友链时给对方抄的字段。

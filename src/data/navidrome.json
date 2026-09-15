@@ -1,6 +1,6 @@
 {
   "serverUrl": "https://music.frp.wynio.pw:62026",
-  "syncedAt": "2026-09-13T15:25:38.064Z",
+  "syncedAt": "2026-09-15T02:08:38.981Z",
   "albums": [
     {
       "id": "4LKmMz6R9bqf9SWJC29y2Q",
@@ -5126,8 +5126,8 @@
   ],
   "stream": {
     "user": "guest",
-    "token": "6a929b083ed732af4798e08e1acbb4d9",
-    "salt": "2ow03nlbre",
+    "token": "d1a3f310024f3e65c20c4bbf31a7254f",
+    "salt": "21wd14c72x",
     "client": "silentcage-blog"
   }
 }

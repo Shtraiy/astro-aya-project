@@ -1,5 +1,6 @@
 ---
 import Footer from "@components/Footer.astro";
+import GitHubActivity from "@components/GitHubActivity.astro";
 import Header from "@components/Header.astro";
 import Icon from "@components/Icon.astro";
 import SectionBlock from "@components/SectionBlock.astro";
@@ -8,9 +9,15 @@ import Main from "@layouts/Main.astro";
 import socialIcons from "@assets/socialIcons";
 import { SITE, SOCIALS } from "@config";
 import { ABOUT_SITE, EDUCATION, FAVORITES, PROFILE } from "@data/profile";
+import { fetchGitHubActivity, usernameFromUrl } from "@utils/githubActivity";
 
 // 名片上的社交标签：直接读站点的社交配置，加一条链接就多一枚标签
 const socials = SOCIALS.filter(social => social.active);
+
+// GitHub 活跃度（构建时抓一次；抓不到就不渲染这一块）
+const githubUrl = socials.find(social => social.name === "Github")?.href ?? "";
+const githubUser = usernameFromUrl(githubUrl);
+const githubActivity = await fetchGitHubActivity(githubUser);
 ---
 
 <Layout
@@ -140,6 +147,18 @@ const socials = SOCIALS.filter(social => social.active);
         }
       </dl>
     </SectionBlock>
+
+    {
+      githubActivity && (
+        <SectionBlock
+          title="GitHub 活跃度"
+          desc={`${githubUser} 过去一年的提交`}
+          icon="activity"
+        >
+          <GitHubActivity data={githubActivity} username={githubUser} />
+        </SectionBlock>
+      )
+    }
   </Main>
 
   <Footer />

@@ -18,6 +18,7 @@
  *   NAVIDROME_LIMIT        最多同步多少张专辑，默认 500
  *   NAVIDROME_COVER_SIZE   封面边长，默认 300
  *   NAVIDROME_SKIP_COVERS=1 跳过封面下载（只更新列表）
+ *   NAVIDROME_PROXY        HTTP 代理，例如 http://127.0.0.1:7890（本机连不上时才需要）
  */
 
 import { createHash } from "node:crypto";
@@ -25,6 +26,7 @@ import { access, mkdir, writeFile } from "node:fs/promises";
 import { stdin, stdout } from "node:process";
 import path from "node:path";
 import { createInterface } from "node:readline/promises";
+import { getJson, httpGet } from "./lib/http.mjs";
 
 let serverUrl = (process.env.NAVIDROME_URL ?? "").replace(/\/+$/, "");
 let userName = process.env.NAVIDROME_USER ?? "";
@@ -32,6 +34,9 @@ let userPass = process.env.NAVIDROME_PASS ?? "";
 const LIMIT = Number(process.env.NAVIDROME_LIMIT ?? 500);
 const COVER_SIZE = process.env.NAVIDROME_COVER_SIZE ?? "300";
 const SKIP_COVERS = process.env.NAVIDROME_SKIP_COVERS === "1";
+/** 可选：本地网络连不上 Navidrome 时走代理（HTTP 层在 lib/http.mjs） */
+const PROXY = (process.env.NAVIDROME_PROXY ?? "").trim();
+const UA = "SilentCage-Blog/1.0 (https://wynio.pw)";
 
 const OUT_JSON = path.join(process.cwd(), "src", "data", "navidrome.json");
 const COVER_DIR = path.join(process.cwd(), "public", "images", "navidrome");
@@ -152,7 +157,8 @@ const interactive = await resolveCredentials();
 const salt = Math.random().toString(36).slice(2, 12);
 const token = createHash("md5").update(userPass + salt).digest("hex");
 
-function request(method, params = {}) {
+/** 拼出 Subsonic 请求地址（认证信息在查询串里） */
+function urlOf(method, params = {}) {
   const query = new URLSearchParams({
     u: userName,
     t: token,
@@ -162,14 +168,14 @@ function request(method, params = {}) {
     f: "json",
     ...params,
   });
-  return fetch(`${serverUrl}/rest/${method}.view?${query}`);
+  return `${serverUrl}/rest/${method}.view?${query}`;
 }
 
 async function call(method, params) {
-  const res = await request(method, params);
-  if (!res.ok) throw new Error(`${method} 返回 HTTP ${res.status}`);
-
-  const body = await res.json();
+  const body = await getJson(urlOf(method, params), {
+    proxy: PROXY,
+    headers: { "User-Agent": UA },
+  });
   const payload = body["subsonic-response"];
   if (payload?.status !== "ok") {
     const detail = payload?.error
@@ -223,12 +229,10 @@ async function main() {
     for (const [index, album] of albums.entries()) {
       if (!album.coverArt) continue;
       try {
-        const res = await request("getCoverArt", {
-          id: album.coverArt,
-          size: COVER_SIZE,
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const bytes = Buffer.from(await res.arrayBuffer());
+        const bytes = await httpGet(
+          urlOf("getCoverArt", { id: album.coverArt, size: COVER_SIZE }),
+          { binary: true, proxy: PROXY, headers: { "User-Agent": UA } }
+        );
         await writeFile(path.join(COVER_DIR, `${album.id}.jpg`), bytes);
         covers += 1;
       } catch (error) {

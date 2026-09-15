@@ -7,7 +7,14 @@ import remarkCollapse from "remark-collapse";
 import { remarkAlert } from "remark-github-blockquote-alert";
 
 import sitemap from "@astrojs/sitemap";
+import {
+  transformerNotationDiff,
+  transformerNotationErrorLevel,
+  transformerNotationFocus,
+  transformerNotationHighlight,
+} from "@shikijs/transformers";
 import { SITE } from "./src/config";
+import rehypeLazyImages from "./src/plugins/rehype-lazy-images.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,12 +35,28 @@ export default defineConfig({
           },
         ],
       ],
+      // 正文图片统一补上 loading="lazy" / decoding="async"（见插件注释）
+      rehypePlugins: [rehypeLazyImages],
     }),
 
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
       wrap: true,
+      /*
+        代码行的标注语法（写在行尾，渲染时会被自动删掉）：
+          // [!code highlight]      高亮这一行
+          // [!code focus]          聚焦这一行，其余变淡
+          // [!code ++] / [!code --]  diff 增删
+          // [!code error] / [!code warning]
+        样式在 base.css 的「代码行标注」一节。
+      */
+      transformers: [
+        transformerNotationDiff(),
+        transformerNotationHighlight(),
+        transformerNotationFocus(),
+        transformerNotationErrorLevel(),
+      ],
     },
   },
   vite: {

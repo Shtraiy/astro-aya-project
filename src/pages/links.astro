@@ -5,6 +5,41 @@ import SectionBlock from "@components/SectionBlock.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { APPLY_RULES, FRIENDS, SITE_INFO } from "@data/links";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
+/**
+ * 友链圈（朋友们最近写了什么）由 `npm run sync:friend-circle` 在构建时抓取。
+ * 文件不存在（还没同步过）就整块不渲染，不会留一个空标题。
+ */
+interface FriendPost {
+  friend: string;
+  title: string;
+  link: string;
+  date: string | null;
+}
+
+const loadFriendPosts = (): {
+  syncedAt: string | null;
+  posts: FriendPost[];
+} => {
+  try {
+    const file = path.join(process.cwd(), "src", "data", "friends-posts.json");
+    const data = JSON.parse(readFileSync(file, "utf8"));
+    return { syncedAt: data.syncedAt ?? null, posts: data.posts ?? [] };
+  } catch {
+    return { syncedAt: null, posts: [] };
+  }
+};
+
+const { syncedAt, posts: friendPosts } = loadFriendPosts();
+
+const shortDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 ---
 
 <Layout title={`友链 | SilentCage`}>
@@ -82,6 +117,35 @@ import { APPLY_RULES, FRIENDS, SITE_INFO } from "@data/links";
         }
       </ul>
     </SectionBlock>
+
+    {
+      friendPosts.length > 0 && (
+        <SectionBlock
+          title="朋友们最近写了什么"
+          desc="友链圈的订阅快照"
+          icon="book"
+        >
+          <ul class="friend-posts">
+            {friendPosts.map(post => (
+              <li>
+                <a href={post.link} target="_blank" rel="noopener noreferrer">
+                  <span class="friend-post-title">{post.title}</span>
+                  <span class="friend-post-meta">
+                    {post.friend}
+                    {post.date ? ` · ${shortDate(post.date)}` : ""}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          {syncedAt && (
+            <p class="friend-posts-note">
+              构建时抓取，同步于 {shortDate(syncedAt)}
+            </p>
+          )}
+        </SectionBlock>
+      )
+    }
 
     <SectionBlock title="申请友链" desc="让我们成为朋友吧" icon="clipboard">
       <ol class="apply-rules">
@@ -187,6 +251,59 @@ import { APPLY_RULES, FRIENDS, SITE_INFO } from "@data/links";
   }
 
   /* 分区标题（图标块 + 标题 + 说明）走 <SectionBlock>，样式在组件里 */
+
+  /* ── 友链圈：朋友们最近写的文章 ── */
+  .friend-posts {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .friend-posts li + li {
+    border-top: 1px dashed rgb(var(--palette-border));
+  }
+  .friend-posts a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  .friend-posts a:hover {
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 55%,
+      transparent
+    );
+    border-radius: 0.5rem;
+  }
+  .friend-post-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgb(var(--palette-text));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .friend-posts a:hover .friend-post-title {
+    color: rgb(var(--palette-accent));
+  }
+  .friend-post-meta {
+    flex: none;
+    font-size: 0.6875rem;
+    color: rgb(var(--palette-muted-text));
+    white-space: nowrap;
+  }
+  .friend-posts-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.6875rem;
+    color: rgb(var(--palette-muted-text));
+  }
 
   /* ── 友链卡片 ── */
   .friend-grid {

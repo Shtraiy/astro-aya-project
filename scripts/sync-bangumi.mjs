@@ -17,7 +17,11 @@
  *     仓库里的 vercel.json 会把构建命令指到 `npm run build:vercel`
  *
  * 可选环境变量：
- *   BANGUMI_USER        你的 Bangumi 用户名或 UID（必填）
+ *   BANGUMI_USER        你的 Bangumi 用户名，或 UID（必填）
+ *                       ⚠️ 官方接口对「UID」有前提：只有**没设置过用户名**的账号才能用 UID，
+ *                          设置过用户名的账号必须用用户名（个人主页 /user/ 后面那段）。
+ *                          打开 https://bangumi.tv/user/<UID>，如果地址栏跳成了字母形式，
+ *                          那个就是用户名。
  *   BANGUMI_TOKEN       访问令牌，只有收藏设为「私密」或要更高频率限制时才需要
  *   BANGUMI_PROXY       HTTP 代理，例如 http://127.0.0.1:7890
  *                       只有本地同步才需要；数据请求和封面下载都会走它
@@ -32,14 +36,11 @@
  * 就沿用上一次的数据继续构建，只在日志里留一条警告。
  */
 
-import { execFile } from "node:child_process";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { stdin, stdout } from "node:process";
 import { createInterface } from "node:readline/promises";
-import { promisify } from "node:util";
-
-const execFileAsync = promisify(execFile);
+import { getJson, httpGet } from "./lib/http.mjs";
 
 const API = "https://api.bgm.tv";
 /** Bangumi 要求带一个能识别来源的 User-Agent，否则可能被拒 */
@@ -70,39 +71,15 @@ async function ask(question) {
   return answer.trim();
 }
 
-/**
- * 统一走这一层发请求：
- * 配了代理就用 curl（Node 自带的 fetch 不支持代理），没配就用 fetch。
- * binary=true 时返回 Buffer（下载封面用）。
- */
-async function httpGet(url, { binary = false, referer } = {}) {
+/** 请求头：标识用的 UA + 可选 token */
+function bgmHeaders(extra = {}) {
   const headers = { "User-Agent": UA, Accept: "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
-  if (referer) headers.Referer = referer;
-
-  if (proxy) {
-    const args = ["-sS", "-L", "-x", proxy, "-A", UA, "-m", "60"];
-    if (token) args.push("-H", `Authorization: Bearer ${token}`);
-    if (referer) args.push("-H", `Referer: ${referer}`);
-    args.push(url);
-
-    const { stdout: body } = await execFileAsync("curl", args, {
-      encoding: binary ? "buffer" : "utf8",
-      maxBuffer: 128 * 1024 * 1024,
-    });
-    if (binary) return body;
-    return body;
-  }
-
-  // 加超时：CI 里挂着不让它把整个构建拖死（undici 默认要等好几分钟）
-  const res = await fetch(url, { headers, signal: AbortSignal.timeout(30_000) });
-  if (!res.ok) {
-    throw new Error(`${res.status} ${res.statusText} — ${url}`);
-  }
-  return binary ? Buffer.from(await res.arrayBuffer()) : res.text();
+  return { ...headers, ...extra };
 }
 
-const getJson = async url => JSON.parse(await httpGet(url));
+/** 带代理和请求头的 GET（HTTP 层在 lib/http.mjs，两个同步脚本共用） */
+const fetchJson = url => getJson(url, { proxy, headers: bgmHeaders() });
 
 /** 本地是否已经有上一次的快照（决定同步失败时能不能兜底） */
 async function hasExistingSnapshot() {
@@ -124,7 +101,7 @@ async function fetchCollections(username, type) {
       `${API}/v0/users/${encodeURIComponent(username)}/collections` +
       `?subject_type=2&type=${type}&limit=${pageSize}&offset=${offset}`;
 
-    const page = await getJson(url);
+    const page = await fetchJson(url);
     const data = Array.isArray(page?.data) ? page.data : [];
     items.push(...data);
     if (data.length < pageSize) break;
@@ -153,7 +130,11 @@ function normalize(item) {
     // 看到第几话
     epStatus: item.ep_status ?? null,
     volumeStatus: item.vol_status ?? null,
+    /** 你自己的评分（Bangumi 用 0 表示没打分） */
     rate: item.rate > 0 ? item.rate : null,
+    /** 全站均分与排名（条目侧的数据，和上面的个人评分是两回事） */
+    score: subject.score > 0 ? subject.score : null,
+    rank: subject.rank > 0 ? subject.rank : null,
     comment: (item.comment ?? "").trim() || null,
     tags: Array.isArray(item.tags) ? item.tags.slice(0, 6) : [],
     updatedAt: item.updated_at ?? null,
@@ -171,20 +152,32 @@ async function main() {
     userName = await ask("Bangumi 用户名或 UID（例如 shtraiy 或 123456）：");
   }
 
+  if (/^\d+$/.test(userName)) {
+    stdout.write(
+      "  （纯数字按 UID 处理：Bangumi 只有「没设置过用户名」的账号能用 UID；\n" +
+        "    如果下面报 404 用户不存在，请改用个人主页 /user/ 后面那段用户名）\n"
+    );
+  }
+
   stdout.write(`→ 正在读取 ${userName} 的收藏…\n`);
 
   let user;
   try {
-    user = await getJson(`${API}/v0/users/${encodeURIComponent(userName)}`);
+    user = await fetchJson(`${API}/v0/users/${encodeURIComponent(userName)}`);
+    // 接口 404 时也会返回一段合法 JSON（错误对象），这里挡一下，
+    // 否则会拿着一个不存在的用户名继续往下跑，报错还看不懂
+    if (!user?.id) throw new Error("接口返回的不是用户对象");
   } catch (error) {
     throw new Error(
       [
         `拿不到用户信息：${error.message}`,
         "",
         "常见原因：",
-        "  1. 用户名写错了（用 UID 数字也行）",
-        "  2. 这台机器连不上 bgm.tv —— 换个网络，或者配 BANGUMI_PROXY 走代理",
-        "  3. 收藏设成了「私密」—— 需要在 .env 里补 BANGUMI_TOKEN",
+        "  1. 填的是 UID，但账号设置过用户名 —— 官方接口此时只认用户名，",
+        "     换成 https://bangumi.tv/user/<UID> 跳转后地址栏里的那个名字",
+        "  2. 用户名写错了",
+        "  3. 这台机器连不上 bgm.tv —— 换个网络，或者配 BANGUMI_PROXY 走代理",
+        "  4. 收藏设成了「私密」—— 需要在 .env 里补 BANGUMI_TOKEN",
       ].join("\n")
     );
   }
@@ -222,7 +215,8 @@ async function main() {
       try {
         const buffer = await httpGet(item.cover, {
           binary: true,
-          referer: "https://bgm.tv/",
+          proxy,
+          headers: bgmHeaders({ Referer: "https://bgm.tv/" }),
         });
         const file = path.join(COVER_DIR, `${item.id}.jpg`);
         await writeFile(file, buffer);

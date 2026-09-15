@@ -276,60 +276,45 @@ const stats = [
 </Layout>
 
 <script>
+  import { initChipFilter } from "@utils/chipFilter";
+
   /*
-    艺术家筛选：纯前端过滤，按钮和卡片都在同一页，没 JS 时列表照常完整显示。
+    收藏页的交互：艺术家筛选（共用工具）+「展开全部」药丸。
     用 astro:page-load 而不是只在模块顶层跑一次 —— 站内客户端跳转进来时，
     模块脚本不会重新执行。
   */
-  function initCollectionFilter() {
-    const buttons = Array.from(
-      document.querySelectorAll<HTMLButtonElement>("[data-artist-filter]")
-    );
-    const items = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-artist]")
-    );
-    if (!buttons.length || !items.length) return;
-
-    const buttonsBound = buttons.some(b => b.dataset.bound === "true");
-    if (buttonsBound) return;
-
-    // 「展开全部」：默认收起多出来的艺术家药丸
-    const extraChips = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-artist-chip]")
-    ).filter(el => el.hidden);
+  function initArtistChipsToggle() {
     const toggle = document.querySelector<HTMLButtonElement>(
       "[data-artist-toggle]"
     );
-    const toggleLabel = toggle?.textContent ?? "";
-    toggle?.addEventListener("click", () => {
+    if (!toggle || toggle.dataset.bound === "true") return;
+    toggle.dataset.bound = "true";
+
+    // 「展开全部」：默认收起的那批艺术家药丸
+    const extraChips = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-artist-chip]")
+    );
+    const toggleLabel = toggle.textContent ?? "";
+    toggle.addEventListener("click", () => {
       const expanded = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", String(!expanded));
       for (const chip of extraChips) chip.hidden = expanded;
       toggle.textContent = expanded ? toggleLabel : "收起";
     });
-
-    const apply = (value: string) => {
-      for (const button of buttons) {
-        button.classList.toggle(
-          "is-current",
-          button.dataset.artistFilter === value
-        );
-      }
-      for (const item of items) {
-        item.hidden = value !== "all" && item.dataset.artist !== value;
-      }
-    };
-
-    for (const button of buttons) {
-      button.dataset.bound = "true";
-      button.addEventListener("click", () => {
-        apply(button.dataset.artistFilter ?? "all");
-      });
-    }
   }
 
-  initCollectionFilter();
-  document.addEventListener("astro:page-load", initCollectionFilter);
+  function initCollectionPage() {
+    initChipFilter({
+      buttonSelector: "[data-artist-filter]",
+      buttonKey: "artistFilter",
+      itemSelector: "[data-artist]",
+      itemKey: "artist",
+    });
+    initArtistChipsToggle();
+  }
+
+  initCollectionPage();
+  document.addEventListener("astro:page-load", initCollectionPage);
 </script>
 
 <style>

@@ -64,12 +64,11 @@ const payload = { serverUrl, stream, albums: playable };
         class="np-icon-btn"
         id="np-close"
         type="button"
-        title="关闭"
-        aria-label="关闭播放器"
+        title="最小化（继续播放）"
+        aria-label="最小化播放器"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12"></path>
-          <path d="M18 6L6 18"></path>
+          <path d="M6 9l6 6l6 -6"></path>
         </svg>
       </button>
     </div>
@@ -97,11 +96,11 @@ const payload = { serverUrl, stream, albums: playable };
 
     <div class="np-ctrl">
       <button
-        class="np-icon-btn"
+        class="np-icon-btn np-mode"
         id="np-shuffle"
         type="button"
-        title="随机播放（本专辑内）"
-        aria-label="随机播放"
+        title="切换播放模式：顺序 / 随机（仅本专辑）"
+        aria-label="播放模式"
         aria-pressed="false"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -111,6 +110,7 @@ const payload = { serverUrl, stream, albums: playable };
           <path d="M15 15l6 6"></path>
           <path d="M4 4l5 5"></path>
         </svg>
+        <span class="np-mode-label" id="np-mode-label">顺序</span>
       </button>
       <button
         class="np-icon-btn"
@@ -186,6 +186,72 @@ const payload = { serverUrl, stream, albums: playable };
         />
       </div>
     </div>
+  </div>
+
+  <!--
+    最小化后的迷你条：面板上的 ↓ 只是把窗口收起来，音频继续放；
+    这里点标题区展开回去，✕ 才是真的停止。
+  -->
+  <div class="np-mini" id="np-mini" hidden>
+    <button
+      class="np-mini-main"
+      id="np-mini-open"
+      type="button"
+      title="展开播放器"
+      aria-label="展开播放器"
+    >
+      <img
+        class="np-mini-cover"
+        id="np-mini-cover"
+        alt=""
+        width="36"
+        height="36"
+      />
+      <span class="np-mini-text">
+        <span class="np-mini-title" id="np-mini-title"></span>
+        <span class="np-mini-sub" id="np-mini-sub"></span>
+      </span>
+      <span class="np-eq np-mini-eq" aria-hidden="true"
+        ><i></i><i></i><i></i></span
+      >
+    </button>
+    <button
+      class="np-icon-btn"
+      id="np-mini-play"
+      type="button"
+      aria-label="播放"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        class="fill-icon"
+        id="np-mini-icon-play"
+      >
+        <path d="M7 5v14l12-7z"></path>
+      </svg>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        class="fill-icon"
+        id="np-mini-icon-pause"
+        style="display:none"
+      >
+        <rect x="5" y="4" width="5" height="16" rx="1"></rect>
+        <rect x="14" y="4" width="5" height="16" rx="1"></rect>
+      </svg>
+    </button>
+    <button
+      class="np-icon-btn"
+      id="np-mini-stop"
+      type="button"
+      title="停止并关闭"
+      aria-label="停止并关闭播放器"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12"></path>
+        <path d="M18 6L6 18"></path>
+      </svg>
+    </button>
   </div>
 
   <script
@@ -594,6 +660,110 @@ const payload = { serverUrl, stream, albums: playable };
   .np-play:active {
     transform: scale(0.97);
   }
+
+  /* ── 播放模式按钮：图标 + 「顺序 / 随机」文字 ── */
+  .np-mode {
+    width: auto;
+    gap: 0.3125rem;
+    padding-inline: 0.5rem;
+  }
+  .np-mode-label {
+    font-size: 0.6875rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ── 最小化后的迷你条 ── */
+  .np-mini {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: min(23rem, calc(100vw - 2rem));
+    padding: 0.375rem 0.5rem 0.375rem 0.375rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 999px;
+    background-color: rgb(var(--palette-fill));
+    box-shadow: 0 14px 36px rgb(0 0 0 / 0.22);
+  }
+  .np-mini[hidden] {
+    display: none;
+  }
+  @media (max-width: 40rem) {
+    .np-mini {
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      max-width: none;
+    }
+  }
+  .np-mini-main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    padding: 0.125rem;
+    border: none;
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .np-mini-cover {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    background-color: rgb(var(--palette-muted));
+  }
+  .np-mini-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .np-mini-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(var(--palette-text));
+    transition: color 0.2s ease;
+  }
+  .np-mini-main:hover .np-mini-title {
+    color: rgb(var(--palette-accent));
+  }
+  .np-mini-sub {
+    font-size: 0.6875rem;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(var(--palette-muted-text));
+  }
+  /* 迷你条里的音浪条：只在播放时显示/动 */
+  .np-mini-eq {
+    margin-inline-start: 0.25rem;
+  }
+  .np-mini.is-playing .np-mini-eq {
+    display: flex;
+  }
+  .np-mini:not(.is-playing) .np-eq i {
+    animation-play-state: paused;
+  }
+  #np-mini-icon-play,
+  #np-mini-icon-pause {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
 </style>
 
 <script>
@@ -676,6 +846,28 @@ const payload = { serverUrl, stream, albums: playable };
     const volSlider = document.getElementById("np-vol") as HTMLInputElement;
     const volOn = document.getElementById("np-vol-on") as HTMLElement;
     const volMute = document.getElementById("np-vol-mute") as HTMLElement;
+    const mini = document.getElementById("np-mini") as HTMLElement;
+    const miniCover = document.getElementById(
+      "np-mini-cover"
+    ) as HTMLImageElement;
+    const miniTitle = document.getElementById("np-mini-title") as HTMLElement;
+    const miniSub = document.getElementById("np-mini-sub") as HTMLElement;
+    const miniOpen = document.getElementById(
+      "np-mini-open"
+    ) as HTMLButtonElement;
+    const miniPlayBtn = document.getElementById(
+      "np-mini-play"
+    ) as HTMLButtonElement;
+    const miniStopBtn = document.getElementById(
+      "np-mini-stop"
+    ) as HTMLButtonElement;
+    const miniIconPlay = document.getElementById(
+      "np-mini-icon-play"
+    ) as HTMLElement;
+    const miniIconPause = document.getElementById(
+      "np-mini-icon-pause"
+    ) as HTMLElement;
+    const modeLabel = document.getElementById("np-mode-label") as HTMLElement;
 
     let albumIndex = -1;
     let trackIndex = -1;
@@ -685,6 +877,10 @@ const payload = { serverUrl, stream, albums: playable };
     let failedStreak = 0;
     /** 当前专辑的播放顺序（开随机时是打乱后的） */
     let queue: number[] = [];
+    /** 是否已经载入过专辑：面板和迷你条至少有一个在 */
+    let opened = false;
+    /** 面板收起成迷你条（音频继续放，不是停止） */
+    let minimized = false;
 
     // 音量 / 随机开关记在本机，下次打开还是这个设置
     const readStored = <T,>(key: string, fallback: T): T => {
@@ -711,7 +907,12 @@ const payload = { serverUrl, stream, albums: playable };
 
     let shuffle = readStored("shuffle", false);
     let lastVolume = readStored("volume", 80);
-    shuffleBtn.setAttribute("aria-pressed", String(shuffle));
+    /** 播放模式：按钮上的文字提示当前是顺序还是随机 */
+    const syncMode = () => {
+      shuffleBtn.setAttribute("aria-pressed", String(shuffle));
+      modeLabel.textContent = shuffle ? "随机" : "顺序";
+    };
+    syncMode();
 
     const album = () => payload.albums[albumIndex];
 
@@ -721,6 +922,28 @@ const payload = { serverUrl, stream, albums: playable };
       playBtn.setAttribute("aria-label", playing ? "暂停" : "播放");
       // 面板上的 is-playing 用来控制音浪条动画
       panel.classList.toggle("is-playing", playing);
+      // 迷你条上的播放键和音浪条跟着一起切
+      mini.classList.toggle("is-playing", playing);
+      miniIconPlay.style.display = playing ? "none" : "";
+      miniIconPause.style.display = playing ? "" : "none";
+      miniPlayBtn.setAttribute("aria-label", playing ? "暂停" : "播放");
+    }
+
+    /** 迷你条上的封面 / 曲名 / 作者 */
+    function syncMini() {
+      const current = album();
+      const item = current?.tracks[trackIndex];
+      miniCover.src = current?.cover ?? "";
+      miniCover.alt = current?.name ?? "";
+      miniTitle.textContent = item?.title ?? current?.name ?? "";
+      miniSub.textContent = current?.artist ?? "";
+    }
+
+    /** 面板和迷你条二选一：收起时只留右下方那一条 */
+    function syncPanels() {
+      panel.hidden = !opened || minimized;
+      mini.hidden = !opened || !minimized;
+      if (opened) syncMini();
     }
 
     /** 按当前专辑重建播放顺序；开了随机就洗牌 */
@@ -736,13 +959,27 @@ const payload = { serverUrl, stream, albums: playable };
       queue = order;
     }
 
-    /** 队列里往前走/往后走一步（不循环出专辑） */
-    function step(delta: number) {
+    /**
+     * 队列里往前走/往后走一步（走到头会绕回，不会跑出这张专辑）。
+     * auto = true 表示是「上一首放完了」自动接的：随机模式下会重新洗牌，
+     * 免得一整轮下来顺序固定得像歌单。
+     */
+    function step(delta: number, auto = false) {
       const current = album();
       if (!current) return;
       if (queue.length !== current.tracks.length) buildQueue();
       const at = queue.indexOf(trackIndex);
-      const next = at < 0 ? 0 : (at + delta + queue.length) % queue.length;
+      let next = (at < 0 ? 0 : at) + delta;
+      if (next < 0 || next >= queue.length) {
+        if (auto && shuffle && trackIndex >= 0) {
+          // 当前这首留在队首，避免刚洗完牌又立刻转回同一首
+          buildQueue();
+          queue = [trackIndex, ...queue.filter(index => index !== trackIndex)];
+          next = 1;
+        } else {
+          next = (next + queue.length) % queue.length;
+        }
+      }
       playTrack(queue[next]);
     }
 
@@ -785,6 +1022,8 @@ const payload = { serverUrl, stream, albums: playable };
       highlight();
       const item = current.tracks[index];
       nowEl.textContent = item.title;
+      // 迷你条上的曲名也要跟着换（收起状态时用户只能看到它）
+      miniTitle.textContent = item.title;
       setStatus("加载中…");
       audio.src = streamUrl(payload, item.id);
       durEl.textContent = item.duration ? fmt(item.duration) : "0:00";
@@ -798,6 +1037,17 @@ const payload = { serverUrl, stream, albums: playable };
     function openAlbum(index: number) {
       const current = payload.albums[index];
       if (!current) return;
+      /*
+        同一张专辑再点一次（或从迷你条展开）：只是把窗口收回来，
+        不重置曲目、也不打断正在放的那首。
+      */
+      if (opened && index === albumIndex) {
+        minimized = false;
+        syncPanels();
+        return;
+      }
+      opened = true;
+      minimized = false;
       albumIndex = index;
       trackIndex = -1;
       nowEl.textContent = "";
@@ -813,15 +1063,37 @@ const payload = { serverUrl, stream, albums: playable };
         extLink.hidden = true;
       }
       renderTracks();
-      panel.hidden = false;
+      syncPanels();
       buildQueue();
       // 点击专辑本身就是用户手势，可以直接开始；开了随机就随机选一首起头
       playTrack(shuffle ? (queue[0] ?? 0) : 0);
     }
 
-    function close() {
+    /** 收起窗口：音频继续放，右下角留一条迷你条可以再展开 */
+    function minimize() {
+      if (!opened) return;
+      minimized = true;
+      setStatus(null);
+      syncPanels();
+    }
+
+    /** 展开回完整面板 */
+    function restore() {
+      if (!opened) return;
+      minimized = false;
+      syncPanels();
+    }
+
+    /** 真正停止：暂停、清掉音源、两个窗口一起收掉 */
+    function stop() {
       audio.pause();
-      panel.hidden = true;
+      audio.removeAttribute("src");
+      audio.load();
+      playing = false;
+      syncIcon();
+      opened = false;
+      minimized = false;
+      syncPanels();
       setStatus(null);
     }
 
@@ -867,12 +1139,20 @@ const payload = { serverUrl, stream, albums: playable };
     document
       .getElementById("np-next")
       ?.addEventListener("click", () => step(1));
-    document.getElementById("np-close")?.addEventListener("click", close);
+    // 面板上的 ↓ 只是最小化（音乐继续），迷你条上的 ✕ 才是停止
+    document.getElementById("np-close")?.addEventListener("click", minimize);
+    miniOpen.addEventListener("click", restore);
+    miniStopBtn.addEventListener("click", stop);
+    miniPlayBtn.addEventListener("click", () => {
+      if (trackIndex < 0) return;
+      if (playing) audio.pause();
+      else audio.play().catch(() => {});
+    });
 
     // 随机播放（只在当前专辑内洗牌）
     shuffleBtn.addEventListener("click", () => {
       shuffle = !shuffle;
-      shuffleBtn.setAttribute("aria-pressed", String(shuffle));
+      syncMode();
       writeStored("shuffle", shuffle);
       buildQueue();
       // 洗牌后把当前这首放到队首，避免刚点开就被换歌
@@ -929,6 +1209,8 @@ const payload = { serverUrl, stream, albums: playable };
       点了没反应也看不出原因。现在会给出原因并自动跳下一首。
     */
     audio.addEventListener("error", () => {
+      // 用户已经停止（或窗口已收掉）时不要自作主张再跳下一首
+      if (!opened) return;
       failedStreak += 1;
       const current = album();
       const detail = audio.error ? `（code ${audio.error.code}）` : "";
@@ -938,7 +1220,7 @@ const payload = { serverUrl, stream, albums: playable };
       }
       setStatus(`这首播放失败${detail}，正在跳到下一首…`, true);
       window.setTimeout(() => {
-        if (host.isConnected && failedStreak < 3) step(1);
+        if (opened && host.isConnected && failedStreak < 3) step(1);
       }, 900);
     });
     audio.addEventListener("pause", () => {
@@ -946,7 +1228,8 @@ const payload = { serverUrl, stream, albums: playable };
       syncIcon();
     });
     audio.addEventListener("ended", () => {
-      step(1);
+      // 播完自动接下一首：顺序模式按列表走，随机模式在洗好的队列里走
+      step(1, true);
     });
     audio.addEventListener("timeupdate", () => {
       if (seeking || !audio.duration) return;
@@ -986,7 +1269,7 @@ const payload = { serverUrl, stream, albums: playable };
     progress.addEventListener("pointercancel", endSeek);
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && !panel.hidden) close();
+      if (event.key === "Escape" && !panel.hidden) minimize();
     });
 
     /*
@@ -998,6 +1281,8 @@ const payload = { serverUrl, stream, albums: playable };
       audio.removeAttribute("src");
       audio.load();
       playing = false;
+      opened = false;
+      minimized = false;
       syncIcon();
     };
     document.addEventListener("astro:before-swap", release, { once: true });

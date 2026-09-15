@@ -25,7 +25,8 @@ export type IconName =
   | "map-pin"
   | "tool"
   | "heart"
-  | "school";
+  | "school"
+  | "activity";
 
 interface Props {
   name: IconName;
@@ -128,6 +129,9 @@ const icons: Record<IconName, string> = {
   school: `
     <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
     <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
+  `,
+  activity: `
+    <path d="M3 12h4l3 8l4 -16l3 8h4" />
   `,
 };
 ---

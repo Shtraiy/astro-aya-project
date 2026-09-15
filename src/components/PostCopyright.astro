@@ -35,6 +35,18 @@ const publishedAt = pubDatetime.toLocaleDateString("zh-CN", {
   day: "numeric",
 });
 
+/*
+  中文 slug 在地址里是百分号编码的（/posts/NAS%E6%8A%98...），直接显示又长又难认。
+  这里只在「显示」时解码，复制和二维码仍用真实地址。解码失败就退回原样。
+*/
+const displayUrl = (() => {
+  try {
+    return decodeURI(url);
+  } catch {
+    return url;
+  }
+})();
+
 const shareText = encodeURIComponent(title);
 const shareUrl = encodeURIComponent(url);
 
@@ -55,7 +67,7 @@ const shares = [
 
   <div class="post-copyright-head">
     <span class="post-copyright-title">{title}</span>
-    <span class="post-copyright-url">{url}</span>
+    <span class="post-copyright-url">{displayUrl}</span>
   </div>
 
   <dl class="post-copyright-meta">

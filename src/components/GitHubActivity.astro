@@ -1,0 +1,161 @@
+---
+import type { ActivityGrid } from "@utils/githubActivity";
+
+/**
+ * GitHub 活跃度热力图（纯 SVG，无 JS、无第三方组件）。
+ * 数据在 about 页里用 fetchGitHubActivity() 抓好传进来，抓不到就不渲染这个组件。
+ */
+interface Props {
+  data: ActivityGrid;
+  username: string;
+}
+
+const { data, username } = Astro.props;
+
+const BLOCK = 12;
+const GAP = 4;
+const LABEL_ROW = 18;
+
+const width = data.weeks.length * (BLOCK + GAP) - GAP;
+const height = LABEL_ROW + 7 * (BLOCK + GAP) - GAP;
+const x = (week: number) => week * (BLOCK + GAP);
+const y = (day: number) => LABEL_ROW + day * (BLOCK + GAP);
+---
+
+<div class="gh-activity">
+  <div class="gh-scroll">
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      width={width}
+      height={height}
+      role="img"
+      aria-label={`${username} 过去一年的 GitHub 提交热力图，共 ${data.total} 次提交`}
+    >
+      {
+        data.months.map(month => (
+          <text class="gh-month" x={x(month.week)} y={11}>
+            {month.label}
+          </text>
+        ))
+      }
+      {
+        data.weeks.map((week, weekIndex) =>
+          week.map((day, dayIndex) =>
+            day ? (
+              <rect
+                class={`gh-cell is-level-${day.level}`}
+                x={x(weekIndex)}
+                y={y(dayIndex)}
+                width={BLOCK}
+                height={BLOCK}
+                rx="2.5"
+              >
+                <title>{`${day.date}：${day.count} 次提交`}</title>
+              </rect>
+            ) : null
+          )
+        )
+      }
+    </svg>
+  </div>
+
+  <p class="gh-meta">
+    过去一年在 GitHub 提交了 <strong>{data.total}</strong> 次
+    <span class="gh-legend" aria-hidden="true">
+      少
+      <i class="gh-cell is-level-0"></i>
+      <i class="gh-cell is-level-1"></i>
+      <i class="gh-cell is-level-2"></i>
+      <i class="gh-cell is-level-3"></i>
+      <i class="gh-cell is-level-4"></i>
+      多
+    </span>
+  </p>
+</div>
+
+<style>
+  @reference "../styles/base.css";
+
+  .gh-activity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  /* 窄屏放不下一年 53 列，横向滚动（和 GitHub 自己的做法一致） */
+  .gh-scroll {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+  svg {
+    display: block;
+    /* 图表本身颜色走别处，这里只兜底背景 */
+    background: none;
+  }
+  .gh-month {
+    font-size: 9px;
+    fill: rgb(var(--palette-muted-text));
+  }
+  .gh-cell {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+  }
+  .is-level-0 {
+    fill: color-mix(in srgb, rgb(var(--palette-muted-text)) 16%, transparent);
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted-text)) 16%,
+      transparent
+    );
+  }
+  .is-level-1 {
+    fill: color-mix(in srgb, rgb(var(--palette-accent)) 28%, transparent);
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 28%,
+      transparent
+    );
+  }
+  .is-level-2 {
+    fill: color-mix(in srgb, rgb(var(--palette-accent)) 45%, transparent);
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 45%,
+      transparent
+    );
+  }
+  .is-level-3 {
+    fill: color-mix(in srgb, rgb(var(--palette-accent)) 68%, transparent);
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 68%,
+      transparent
+    );
+  }
+  .is-level-4 {
+    fill: rgb(var(--palette-accent));
+    background-color: rgb(var(--palette-accent));
+  }
+
+  .gh-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .gh-meta strong {
+    color: rgb(var(--palette-text));
+  }
+  .gh-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1875rem;
+    font-size: 0.6875rem;
+  }
+  .gh-legend i {
+    border-radius: 2.5px;
+  }
+</style>

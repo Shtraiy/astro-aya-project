@@ -1,318 +1,127 @@
 # SilentCage
 
-个人博客，基于 [AstroPaper](https://github.com/satnaing/astro-paper) 改编。
+个人博客：随笔 + 技术笔记 + 音乐收藏 + 追番 + 友链圈。
+基于 [AstroPaper](https://github.com/satnaing/astro-paper) 改编，Astro 7 + Tailwind 4，
+**纯静态输出**。
 
-> **Attribution:** This project is adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://satnaing.dev), licensed under the [MIT License](LICENSE). Original copyright © 2023 Sat Naing.
+> **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
+> [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
 
-当前版本 **v1.1.0**（主题元数据见 `package.json`）。
+---
 
-## 功能
+## 30 秒理解这个项目
 
-- 文章列表、标签、归档、分页与模糊搜索（Fuse.js）
-- 音乐收藏（`/collection`）：从 Navidrome 同步的音乐库快照，封面墙 + 艺术家筛选 +
-  站内浮空播放窗（进度、音量、随机、逐首失败跳过）
-- 追番（`/anime`）：从 Bangumi 同步的收藏快照，按在看 / 想看 / 看过 / 搁置 / 抛弃分组，
-  带评分角标与「看到第几话」进度
-- 文章页：目录、阅读进度条、代码块语言标签与一键复制、图片灯箱
-- 文章底部版权卡：作者 / 日期 / CC 协议，复制链接、二维码、微博与 X 分享
-- 文章内的步骤条、标签页、可折叠块、剧透（见下方「文章里可嵌入的块」）
-- 友链页面（`/links`）：卡片随机排序 + 头像渐隐背景 + 本站信息点击复制
-- 关于页：站长信息 + 教育经历卡片
-- 首页「左标签 · 右内容」分区版式（关于我 / 统计 / 置顶 / 最近文章）
-- RSS、sitemap、robots.txt
-- 每篇文章在构建时自动生成 OG 分享图，站点另有默认图 `/og.png`
-- 浅色 / 深色主题，中文排版（霞鹜文楷屏幕版）
+- **纯静态**：页面在构建时生成，运行时不查数据库、不调外部 API。外部数据都在构建时
+  抓成 JSON 快照（`src/data/*.json`）+ 本地图片（`public/images/*`）。
+- **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
+  Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
+- **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
+  （⚠️ 见 [docs/data-sync.md](docs/data-sync.md) 的「播放凭据」）。
+- **部署**：Vercel。`vercel.json` 把构建命令设成 `npm run build:vercel`，
+  会在构建前自动跑同步脚本。Node `>= 22.12`（`.nvmrc` 指定 24）。
 
-## 技术栈
+## 目录地图
 
-| 用途     | 方案                                                                                                                  |
-| :------- | :-------------------------------------------------------------------------------------------------------------------- |
-| 框架     | [Astro](https://astro.build/) 7（静态输出）                                                                           |
-| 类型     | TypeScript 5                                                                                                          |
-| 交互组件 | React 18（搜索框等）                                                                                                  |
-| 样式     | Tailwind CSS 4，通过 `@tailwindcss/vite` 接入，配置写在 `src/styles/base.css`                                         |
-| Markdown | `@astrojs/markdown-remark` 的 unified 管线，插件：`remark-toc` / `remark-collapse` / `remark-github-blockquote-alert` |
-| 代码高亮 | Shiki（浅色 min-light / 深色 night-owl 双主题）                                                                       |
-| OG 图片  | satori + `@resvg/resvg-js`，字体从 Google Fonts 与其镜像获取，woff/woff2 用 `fontverter` 转成 satori 可读的 sfnt      |
+> 找工作方式看这里，不必逐个文件打开。
 
-## 环境要求
-
-- Node.js `>= 22.12.0`（Astro 7 的要求），`.nvmrc` 指定 24
-- npm `>= 9`
-
-## 本地开发
-
-```bash
-npm install
-npm run dev      # http://localhost:4321
+```
+src/
+├── config.ts              站点信息、社交链接 SOCIALS（导航、关于页名片都读它）
+├── content.config.ts      blog 集合的 schema（注意：不在 src/content 里）
+├── content/blog/          文章 .md，文件名即 URL 片段（支持中文）
+├── data/
+│   ├── profile.ts         关于页/首页共用的个人信息，改数据只动这里
+│   ├── links.json         友链数据源（页面和同步脚本共用）
+│   ├── links.ts           给 links.json 补类型，外加本站信息/申请须知
+│   ├── navidrome.json     音乐快照（sync:navidrome 生成，⚠️ 含播放凭据）
+│   ├── bangumi.json       追番快照（sync:bangumi 生成）
+│   └── friends-posts.json 友链圈快照（sync:friend-circle 生成）
+├── layouts/
+│   ├── Layout.astro       <html> 骨架、字体、ClientRouter、主题脚本
+│   ├── Main.astro         常规页面容器 + 统一页头（图标块 + 标题 + 说明）
+│   ├── PostDetails.astro  文章页：正文、版权卡、上下篇、评论区挂载点、文章级脚本
+│   └── Posts / TagPosts / AboutLayout / LinksLayout / CommonPage
+├── components/
+│   ├── Card.tsx           文章列表卡片（首页/列表/标签页共用）
+│   ├── Section.astro      「左标签 · 右内容」版式（首页分区）
+│   ├── SectionBlock.astro 「图标块 + 标题 + 说明」分区（关于页/友链页）
+│   ├── StatsStrip.astro   分段统计条（首页/收藏/追番共用，容器查询自适应列数）
+│   ├── CollectionPlayer.astro 收藏页浮空播放窗 + 最小化迷你条（播放逻辑都在这里）
+│   ├── Comments.astro     评论区（Waline，默认关闭，未配置时整块不渲染）
+│   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
+│   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
+│   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Search
+├── pages/                 路由：posts / tags / archives / search / about /
+│                          links / collection（音乐）/ anime（追番）
+├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
+├── utils/                 纯函数：阅读时间、slug、标签色、chip 筛选、
+│                          GitHub 活跃度、OG 图模板
+└── plugins/               markdown 管线插件（图片懒加载等）
+scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支持代理）
+deploy/waline/             评论服务端部署说明（评论默认关闭）
+docs/                      详细文档：content / data-sync / deploy
 ```
 
-构建与预览：
+## 关键约定与坑（改代码前扫一眼）
 
-```bash
-npm run build    # astro check && astro build，产物在 ./dist
-npm run preview
-```
+1. **颜色写法**：`--palette-*` 存的是 `"R, G, B"` 三元组，用 `rgb(var(--palette-x))`。
+   要透明度用 `color-mix(in srgb, rgb(var(--palette-x)) 40%, transparent)`；
+   `rgb(var(--x) / 0.4)` 是非法语法，**整条声明会被浏览器丢掉**。
+   语义色（`--color-background` 等）在 `base.css` 的 `@theme inline` 里映射。
+2. **根字号 18px**：页面里的 `rem` 按 18px 算，媒体查询里的 `rem` 按 16px 算
+   —— 涉及宽度阈值的写 `px`，别用 `rem` 猜。
+3. **Astro scoped style**：脚本用 `innerHTML` 生成的元素拿不到 scope 类，
+   这类样式必须写在 `<style is:global>`（`CollectionPlayer.astro` 就是例子）。
+4. **内联脚本**要加 `data-astro-rerun` 才会在站内软跳转后重跑；
+   重复绑定用 `dataset.bound` 守卫（`utils/chipFilter.ts` 已内置这套）。
+5. **`.md` 里可以写 HTML**，但标签后要**空一行**内容才按 markdown 解析；
+   `<style>` 会原样输出成全局样式。能用 `.astro` 就别用这个写法。
+6. **类名别撞 Tailwind 工具类**：`.collapse` 会让内容 `visibility: collapse`
+   —— 折叠块因此叫 `.collapsible`。
+7. `base.css` 有一条「正文链接 hover 反白」（`.prose a:hover`）。
+   整块卡片级别的链接要加 `class="card-link"` 豁免，否则鼠标移上去整张卡会被刷成深色。
+8. 统计条用**容器查询**（容器是 `#main-content` 和 `.section-row-body`），
+   别改回媒体查询：首页那条会被塞进窄栏，按视口判断会把日期挤成两行。
+9. `base.css` 把 `section` 统一成 `mx-auto max-w-3xl px-4`；组件里要用
+   `<section>` 记得重置（见 `SectionBlock.astro`）。
+10. **构建时快照**：页面不做运行时请求（音频流除外）。改了 Bangumi / Navidrome /
+    友链，要重跑同步脚本再构建。
 
 ## 常用命令
 
-| 命令                     | 说明                                     |
-| :----------------------- | :--------------------------------------- |
-| `npm run dev`            | 启动开发服务器（`localhost:4321`）       |
-| `npm run build`          | 类型检查 + 构建生产版本到 `./dist`       |
-| `npm run build:vercel`   | 先同步 Bangumi 追番再构建（Vercel 用）   |
-| `npm run preview`        | 本地预览构建结果                         |
-| `npm run sync`           | 生成内容集合的类型声明                   |
-| `npm run sync:navidrome` | 同步音乐收藏 → `src/data/navidrome.json` |
-| `npm run sync:bangumi`   | 同步追番列表 → `src/data/bangumi.json`   |
-| `npm run lint`           | ESLint 检查                              |
-| `npm run format`         | Prettier 格式化                          |
-| `npm run format:check`   | 只检查格式，不写入（CI 用这个）          |
-
-## 项目结构
-
-```
-/
-├── .github/workflows/ci.yml     # CI：npm ci → lint → format:check → build
-├── deploy/waline/               # Waline 评论服务端的 docker-compose 与部署说明
-├── public/                      # 静态资源（图片、图标、播放器脚本）
-├── scripts/                     # Navidrome / Bangumi 同步脚本
-├── src/
-│   ├── assets/socialIcons.ts    # 社交图标
-│   ├── components/              # 组件
-│   ├── content/
-│   │   ├── blog/                # 文章（.md）
-│   │   └── albums/              # 音乐专辑（.md，已无页面消费，仅作留档）
-│   ├── content.config.ts        # 内容集合的 schema（注意：不在 src/content 里）
-│   ├── layouts/
-│   ├── data/navidrome.json      # Navidrome 收藏快照（由 sync:navidrome 生成）
-│   ├── data/bangumi.json        # Bangumi 追番快照（由 sync:bangumi 生成）
-│   ├── data/links.ts            # 友链列表与本站信息（友链页数据源）
-│   ├── pages/                   # 路由：posts / tags / archives / collection / anime / links …
-│   ├── styles/base.css          # Tailwind 主题与全局样式
-│   ├── utils/                   # 排序、标签、OG 图片生成等
-│   └── config.ts                # 站点信息、社交链接
-├── astro.config.ts
-├── vercel.json                  # Vercel 构建命令（含追番同步）
-└── package.json
-```
-
-## Navidrome 音乐收藏
-
-`/collection` 页面的数据来自 Navidrome（走它内置的 Subsonic API），在**构建时**同步成
-`src/data/navidrome.json`。所以站点仍然是纯静态的：运行时不连 Navidrome，前端也不含任何凭据。
-
-同步步骤（两种方式任选）：
-
-1. **直接跑，脚本会问你要凭据**（推荐，密码不回显、不进 Shell 历史）
-
-   ```bash
-   npm run sync:navidrome
-   ```
-
-   依次输入 Navidrome 地址（公网 https）、用户名、密码。跑完会问要不要写进
-   `.env`（已 gitignore），写了以后就不用再输。
-
-2. **先用 `.env` 配好**（适合 CI / 无人值守）：复制 `.env.example` 为 `.env`，填
-   `NAVIDROME_URL` / `NAVIDROME_USER` / `NAVIDROME_PASS`，再跑同一条命令。
-
-同步会做两件事：
-
-- 拉取专辑列表 → `src/data/navidrome.json`
-- 下载专辑封面 → `public/images/navidrome/`（页面运行时不依赖 Navidrome 在线）
-
-最后 `npm run build` 重新构建即可。建议在 Navidrome 里单独建一个**非管理员**账号给这一步用。
-
-数据是构建时快照：Navidrome 里新增专辑后，重跑一次同步再构建即可。
-
-### 站内播放与安全
-
-收藏页点封面会打开一个浮空播放窗，音频直连 Navidrome 的 Subsonic `/rest/stream`
-（支持 Range，所以可以拖进度条），不经过本站服务器。
-
-这个接口需要认证，所以同步时会往 `src/data/navidrome.json` 写一份 `stream` 凭据
-（`u` / `t` / `s`；其中 `t = md5(密码 + salt)`，而 Subsonic 接受任意 salt，
-所以它等同于一份**长期有效**的凭据）。
-
-> **⚠️ 这意味着：任何打开你收藏页的人都能拿到这份凭据，进而读取你的整个音乐库。**
-> 站点是公开的话，建议改成反代在服务端注入凭据（前端只请求自己域名下的路径，
-> 例如 `/nd/rest/stream?...`），这样凭据永远不出现在浏览器里。
-> 播放地址只在 `src/components/CollectionPlayer.astro` 的 `streamUrl()` 里拼一次，
-> 换模式是改一处的事。
-
-## Bangumi 追番
-
-`/anime` 页面的数据来自 Bangumi 官方 v0 API，同样在**构建时**同步成 `src/data/bangumi.json`。
-
-```bash
-# .env 里填 BANGUMI_USER=你的用户名或 UID（公开收藏不需要 token）
-npm run sync:bangumi
-```
-
-- 拉取收藏（在看 / 想看 / 看过 / 搁置 / 抛弃）→ `src/data/bangumi.json`
-- 下载封面 → `public/images/bangumi/`（默认开启，`BANGUMI_SKIP_COVERS=1` 可跳过）
-
-**在 Vercel 上跑**：`vercel.json` 已经把构建命令设成 `npm run build:vercel`
-（先同步追番、再构建），你只要在 Vercel 的环境变量里加一个 `BANGUMI_USER` 就行，
-不需要代理 —— 构建机在墙外，直连 bgm.tv。封面是构建时下载的，不会进仓库。
-
-**在本地跑**：大陆直连 bgm.tv 基本不通（`api.bgm.tv` 和封面图床都会超时），要挂代理：
-`BANGUMI_PROXY=http://127.0.0.1:7890`，数据请求和封面下载都会走它。
-
-同步失败不会把构建搞挂：没配 `BANGUMI_USER` 直接跳过；连不上但本地已有快照，
-就沿用上一次的数据继续构建，只在日志里留一行警告。
-
-页面是构建时快照，所以 Bangumi 里更新之后要**重新部署**才会反映出来
-（Vercel 可以配 Deploy Hook + 定时任务，或者手动 Redeploy）。
-
-## 评论（Waline）
-
-评论区在文章底部，默认**关闭** —— `src/config.ts` 里没配服务端时整块不渲染，
-页面里不会留下空标题。开启走三步：
-
-1. 部署一个 Waline 服务端（见 [Waline 文档](https://waline.js.org/guide/get-started/)，Docker、Vercel 都行）
-2. 在 `.env` 里填：
-
-   ```
-   PUBLIC_COMMENT_PROVIDER=waline
-   PUBLIC_WALINE_SERVER=https://comments.example.com
-   ```
-
-3. 重新构建
-
-组件本身不装 npm 依赖：Waline 的 JS / CSS 从 jsDelivr 按需加载，而且滚动到评论区
-附近才开始下载，首屏不受影响。
-
-**服务端放哪**：博客在 Vercel 上是纯静态的，评论服务端放哪都行，只要有个公网
-HTTPS 地址。想放自己 NAS 上（和 Navidrome 一个套路：Docker + frp 映射），
-照 [`deploy/waline/`](deploy/waline/README.md) 那份配置抄一遍即可，
-里面把跨域、证书、备份这些坑都写了。
-
-## 写文章
-
-文章放在 `src/content/blog/`，文件名即 URL 片段（支持中文）。frontmatter 字段：
-
-```yaml
----
-title: 文章标题
-author: Resalia
-pubDatetime: 2026-09-13T08:00:00+08:00
-modDatetime: 2026-09-14T10:00:00+08:00 # 可选，用于「最近更新」排序
-featured: false # 可选，置顶
-draft: false # 可选，草稿不会出现在列表与 RSS 中
-tags: [随笔]
-description: 列表页与 OG 图里显示的摘要
-ogImage: "" # 可选，指定后不再自动生成 OG 图
-canonicalURL: "" # 可选
----
-```
-
-专辑放在 `src/content/albums/`，字段为 `title` / `artist` / `theme`（`#RRGGBB` 主题色）/ `cover` / `date` / `tracks[]` / `lyrics[]`。
-
-### 关于页（个人介绍）
-
-个人信息集中在 `src/data/profile.ts`，关于页和**首页的「关于我」分区**共用这一份，
-**改数据就行，页面结构不用动**：
-
-| 常量         | 内容                                                                                            |
-| :----------- | :---------------------------------------------------------------------------------------------- |
-| `PROFILE`    | 头像、网名、副标题、一句话简介、坐标、自我介绍段落（一段一项），以及首页用的一句话 `shortIntro` |
-| `EDUCATION`  | 教育经历（倒序）：学位状态、学校、专业、起止、官网、校徽图片与底色                              |
-| `FAVORITES`  | 「喜欢的东西」：两列表，值可以挂链接                                                            |
-| `ABOUT_SITE` | 「关于本站」：两列表                                                                            |
-
-校徽图片放在 `public/images/education/`（现在是 GUET / GLUT 官方白版徽标裁出来的方形图）。
-名片上的社交标签直接来自 `src/config.ts` 的 `SOCIALS`，加一条链接就多一枚标签。
-
-> 页面样式里那条 `.card-link` 的说明：`base.css` 有一条「正文链接 hover 反白」的规则
-> （`.prose a:hover`），整块卡片级别的链接要加 `class="card-link"` 豁免，
-> 否则鼠标移上去整张卡的底色会被刷成深色。
-
-### 文章里可嵌入的块
-
-正文是 `.md`，写不了 Astro 组件，所以这几块用「原生 HTML + `src/styles/base.css`
-里的全局样式」实现，不依赖 MDX，也不用装任何东西。注意每个外层标签后面要空一行，
-里面的内容才会按 markdown 解析。
-
-**带序号的步骤条**（外层 `class="steps"`，里边照常写有序列表）：
-
-```html
-<div class="steps">
-  1. **准备环境**：确认 Node 版本。 2. **装依赖**：`npm ci`。
-</div>
-```
-
-**标签页**（每个面板用 `data-tab="标签名"`，标签栏由脚本自动生成；没有 JS 时就是顺序排列）：
-
-````html
-<div class="tabs" data-tabs>
-  <div data-tab="Debian / Ubuntu">```bash sudo apt install foo</div>
-</div>
-````
-
-</div>
-
-<div data-tab="Arch Linux">
-
-```bash
-sudo pacman -S foo
-```
-
-</div>
-
-</div>
-```
-
-**可折叠块**（原生 `<details>`，类名必须是 `collapsible`）：
-
-```html
-<details class="collapsible">
-  <summary>展开看完整配置</summary>
-
-  正文照常写 markdown。
-</details>
-```
-
-> 类名不能叫 `collapse` —— Tailwind 自带一个 `.collapse { visibility: collapse }`
-> 的工具类，会把 summary 直接藏掉。
-
-**剧透**（默认糊成一团，悬停或点击显形）：
-
-```html
-结局是<span class="spoiler">主角其实早就把坑填完了</span>，先别急着看。
-```
-
-## OG 图片
-
-- 每篇文章构建时生成 `/posts/<标题>.png`；站点默认图是 `/og.png`（由 `src/utils/og-templates/site.tsx` 渲染）
-- 字体按「标题 + 作者 + 站点名」请求子集：拉丁字符用 IBM Plex Mono，中文回退到 Noto Sans SC
-- 拉取顺序为 Google Fonts 与几个国内镜像并行，结果缓存在 `node_modules/.cache/fonts`（`npm ci` 会清掉缓存，届时首次构建需要联网，约多花 40 秒）
-
-## 部署
-
-**Vercel**：直接连仓库即可，构建命令和输出目录都写在 `vercel.json` 里
-（`npm run build:vercel` / `dist`）—— 它会先同步 Bangumi 追番再构建，
-所以记得在 Vercel 项目里配环境变量 `BANGUMI_USER`（可选：`PUBLIC_COMMENT_PROVIDER`、
-`PUBLIC_WALINE_SERVER`）。Node 版本由 `package.json` 的 `engines.node` 决定
-（Vercel 面板里的 Node.js Version 会被它覆盖，所以会出现 "Node.js Version Override" 提示，属正常）。
-
-**Docker**：
-
-```bash
-docker build -t silentcage .
-docker run -p 8080:80 silentcage
-```
-
-`Dockerfile` 用 `node:lts` 构建静态文件，再用 nginx 提供；`docker-compose.yml` 是开发用容器（挂载源码跑 `npm run dev`）。
-
-## 代码规范
-
-- Prettier 对源码、配置与 `src/pages` 生效；`src/content/blog`（文章正文由作者手写维护）与 `public/js/*.min.*`（第三方压缩产物）已在 `.prettierignore` 中排除
-- ESLint 忽略 `dist/`、`.astro` 与 `**/*.min.js|css`
-- 行尾统一为 LF，规则见 `.gitattributes`
+| 命令                         | 作用                                            |
+| :--------------------------- | :---------------------------------------------- |
+| `npm run dev`                | 开发服务器（`localhost:4321`）                  |
+| `npm run build`              | `astro check` + 构建到 `./dist`                 |
+| `npm run build:vercel`       | 先跑 Bangumi + 友链圈同步再构建（Vercel 用）    |
+| `npm run preview`            | 预览构建结果                                    |
+| `npm run sync:navidrome`     | 同步音乐收藏 → `src/data/navidrome.json` + 封面 |
+| `npm run sync:bangumi`       | 同步追番 → `src/data/bangumi.json` + 封面       |
+| `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`      |
+| `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）  |
+
+## 改哪里
+
+| 想改的东西               | 改哪里                                                        |
+| :----------------------- | :------------------------------------------------------------ |
+| 站点名 / 描述 / 社交链接 | `src/config.ts`                                               |
+| 导航菜单                 | `src/components/Header.astro`                                 |
+| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                      |
+| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]` |
+| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                     |
+| 关于页内容               | `src/data/profile.ts`                                         |
+| 友链                     | `src/data/links.json`                                         |
+| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                            |
+| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                        |
+| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                              |
+
+## 有意保留的遗留项
+
+- `src/pages/music/index.astro`：301 跳到 `/collection/`，让旧链接不 404。
+- `src/components/Comments.astro` + `deploy/waline/`：评论默认关闭，随时可开。
+- `scripts/sync-navidrome.mjs` 会往快照里写一份只读凭据（前端播放需要），
+  风险与替代方案见 [docs/data-sync.md](docs/data-sync.md)。
 
 ## License
 
-本项目遵循 MIT 许可证。原始版权归 Sat Naing 所有，改编部分版权归 Resalia 所有。
-
-详见 [LICENSE](LICENSE) 文件。
+MIT。原始版权归 Sat Naing 所有，改编部分版权归 Resalia 所有，详见 [LICENSE](LICENSE)。
