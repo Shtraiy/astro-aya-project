@@ -17,5 +17,8 @@
 /public/js/*.min.js
 /public/js/*.min.css
 
+# Pagefind 生成的搜索索引与运行时（search:index:dev 会写进 public/）
+/public/pagefind
+
 # 文章正文由作者手写维护，不参与 Prettier，避免工具改写正文排版
 /src/content/blog

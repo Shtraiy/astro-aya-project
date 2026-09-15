@@ -135,7 +135,13 @@ const nextPost =
     </button>
   </div>
   <main id="main-content">
-    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+    <h1
+      transition:name={slugifyStr(title)}
+      class="post-title"
+      data-pagefind-meta="title"
+    >
+      {title}
+    </h1>
 
     {/* 文章元信息：日期 / 阅读时长 / 标签，统一走图标行 */}
     <div class="post-meta">
@@ -174,7 +180,19 @@ const nextPost =
       }
     </div>
 
-    <article id="article" class="prose mt-8 max-w-3xl text-lg">
+    {
+      /*
+      搜索索引只认带 data-pagefind-body 的页面（Pagefind 的规则：一旦有页面标了它，
+      其它页面就不进索引了）。标在正文上而不是整个 main 上，是为了把导航、标签云、
+      上下篇、评论区这些"每个页面都差不多"的部分排除掉 —— 否则搜「香港」会被
+     侧栏标签云里的字命中，返回几十条无关结果。
+    */
+    }
+    <article
+      id="article"
+      class="prose mt-8 max-w-3xl text-lg"
+      data-pagefind-body
+    >
       <Content />
     </article>
 

@@ -11,6 +11,10 @@
 `build:vercel` = `sync:bangumi` → `sync:friend-circle` → `build`
 （构建机在墙外，抓 Bangumi 不需要代理）。
 
+`build` = `astro check` → `astro build` → `pagefind --site dist`：最后一步扫描产物生成
+站内搜索索引（`dist/pagefind/`）。索引是构建产物，所以**本地 dev 默认搜不了**：
+看搜索效果用 `npm run preview`，或跑一次 `npm run search:index:dev` 把索引也写进 `public/`。
+
 需要在 Vercel 项目里配的环境变量：
 
 | 变量                                               | 用途                     |

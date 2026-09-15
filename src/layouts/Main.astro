@@ -10,12 +10,20 @@ interface Props {
   icon?: IconName;
   /** 图标块的色相 0-359（标签页用它对应的标签色）；不传则跟随站点强调色 */
   iconHue?: number;
+  /** 这页的内容要不要进站内搜索索引（Pagefind 只收标了 data-pagefind-body 的页面） */
+  pagefindBody?: boolean;
 }
 
-const { pageTitle, pageDesc, icon, iconHue } = Astro.props;
+const {
+  pageTitle,
+  pageDesc,
+  icon,
+  iconHue,
+  pagefindBody = false,
+} = Astro.props;
 ---
 
-<main id="main-content">
+<main id="main-content" data-pagefind-body={pagefindBody ? "" : undefined}>
   <div class="page-head">
     {
       icon && (

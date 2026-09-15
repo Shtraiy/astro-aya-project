@@ -46,6 +46,8 @@ export default [
       ".astro",
       "**/*.min.js",
       "**/*.min.css",
+      // Pagefind 生成的搜索索引与运行时（search:index:dev 会写进 public/）
+      "public/pagefind/**",
       "参考主题/**",
     ],
   },

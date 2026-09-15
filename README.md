@@ -16,6 +16,9 @@
 - **两套文章索引**：分类 = 六个互斥栏目（`src/data/categories.ts`），标签 = 自由关键词。
   都从 `content/blog/*.md` 的 frontmatter 生成，页面在 `pages/categories`、`pages/tags`，
   分工见下文「分类与标签怎么分工」。
+- **站内搜索**：Pagefind。构建后扫一遍 HTML 生成静态索引（同源，不依赖任何第三方），
+  只有标了 `data-pagefind-body` 的页面进索引：32 篇文章正文 + 关于 / 友链 / 收藏 / 追番。
+  导航、栏目页、标签云这些"每页都差不多"的部分不进索引，否则搜一个词会被侧栏命中几十次。
 - **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
   Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
 - **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
@@ -54,7 +57,8 @@ src/
 │   ├── Comments.astro     评论区（Waline，默认关闭，未配置时整块不渲染）
 │   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
 │   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
-│   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Search
+│   ├── PagefindSearch.astro 搜索页本体（Pagefind UI + 中文文案 + 主题变量）
+│   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Card
 ├── pages/                 路由：posts（双视图）/ categories（分类）/ tags /
 │                          search / about / links / collection（音乐）/ anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
@@ -114,33 +118,36 @@ docs/                      详细文档：content / data-sync / deploy
 
 ## 常用命令
 
-| 命令                         | 作用                                            |
-| :--------------------------- | :---------------------------------------------- |
-| `npm run dev`                | 开发服务器（`localhost:4321`）                  |
-| `npm run build`              | `astro check` + 构建到 `./dist`                 |
-| `npm run build:vercel`       | 先跑 Bangumi + 友链圈同步再构建（Vercel 用）    |
-| `npm run preview`            | 预览构建结果                                    |
-| `npm run sync:navidrome`     | 同步音乐收藏 → `src/data/navidrome.json` + 封面 |
-| `npm run sync:bangumi`       | 同步追番 → `src/data/bangumi.json` + 封面       |
-| `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`      |
-| `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）  |
+| 命令                         | 作用                                              |
+| :--------------------------- | :------------------------------------------------ |
+| `npm run dev`                | 开发服务器（`localhost:4321`）                    |
+| `npm run build`              | `astro check` + 构建到 `./dist`                   |
+| `npm run build:vercel`       | 先跑 Bangumi + 友链圈同步再构建（Vercel 用）      |
+| `npm run preview`            | 预览构建结果                                      |
+| `npm run search:index`       | 构建后生成搜索索引（`build` 里已经带这一步）      |
+| `npm run search:index:dev`   | 把索引也写进 `public/`，让 dev 下能搜（先 build） |
+| `npm run sync:navidrome`     | 同步音乐收藏 → `src/data/navidrome.json` + 封面   |
+| `npm run sync:bangumi`       | 同步追番 → `src/data/bangumi.json` + 封面         |
+| `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`        |
+| `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）    |
 
 ## 改哪里
 
-| 想改的东西               | 改哪里                                                        |
-| :----------------------- | :------------------------------------------------------------ |
-| 站点名 / 描述 / 社交链接 | `src/config.ts`                                               |
-| 导航菜单                 | `src/components/Header.astro`                                 |
-| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                      |
-| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]` |
-| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里      |
-| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）        |
-| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                     |
-| 关于页内容               | `src/data/profile.ts`                                         |
-| 友链                     | `src/data/links.json`                                         |
-| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                            |
-| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                        |
-| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                              |
+| 想改的东西               | 改哪里                                                                       |
+| :----------------------- | :--------------------------------------------------------------------------- |
+| 站点名 / 描述 / 社交链接 | `src/config.ts`                                                              |
+| 导航菜单                 | `src/components/Header.astro`                                                |
+| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                                     |
+| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                |
+| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                     |
+| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                       |
+| 站内搜索                 | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body` |
+| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                                    |
+| 关于页内容               | `src/data/profile.ts`                                                        |
+| 友链                     | `src/data/links.json`                                                        |
+| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                                           |
+| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                                       |
+| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                                             |
 
 ## 有意保留的遗留项
 

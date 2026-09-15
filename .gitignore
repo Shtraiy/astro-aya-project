@@ -48,3 +48,9 @@ pnpm-debug.log*
 
 # 本地拿来对照的参考主题：整个项目（含 node_modules），不提交
 /参考主题/
+
+# 本地暂存区：重复稿、临时备份等，不提交
+/.trash/
+
+# 本地开发用的搜索索引（search:index:dev 生成，构建时会重写 dist 里的那份）
+/public/pagefind/

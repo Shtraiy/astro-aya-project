@@ -1,0 +1,142 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+
+/*
+  站内搜索：Pagefind。
+
+  为什么不再用 Fuse：以前那份索引只装了标题和摘要，正文搜不到；中文又没有分词，
+  把正文塞进 Fuse 只会得到一堆匹配不上的超长 token。Pagefind 在构建后扫一遍 HTML，
+  生成带中文分词的静态索引（不占页面体积），搜索结果还能带上下文片段。
+
+  索引是构建产物，所以本地开发默认搜不了：
+  - 看构建结果：npm run build 之后 npm run preview
+  - 想在 dev 里搜：npm run build && npm run search:index:dev（把索引也写进 public/）
+*/
+---
+
+<div class="search-shell" data-search-root>
+  <div id="search"></div>
+  <p class="search-note" data-search-note hidden>
+    搜索索引在构建时生成，本地开发默认没有。想看搜索效果：
+    <code>npm run build &amp;&amp; npm run preview</code>；想在 dev 里直接搜：
+    <code>npm run build &amp;&amp; npm run search:index:dev</code>。
+  </p>
+</div>
+
+<style is:global>
+  /*
+    Pagefind 的类名不带 Astro 作用域，主题变量只能写在全局样式里。
+    这里把它的调色板接到站点令牌上，深浅色自动跟随。
+  */
+  .search-shell {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: rgb(var(--palette-accent));
+    --pagefind-ui-text: rgb(var(--palette-text));
+    --pagefind-ui-background: rgb(var(--palette-fill));
+    --pagefind-ui-border: rgb(var(--palette-border));
+    --pagefind-ui-tag: rgb(var(--palette-muted));
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0.75rem;
+    --pagefind-ui-font: var(--font-sans);
+  }
+  /* 输入框：跟站点输入框一致的描边与内边距 */
+  .search-shell .pagefind-ui__search-input {
+    border-color: rgb(var(--palette-border));
+    background-color: rgb(var(--palette-fill));
+    color: rgb(var(--palette-text));
+  }
+  .search-shell .pagefind-ui__search-input:focus {
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 55%,
+      transparent
+    );
+  }
+  /* 结果标题用强调色，正文摘要次级处理 */
+  .search-shell .pagefind-ui__result-link {
+    color: rgb(var(--palette-accent));
+  }
+  .search-shell .pagefind-ui__result-excerpt {
+    color: rgb(var(--palette-muted-text));
+  }
+  .search-shell mark {
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 22%,
+      transparent
+    );
+    color: inherit;
+  }
+  .search-note {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: rgb(var(--palette-muted-text));
+  }
+  .search-note code {
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.375rem;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 75%,
+      transparent
+    );
+    font-size: 0.8125rem;
+  }
+</style>
+
+<script>
+  import { PagefindUI } from "@pagefind/default-ui";
+
+  /*
+    索引缺失时（本地开发最常见）不初始化 UI，只显示提示，
+    避免在页面上留一个"搜了没反应"的输入框。
+  */
+  let initialized = false;
+
+  async function initSearch() {
+    const root = document.querySelector<HTMLElement>("[data-search-root]");
+    if (!root || initialized) return;
+
+    const container = root.querySelector<HTMLElement>("#search");
+    const note = root.querySelector<HTMLElement>("[data-search-note]");
+    if (!container || container.childElementCount > 0) return;
+
+    /* 用 entry json 探活：比运行时小得多，而且 GET 在所有静态托管上都可靠 */
+    const hasIndex = await fetch("/pagefind/pagefind-entry.json")
+      .then(response => response.ok)
+      .catch(() => false);
+
+    if (!hasIndex) {
+      container.hidden = true;
+      if (note) note.hidden = false;
+      return;
+    }
+
+    initialized = true;
+    new PagefindUI({
+      element: "#search",
+      showImages: false,
+      showSubResults: true,
+      translations: {
+        placeholder: "搜索文章…",
+        clear_search: "清空",
+        load_more: "加载更多结果",
+        search_label: "站内搜索",
+        filters_label: "筛选",
+        zero_results: "没有找到与「[SEARCH_TERM]」相关的内容",
+        many_results: "「[SEARCH_TERM]」共 [COUNT] 条结果",
+        one_result: "「[SEARCH_TERM]」1 条结果",
+        alt_search: "没有「[SEARCH_TERM]」，改为显示「[DIFFERENT_TERM]」的结果",
+        search_suggestion: "没有「[SEARCH_TERM]」，换个词试试：",
+        searching: "正在搜索「[SEARCH_TERM]」…",
+      },
+    });
+  }
+
+  initSearch();
+  document.addEventListener("astro:after-swap", () => {
+    initialized = false;
+    initSearch();
+  });
+</script>
