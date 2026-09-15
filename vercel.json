@@ -9,6 +9,16 @@
       "source": "/posts/:page(\\d+)",
       "destination": "/posts/",
       "permanent": true
+    },
+    {
+      "source": "/categories",
+      "destination": "/posts/",
+      "permanent": true
+    },
+    {
+      "source": "/categories/",
+      "destination": "/posts/",
+      "permanent": true
     }
   ]
 }

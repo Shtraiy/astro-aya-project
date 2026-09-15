@@ -1,6 +1,7 @@
 import { slugifyStr } from "@utils/slugify";
 import { getReadingTime } from "@utils/getReadingTime";
 import { tagHue } from "@utils/tagHue";
+import { getCategory } from "@data/categories";
 import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 
@@ -21,7 +22,11 @@ export default function Card({
   readingTime,
   body,
 }: Props) {
-  const { title, pubDatetime, modDatetime, description, tags } = frontmatter;
+  const { title, pubDatetime, modDatetime, description, tags, category } =
+    frontmatter;
+
+  /* 栏目色相取自 src/data/categories.ts，和筛选条、栏目页保持同一个颜色 */
+  const categoryHue = getCategory(category)?.hue ?? 220;
 
   const minutes = readingTime ?? (body ? getReadingTime(body) : undefined);
 
@@ -31,7 +36,10 @@ export default function Card({
     "mt-1 text-lg font-medium transition-colors duration-200 group-hover/card:text-primary";
 
   return (
-    <li className="group/card bg-background hover:bg-muted border-border my-4 rounded-2xl border px-5 py-4 transition-colors duration-200">
+    <li
+      className="group/card bg-background hover:bg-muted border-border my-4 rounded-2xl border px-5 py-4 transition-colors duration-200"
+      data-post-category={category}
+    >
       <a href={href} className="flex flex-col no-underline">
         <div className="text-muted-foreground flex items-center justify-between gap-3 text-xs">
           <Datetime
@@ -101,21 +109,30 @@ export default function Card({
         </div>
       </a>
 
-      {tags && tags.length > 0 && (
-        <ul className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
-          {tags.map(tag => (
-            <li key={tag}>
-              <a
-                href={`/tags/${slugifyStr(tag)}/`}
-                className="chip chip--tag"
-                style={{ "--tag-hue": tagHue(tag) } as React.CSSProperties}
-              >
-                {tag}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* 栏目在前、标签在后：一眼能看出这条属于哪个栏目、讲了哪些关键词 */}
+      <ul className="mt-2 flex list-none flex-wrap gap-1.5 p-0">
+        <li>
+          <a
+            href={`/categories/${category}/`}
+            className="chip chip--category"
+            data-category-jump={category}
+            style={{ "--cat-hue": categoryHue } as React.CSSProperties}
+          >
+            {category}
+          </a>
+        </li>
+        {tags?.map(tag => (
+          <li key={tag}>
+            <a
+              href={`/tags/${slugifyStr(tag)}/`}
+              className="chip chip--tag"
+              style={{ "--tag-hue": tagHue(tag) } as React.CSSProperties}
+            >
+              {tag}
+            </a>
+          </li>
+        ))}
+      </ul>
     </li>
   );
 }

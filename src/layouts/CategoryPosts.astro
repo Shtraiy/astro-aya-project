@@ -25,7 +25,7 @@ const { page, category } = Astro.props;
 ---
 
 <Layout title={`${category.name} | ${SITE.title}`}>
-  <Header activeNav="categories" />
+  <Header activeNav="posts" />
   <Main
     pageTitle={category.name}
     pageDesc={`${category.desc} · 共 ${page.total} 篇文章`}

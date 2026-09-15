@@ -8,6 +8,7 @@ import TagCloud from "@components/TagCloud.astro";
 import { SITE } from "@config";
 import { getReadingTime } from "@utils/getReadingTime";
 import getPostsByGroupCondition from "@utils/getPostsByGroupCondition";
+import { sortedCategories } from "@data/categories";
 import type { CollectionEntry } from "astro:content";
 
 /**
@@ -17,6 +18,9 @@ import type { CollectionEntry } from "astro:content";
  * 现在合成一个：年份当分组标题（延续原来那枚巨大的年份水印），组内直接排卡片，
  * 页头的年份条负责"按年速查"这件时间轴唯一独有的好事。
  *
+ * 栏目也并到这一页：页头一条栏目筛选条就地过滤（无 JS 时它是指向栏目页的链接），
+ * 于是"文章 / 分类"不再是两个并列入口，而是同一页上的两个维度（栏目 + 年份）。
+ *
  * 不再分页：全部文章一页到底，旧的 /posts/2 … /posts/6 在 vercel.json 里 301 回这里。
  */
 export interface Props {
@@ -25,6 +29,14 @@ export interface Props {
 }
 
 const { posts } = Astro.props;
+
+const categories = sortedCategories();
+
+const categoryCounts = new Map<string, number>();
+for (const post of posts) {
+  const name = post.data.category;
+  categoryCounts.set(name, (categoryCounts.get(name) ?? 0) + 1);
+}
 
 const years = Object.entries(
   getPostsByGroupCondition(posts, post => post.data.pubDatetime.getFullYear())
@@ -41,43 +53,76 @@ const years = Object.entries(
   <Header activeNav="posts" />
   <Main
     pageTitle="文章"
-    pageDesc={`全部 ${posts.length} 篇，按年份分组 · 想按栏目看走分类页`}
+    pageDesc={`全部 ${posts.length} 篇 · 按栏目筛、按年份跳，都在这一页`}
     icon="book"
   >
-    <nav class="year-strip" aria-label="按年份跳转">
+    <div class="posts-filter" data-posts-filter>
+      <nav class="category-strip" aria-label="按栏目筛选">
+        <a
+          class="category-chip is-active"
+          href="/posts/"
+          data-category-filter=""
+          aria-current="true"
+        >
+          <span>全部</span>
+          <span class="filter-count">{posts.length}</span>
+        </a>
+        {
+          categories.map(category => (
+            <a
+              class="category-chip"
+              href={`/categories/${category.name}/`}
+              data-category-filter={category.name}
+              style={`--cat-hue:${category.hue}`}
+            >
+              <span>{category.name}</span>
+              <span class="filter-count">
+                {categoryCounts.get(category.name) ?? 0}
+              </span>
+            </a>
+          ))
+        }
+      </nav>
+
+      <nav class="year-strip" aria-label="按年份跳转">
+        {
+          years.map(({ year, count }) => (
+            <a class="year-chip" href={`#year-${year}`} data-year-chip={year}>
+              <span class="year-chip-year">{year}</span>
+              <span class="year-chip-count" data-year-chip-count>
+                {count}
+              </span>
+            </a>
+          ))
+        }
+      </nav>
+
       {
-        years.map(({ year, count }) => (
-          <a class="year-chip" href={`#year-${year}`}>
-            <span class="year-chip-year">{year}</span>
-            <span class="year-chip-count">{count}</span>
-          </a>
+        years.map(({ year, count, posts: yearPosts }) => (
+          <div class="year-group" id={`year-${year}`} data-year-group={year}>
+            <h2 class="year-head">
+              {/* 装饰用的巨大年份水印，压在标题下面 */}
+              <span class="year-ghost" aria-hidden="true">
+                {year}
+              </span>
+              <span class="year-label">{year}</span>
+              <span class="year-count" data-year-count>
+                {count} 篇
+              </span>
+            </h2>
+            <ul>
+              {yearPosts.map(post => (
+                <Card
+                  href={`/posts/${post.id}/`}
+                  frontmatter={post.data}
+                  readingTime={getReadingTime(post.body ?? "")}
+                />
+              ))}
+            </ul>
+          </div>
         ))
       }
-    </nav>
-
-    {
-      years.map(({ year, count, posts: yearPosts }) => (
-        <div class="year-group" id={`year-${year}`}>
-          <h2 class="year-head">
-            {/* 装饰用的巨大年份水印，压在标题下面 */}
-            <span class="year-ghost" aria-hidden="true">
-              {year}
-            </span>
-            <span class="year-label">{year}</span>
-            <span class="year-count">{count} 篇</span>
-          </h2>
-          <ul>
-            {yearPosts.map(post => (
-              <Card
-                href={`/posts/${post.id}/`}
-                frontmatter={post.data}
-                readingTime={getReadingTime(post.body ?? "")}
-              />
-            ))}
-          </ul>
-        </div>
-      ))
-    }
+    </div>
   </Main>
 
   <aside class="side-rail">
@@ -89,6 +134,45 @@ const years = Object.entries(
 
 <style>
   @reference "../styles/base.css";
+
+  /* ===== 栏目筛选条（就地过滤，无 JS 时是通往栏目页的链接）===== */
+  .category-strip {
+    @apply mb-3 flex flex-wrap gap-2;
+  }
+  .category-chip {
+    --cat-color: hsl(var(--cat-hue, 220) 62% 41%);
+    @apply inline-flex items-center gap-1.5 rounded-xl border px-3 py-1 text-sm no-underline transition-colors;
+    border-color: rgb(var(--palette-border));
+    color: rgb(var(--palette-text));
+  }
+  .category-chip::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background-color: var(--cat-color);
+  }
+  .category-chip:hover {
+    color: var(--cat-color);
+    border-color: color-mix(in srgb, var(--cat-color) 45%, transparent);
+  }
+  .category-chip.is-active {
+    font-weight: 600;
+    color: var(--cat-color);
+    border-color: color-mix(in srgb, var(--cat-color) 55%, transparent);
+    background-color: color-mix(in srgb, var(--cat-color) 12%, transparent);
+  }
+  .filter-count {
+    @apply text-xs tabular-nums opacity-70;
+  }
+  :global(html[data-theme="dark"]) .category-chip {
+    --cat-color: hsl(var(--cat-hue, 220) 78% 72%);
+  }
+  [data-post-category][hidden],
+  [data-year-group][hidden],
+  [data-year-chip][hidden] {
+    display: none;
+  }
 
   /* ===== 年份快捷条（替代原时间轴视图的速查作用）===== */
   .year-strip {
@@ -151,3 +235,118 @@ const years = Object.entries(
     color: rgb(var(--palette-muted-text));
   }
 </style>
+
+<script>
+  /*
+    栏目筛选：在文章页就地过滤（不跳页、不刷新），并同步到 ?category=xxx，
+    所以筛选后的地址可以直接分享 / 收藏 / 刷新。
+
+    渐进增强：筛选条与卡片上的栏目 chip 本身就是链接（指向 /categories/<栏目>/），
+    脚本没跑起来时功能不丢，只是会跳到栏目页。
+  */
+  const FILTER_PARAM = "category";
+
+  function initPostsFilter() {
+    const roots = document.querySelectorAll<HTMLElement>("[data-posts-filter]");
+
+    for (const root of roots) {
+      if (root.dataset.ready === "true") continue;
+
+      const chips = [
+        ...root.querySelectorAll<HTMLAnchorElement>("[data-category-filter]"),
+      ];
+      const groups = [
+        ...root.querySelectorAll<HTMLElement>("[data-year-group]"),
+      ];
+      const yearChips = [
+        ...root.querySelectorAll<HTMLAnchorElement>("[data-year-chip]"),
+      ];
+      if (chips.length === 0 || groups.length === 0) continue;
+
+      root.dataset.ready = "true";
+
+      const valueOf = (chip: HTMLAnchorElement) =>
+        chip.dataset.categoryFilter ?? "";
+
+      /* 只认左键纯点击：中键 / Ctrl+点击仍然交给浏览器开新标签 */
+      const isPlainClick = (event: MouseEvent) =>
+        !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+
+      const apply = (value: string, scrollToTop = false) => {
+        const showAll = value === "";
+
+        for (const group of groups) {
+          let shown = 0;
+          const cards = group.querySelectorAll<HTMLElement>(
+            "[data-post-category]"
+          );
+
+          for (const card of cards) {
+            const match = showAll || card.dataset.postCategory === value;
+            card.hidden = !match;
+            if (match) shown += 1;
+          }
+
+          group.hidden = shown === 0;
+
+          const groupCount = group.querySelector("[data-year-count]");
+          if (groupCount) groupCount.textContent = `${shown} 篇`;
+
+          const chip = yearChips.find(
+            item => item.dataset.yearChip === group.dataset.yearGroup
+          );
+          if (chip) {
+            chip.hidden = shown === 0;
+            const chipCount = chip.querySelector("[data-year-chip-count]");
+            if (chipCount) chipCount.textContent = String(shown);
+          }
+        }
+
+        for (const chip of chips) {
+          const active = valueOf(chip) === value;
+          chip.classList.toggle("is-active", active);
+          if (active) chip.setAttribute("aria-current", "true");
+          else chip.removeAttribute("aria-current");
+        }
+
+        const url = new URL(window.location.href);
+        if (value) url.searchParams.set(FILTER_PARAM, value);
+        else url.searchParams.delete(FILTER_PARAM);
+        window.history.replaceState(null, "", url);
+
+        if (scrollToTop) {
+          root.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+
+      for (const chip of chips) {
+        chip.addEventListener("click", event => {
+          if (!isPlainClick(event)) return;
+          event.preventDefault();
+          apply(valueOf(chip), true);
+        });
+      }
+
+      /* 卡片上的栏目 chip 走同一套筛选 */
+      const jumps = root.querySelectorAll<HTMLAnchorElement>(
+        "[data-category-jump]"
+      );
+      for (const jump of jumps) {
+        jump.addEventListener("click", event => {
+          if (!isPlainClick(event)) return;
+          event.preventDefault();
+          apply(jump.dataset.categoryJump ?? "", true);
+        });
+      }
+
+      /* 从 ?category=xxx 进来直接就是筛过的样子；不认识的值当"全部" */
+      const requested =
+        new URL(window.location.href).searchParams.get(FILTER_PARAM) ?? "";
+      const known = chips.some(chip => valueOf(chip) === requested);
+      apply(requested && known ? requested : "");
+    }
+  }
+
+  initPostsFilter();
+  document.addEventListener("astro:after-swap", () => initPostsFilter());
+</script>

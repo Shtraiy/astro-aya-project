@@ -416,6 +416,38 @@ html[data-theme="dark"] .chip--tag:hover {
   color: hsl(var(--tag-hue, 220) 75% 84%);
 }
 
+/* 栏目 chip：中性底色 + 左侧一枚栏目色圆点。
+   和彩色的标签药丸刻意拉开观感 —— 栏目是"一篇只属一个"的归属，
+   标签是"一篇可以有多个"的关键词，长得一样会让人分不清。 */
+.chip--category {
+  gap: 0.375rem;
+  border-color: color-mix(
+    in srgb,
+    rgb(var(--palette-muted-text)) 32%,
+    transparent
+  );
+  background-color: rgb(var(--palette-fill));
+  color: rgb(var(--palette-text));
+}
+.chip--category::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background-color: hsl(var(--cat-hue, 220) 62% 41%);
+}
+.chip--category:hover {
+  border-color: hsl(var(--cat-hue, 220) 62% 60%);
+  color: hsl(var(--cat-hue, 220) 52% 32%);
+}
+html[data-theme="dark"] .chip--category::before {
+  background-color: hsl(var(--cat-hue, 220) 78% 72%);
+}
+html[data-theme="dark"] .chip--category:hover {
+  border-color: hsl(var(--cat-hue, 220) 45% 46%);
+  color: hsl(var(--cat-hue, 220) 70% 80%);
+}
+
 /* ===== 文章元信息行（日期 / 阅读时长 / 标签） =====
    放在 @layer 之外：不带层级的规则优先级高于 Tailwind 的 utilities，
    这样才能覆盖 Datetime 组件内部写死的 h-6 w-6 / fill-skin-base 等工具类。 */
