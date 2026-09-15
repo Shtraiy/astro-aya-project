@@ -201,8 +201,13 @@ const show = toc.length >= minItems;
       const heading = slug ? document.getElementById(slug) : null;
       if (!slug || !heading) return;
 
-      event.preventDefault();
-      history.pushState(null, "", `#${slug}`);
+      /*
+        这里不要自己 pushState：手工写入 null 会把 Astro 视图过渡存在
+        history.state 里的 { index, scrollX, scrollY } 抹掉，之后按返回键就会出现
+        「地址回到上一页、页面却还停在原地」。
+        页内锚点交给浏览器与视图过渡自己处理（router.js 会先保存、再恢复 history.state），
+        这里只负责平滑滚动与目录高亮。
+      */
       heading.scrollIntoView({ behavior: "smooth", block: "start" });
       update();
     });

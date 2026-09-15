@@ -7,6 +7,8 @@
 > **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
 > [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
 
+> 当前版本 **2.0.0**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+
 ---
 
 ## 30 秒理解这个项目
@@ -88,12 +90,14 @@ docs/                      详细文档：content / data-sync / deploy
    `astro check` 会直接失败（故意的，避免静默进错栏目）。
 2. 标签**不要重复栏目名**（技术 / 随笔 / 游记 / 番剧游戏 / 音乐 / 分享）。重复会变成两套同义
    索引，两个浏览入口互相打架；标签只留更细的词，例如 `Linux`、`NAS`、`STM32`、`香港`、`考研`。
-   已经清理掉的同义标签（技术 / 随笔 / 音乐 / 番剧 / 旅游 / 旅行 / 收藏）在
-   `pages/tags/[tag]/[...page].astro` 的 `RETIRED_TAGS` 里配了 301，跳到对应栏目。
+   已经清理掉的同义标签（技术 / 随笔 / 音乐 / 番剧 / 旅游 / 旅行 / 收藏）集中在
+   `src/data/retiredTags.ts`，标签路由会为它们生成跳转页（meta refresh + canonical +
+   noindex），并已在 sitemap 里排除 —— 一份名单两个消费方，别各写一份。
 3. 找文章就一个入口：`/posts/`。它同时提供两个维度 —— 页头**栏目筛选条**（点一下就地过滤，
    地址同步成 `?category=技术`，可分享可刷新）与**年份条 + 年份分组的卡片流**（不分页）。
    所以别再给"分类"单开导航项或总览页：`/categories/`、`/archives/`、旧的 `/posts/2…6`
-   现在都是 301 回 `/posts/`（静态跳转页 + `vercel.json` 里的真 301）。
+   现在都跳回 `/posts/`；ASCII 路径（`/archives`、`/categories`、`/posts/2…6`）在
+   `vercel.json` 里配了真 301，页面里另有静态跳转页兜底（`/music` 只有后者）。
    六个 `/categories/<栏目>/` 页面保留着，作为无 JS 时的兜底与主题落点。
    筛选条无 JS 时就是普通链接，点进去得到同样的内容，只是会跳页。
 

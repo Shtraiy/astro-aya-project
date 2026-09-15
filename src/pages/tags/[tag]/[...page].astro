@@ -6,33 +6,20 @@ import getPostsByTag from "@utils/getPostsByTag";
 import type { GetStaticPathsOptions, Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import { SITE } from "@config";
+import { RETIRED_TAGS, categoryPath } from "@data/retiredTags";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const posts = await getCollection("blog");
   const tags = getUniqueTags(posts);
 
   /*
-    与分类同义的旧标签：文章已经不打这些标签了（见 README「分类与标签怎么分工」），
-    页面不会再由文章生成。旧链接和搜索引擎里的地址还在，这里补 301 跳到对应栏目，
+    与栏目同义的旧标签：文章已经不打这些标签了（见 README「分类与标签怎么分工」），
+    页面不会再由文章生成。旧链接和搜索引擎里的地址还在，这里补跳转页跳到对应栏目，
     避免 404 —— 和 /music → /collection 的处理方式一致。
 
     注意：这段必须写在 getStaticPaths 内部。它会连同函数一起被抽出到独立模块里执行，
     引用不到 frontmatter 里的模块级常量。
   */
-  const categoryUrl = (name: string) =>
-    `/categories/${encodeURIComponent(name)}/`;
-
-  const retiredTags: Record<string, string> = {
-    /* 跳转目标要百分号编码：Location 头只能放 Latin-1，中文直接写会构建失败 */
-    技术: categoryUrl("技术"),
-    随笔: categoryUrl("随笔"),
-    音乐: categoryUrl("音乐"),
-    番剧: categoryUrl("番剧游戏"),
-    旅游: categoryUrl("游记"),
-    旅行: categoryUrl("游记"),
-    收藏: categoryUrl("分享"),
-  };
-
   const tagPages = tags.flatMap(({ tag, tagName }) => {
     const tagPosts = getPostsByTag(posts, tag);
 
@@ -43,9 +30,9 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     });
   });
 
-  const retiredPages = Object.entries(retiredTags).map(([tag, redirectTo]) => ({
+  const retiredPages = Object.entries(RETIRED_TAGS).map(([tag, category]) => ({
     params: { tag },
-    props: { redirectTo },
+    props: { redirectTo: categoryPath(category) },
   }));
 
   return [...tagPages, ...retiredPages];

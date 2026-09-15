@@ -68,19 +68,22 @@ const years = Object.entries(
           <span class="filter-count">{posts.length}</span>
         </a>
         {
-          categories.map(category => (
-            <a
-              class="category-chip"
-              href={`/categories/${category.name}/`}
-              data-category-filter={category.name}
-              style={`--cat-hue:${category.hue}`}
-            >
-              <span>{category.name}</span>
-              <span class="filter-count">
-                {categoryCounts.get(category.name) ?? 0}
-              </span>
-            </a>
-          ))
+          /* 只列有文章的栏目：配置里留了空栏目时，不该在筛选条上摆一个点了没结果的死芯片 */
+          categories
+            .filter(category => (categoryCounts.get(category.name) ?? 0) > 0)
+            .map(category => (
+              <a
+                class="category-chip"
+                href={`/categories/${category.name}/`}
+                data-category-filter={category.name}
+                style={`--cat-hue:${category.hue}`}
+              >
+                <span>{category.name}</span>
+                <span class="filter-count">
+                  {categoryCounts.get(category.name) ?? 0}
+                </span>
+              </a>
+            ))
         }
       </nav>
 
@@ -312,7 +315,13 @@ const years = Object.entries(
         const url = new URL(window.location.href);
         if (value) url.searchParams.set(FILTER_PARAM, value);
         else url.searchParams.delete(FILTER_PARAM);
-        window.history.replaceState(null, "", url);
+        /*
+          注意：这里必须把 history.state 原样传回去。
+          Astro 的视图过渡把 { index, scrollX, scrollY } 存在 history.state 里，
+          用 null 覆盖会让路由认不出"这是同一条历史记录"，返回时就会只换 URL、
+          不换 DOM（表现为：地址回到文章列表，页面却还停在文章上）。
+        */
+        window.history.replaceState(window.history.state, "", url);
 
         if (scrollToTop) {
           root.scrollIntoView({ behavior: "smooth", block: "start" });

@@ -1,6 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "exclude": ["dist", "参考主题"],
+  "exclude": ["dist", "参考主题", "public/pagefind"],
   "compilerOptions": {
     "baseUrl": "src",
     "jsx": "react-jsx",

@@ -6,6 +6,7 @@ import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import { remarkAlert } from "remark-github-blockquote-alert";
 import rehypeExternalLinks from "rehype-external-links";
+import type { Element } from "hast";
 
 import sitemap from "@astrojs/sitemap";
 import {
@@ -15,12 +16,40 @@ import {
   transformerNotationHighlight,
 } from "@shikijs/transformers";
 import { SITE } from "./src/config";
+import { RETIRED_TAG_NAMES } from "./src/data/retiredTags";
 import rehypeLazyImages from "./src/plugins/rehype-lazy-images.mjs";
+
+/** 只做跳转、没有内容的页面：sitemap 不该收录 */
+const REDIRECT_PAGES = ["/archives/", "/categories/", "/music/", "/search/"];
+
+/** decodeURIComponent 遇到非法编码会抛错，这里退回原串 */
+function safeDecode(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      /*
+        跳转页与没有内容的页面不该进 sitemap：
+        /archives、/categories、/music 与退场标签页都是跳转页（meta refresh + noindex），
+        /search 只有一个搜索框。把它们列进 sitemap 等于向搜索引擎推荐空壳 URL。
+      */
+      filter: page => {
+        const path = safeDecode(new URL(page).pathname);
+        if (REDIRECT_PAGES.includes(path)) return false;
+
+        return !RETIRED_TAG_NAMES.some(tag => path === `/tags/${tag}/`);
+      },
+    }),
+  ],
   markdown: {
     // Astro 7 默认改用 Sätteri（Rust）渲染 Markdown，本项目的 remark 插件
     // （目录、折叠、GitHub 提示框）需要显式装回 unified/rehype 管线，
@@ -59,6 +88,22 @@ export default defineConfig({
             target: "_blank",
             rel: ["noopener", "noreferrer"],
             properties: { className: ["external-link"] },
+            /*
+              自家域名的绝对地址不算外链：正文里若写成完整 URL（例如引用自己的另一篇
+              文章），不该被加新窗口与 ↗。顺带把 mailto / 相对链接挡在外面。
+            */
+            test: (element: Element) => {
+              const href = element.properties?.href;
+              if (typeof href !== "string" || !/^https?:\/\//i.test(href)) {
+                return false;
+              }
+
+              try {
+                return new URL(href).host !== new URL(SITE.website).host;
+              } catch {
+                return false;
+              }
+            },
           },
         ],
       ],
