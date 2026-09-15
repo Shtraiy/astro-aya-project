@@ -19,6 +19,8 @@ export interface Props {
   category?: string;
   /** 文章标签（关键词），逐条输出为 article:tag */
   tags?: string[];
+  /** 错误页等不该被收录的页面：输出 robots noindex */
+  noindex?: boolean;
   scrollSmooth?: boolean;
 }
 
@@ -32,6 +34,7 @@ const {
   modDatetime,
   category,
   tags,
+  noindex = false,
   scrollSmooth = false,
 } = Astro.props;
 
@@ -69,6 +72,7 @@ const ogLocale = (LOCALE.langTag[0] ?? LOCALE.lang).replace("-", "_");
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->

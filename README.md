@@ -55,7 +55,7 @@ src/
 │   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
 │   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
 │   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Search
-├── pages/                 路由：posts / categories（分类）/ tags / archives /
+├── pages/                 路由：posts（双视图）/ categories（分类）/ tags /
 │                          search / about / links / collection（音乐）/ anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
 ├── utils/                 纯函数：阅读时间、slug、标签色、chip 筛选、
@@ -83,8 +83,9 @@ docs/                      详细文档：content / data-sync / deploy
    索引，两个浏览入口互相打架；标签只留更细的词，例如 `Linux`、`NAS`、`STM32`、`香港`、`考研`。
    已经清理掉的同义标签（技术 / 随笔 / 音乐 / 番剧 / 旅游 / 旅行 / 收藏）在
    `pages/tags/[tag]/[...page].astro` 的 `RETIRED_TAGS` 里配了 301，跳到对应栏目。
-3. `/posts/` 是「全部文章按时间倒序 + 分页卡片」，`/archives/` 是「同一批文章按年份速查」——
-   同一集合的两种视图，不是两套内容。
+3. 找文章只有两个入口，别再往导航加第三个：`/posts/`（第一页可在「卡片 / 时间轴」之间
+   切换，时间轴就是原 `/archives/` 的按年月速查，已合并进来）与 `/categories/`（按栏目）。
+   `/archives/` 现在只是一个 301 跳转（静态跳转页 + `vercel.json` 里的真 301）。
 
 ## 关键约定与坑（改代码前扫一眼）
 
@@ -133,6 +134,7 @@ docs/                      详细文档：content / data-sync / deploy
 | 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                      |
 | 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]` |
 | 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里      |
+| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）        |
 | 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                     |
 | 关于页内容               | `src/data/profile.ts`                                         |
 | 友链                     | `src/data/links.json`                                         |
@@ -143,6 +145,8 @@ docs/                      详细文档：content / data-sync / deploy
 ## 有意保留的遗留项
 
 - `src/pages/music/index.astro`：301 跳到 `/collection/`，让旧链接不 404。
+- `src/pages/archives/index.astro`：301 跳到 `/posts/`（时间轴已并入文章页第一页），
+  `vercel.json` 里另有同名 301 规则，静态托管下优先走那条。
 - `src/components/Comments.astro` + `deploy/waline/`：评论默认关闭，随时可开。
 - `scripts/sync-navidrome.mjs` 会往快照里写一份只读凭据（前端播放需要），
   风险与替代方案见 [docs/data-sync.md](docs/data-sync.md)。

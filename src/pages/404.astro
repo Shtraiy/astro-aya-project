@@ -1,34 +1,70 @@
 ---
-import { SITE } from "@config";
+import { SITE, SOCIALS } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
+import Icon from "@components/Icon.astro";
 import LinkButton from "@components/LinkButton.astro";
+import { sortedCategories } from "@data/categories";
+
+/*
+  纯静态站只有 404 能自定义（403 / 500 由托管方产生），所以这里是唯一的错误页：
+  一屏内说清「发生了什么 + 怎么出去」，给三条出口 —— 回首页、搜索、按栏目找。
+
+  出错路径由客户端脚本填进说明和「报告坏链」的链接：静态页在构建时拿不到请求地址。
+  没有 JS 时显示兜底文案，页面不会残废。
+*/
+const categories = sortedCategories();
+
+/* 邮箱跟着站点社交链接走，这里不再写第二份 */
+const mailHref =
+  SOCIALS.find(social => social.name === "Mail")?.href ?? "mailto:";
 ---
 
-<Layout title={`404 Not Found | ${SITE.title}`}>
+<Layout title={`404 页面未找到 | ${SITE.title}`} noindex>
   <Header />
 
   <main id="main-content">
-    <div class="not-found-wrapper">
-      <h1>404</h1>
-      <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p>页面未找到</p>
-      <p class="hint">你访问的页面不存在或已被移除</p>
-      <div class="actions">
-        <LinkButton
-          href="/"
-          className="my-6 text-lg underline decoration-dashed underline-offset-8"
+    <div class="not-found">
+      <p class="not-found-code" aria-hidden="true">404</p>
+      <h1 class="not-found-title">这个页面不在笼子里</h1>
+
+      <p class="not-found-lead">
+        你访问的 <code data-error-path>这个地址</code> 没有对应的页面。
+      </p>
+      <p class="not-found-hint">
+        可能是地址打错了、文章改过名，或者那条链接已经过期。
+      </p>
+
+      <div class="not-found-actions">
+        <LinkButton href="/" className="action action-primary"
+          >回首页</LinkButton
         >
-          返回首页
-        </LinkButton>
-        <LinkButton
-          href="/search/"
-          className="my-6 text-lg underline decoration-dashed underline-offset-8"
-        >
+        <LinkButton href="/search/" className="action action-secondary">
           搜索文章
         </LinkButton>
       </div>
+
+      <section class="not-found-categories">
+        <h2 class="not-found-section-title">或者按栏目逛逛</h2>
+        <ul>
+          {
+            categories.map(category => (
+              <li>
+                <a class="chip" href={`/categories/${category.name}/`}>
+                  <Icon name={category.icon} size={14} />
+                  <span>{category.name}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <p class="not-found-report">
+        确定这是坏链？<a data-error-report href={mailHref}>告诉我一声</a
+        >，我收到就去修。
+      </p>
     </div>
   </main>
 
@@ -37,22 +73,114 @@ import LinkButton from "@components/LinkButton.astro";
 
 <style>
   @reference "../styles/base.css";
+
   #main-content {
-    @apply mx-auto flex max-w-3xl flex-1 items-center justify-center;
+    @apply mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center px-4;
   }
-  .not-found-wrapper {
-    @apply mb-14 flex flex-col items-center justify-center;
+  .not-found {
+    @apply my-16 flex flex-col items-start;
   }
-  .not-found-wrapper h1 {
-    @apply text-9xl font-bold text-skin-accent;
+  .not-found-code {
+    @apply mb-3 font-mono text-6xl leading-none font-bold;
+    color: rgb(var(--palette-accent));
   }
-  .not-found-wrapper p {
-    @apply mt-4 text-2xl sm:text-3xl;
+  .not-found-title {
+    @apply text-2xl font-bold sm:text-3xl;
   }
-  .not-found-wrapper .hint {
-    @apply mt-2 text-base opacity-50 sm:text-lg;
+  .not-found-lead {
+    @apply mt-4 text-base;
   }
-  .actions {
-    @apply flex gap-6;
+  /* 出错路径可能很长，允许在任意位置断行 */
+  .not-found-lead code {
+    @apply rounded-md px-1.5 py-0.5 text-sm;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 75%,
+      transparent
+    );
+    word-break: break-all;
+  }
+  .not-found-hint {
+    @apply mt-2 text-sm;
+    color: rgb(var(--palette-muted-text));
+  }
+  .not-found-actions {
+    @apply mt-7 flex flex-wrap gap-3;
+  }
+  /* 主次分明：主按钮实心强调色，次按钮描边 */
+  .action {
+    @apply rounded-xl px-4 py-2 text-sm font-medium transition-colors;
+    border: 1px solid transparent;
+  }
+  .action-primary {
+    color: rgb(var(--palette-fill));
+    background-color: rgb(var(--palette-accent));
+  }
+  .action-primary:hover {
+    opacity: 0.88;
+  }
+  .action-secondary {
+    border-color: rgb(var(--palette-border));
+    color: rgb(var(--palette-text));
+  }
+  .action-secondary:hover {
+    color: rgb(var(--palette-accent));
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 45%,
+      transparent
+    );
+  }
+  .not-found-categories {
+    @apply mt-10;
+  }
+  .not-found-section-title {
+    @apply mb-3 text-xs tracking-widest uppercase;
+    color: rgb(var(--palette-muted-text));
+  }
+  .not-found-categories ul {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+  .not-found-report {
+    @apply mt-10 text-xs;
+    color: rgb(var(--palette-muted-text));
+  }
+  .not-found-report a {
+    @apply text-primary underline-offset-2 hover:underline;
   }
 </style>
+
+<script>
+  /*
+    静态页构建时不知道用户访问了哪个地址，这里补两点：
+    1) 把出错路径填进说明文案
+    2) 让「报告坏链」的 mailto 带上主题，收到就直接知道是哪条链接坏的
+  */
+  function fillErrorPath() {
+    const raw = window.location.pathname + window.location.search;
+    let shown = raw;
+    try {
+      shown = decodeURIComponent(raw);
+    } catch {
+      /* 非法编码就原样显示 */
+    }
+
+    const target = document.querySelector("[data-error-path]");
+    if (target) target.textContent = shown;
+
+    const report = document.querySelector<HTMLAnchorElement>(
+      "[data-error-report]"
+    );
+    if (report) {
+      const base = report.getAttribute("href") ?? "mailto:";
+      const join = base.includes("?") ? "&" : "?";
+      report.setAttribute(
+        "href",
+        `${base}${join}subject=${encodeURIComponent(`坏链报告：${shown}`)}`
+      );
+    }
+  }
+
+  fillErrorPath();
+  document.addEventListener("astro:after-swap", fillErrorPath);
+</script>
