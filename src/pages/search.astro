@@ -9,11 +9,7 @@ import PagefindSearch from "@components/PagefindSearch.astro";
 
 <Layout title={`搜索 | ${SITE.title}`}>
   <Header activeNav="search" />
-  <Main
-    pageTitle="搜寻"
-    pageDesc="全文检索：标题、正文都能搜到 · 索引在构建时生成"
-    icon="search"
-  >
+  <Main pageTitle="搜寻" pageDesc="标题与正文全文检索" icon="search">
     <PagefindSearch />
   </Main>
   <Footer />

@@ -11,14 +11,9 @@ import { SITE } from "@config";
   <Header activeNav="tags" />
   <Main
     pageTitle="笼中标签"
-    pageDesc="标签是关键词（一篇可有多个）· 字号越大文章越多 · 栏目请走分类页"
+    pageDesc="字号越大，说明这个标签下的文章越多"
     icon="hashtag"
   >
-    <p class="tag-page-hint">
-      标签是关键词，一篇文章可以有很多个；想按栏目浏览就去<a href="/categories/"
-        >分类</a
-      >。
-    </p>
     <TagCloud variant="page" />
   </Main>
   <Footer />
@@ -30,12 +25,5 @@ import { SITE } from "@config";
   /* 标签云自己带外边距节奏，这里只把篇幅拉开一点 */
   #main-content {
     padding-bottom: 4rem;
-  }
-  /* 分类入口提示：压在标签云上方，比正文小一档 */
-  .tag-page-hint {
-    @apply text-muted-foreground m-0 mb-7 text-sm;
-  }
-  .tag-page-hint a {
-    @apply text-primary underline-offset-2 hover:underline;
   }
 </style>

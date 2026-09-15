@@ -25,7 +25,7 @@ const { page, tag, tagName } = Astro.props;
   <Header activeNav="tags" />
   <Main
     pageTitle={tagName}
-    pageDesc={`关键词筛选 · 共 ${page.total} 篇文章`}
+    pageDesc={`共 ${page.total} 篇文章`}
     icon="hashtag"
     iconHue={tagHue(tagName)}
   >
