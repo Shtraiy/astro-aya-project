@@ -5,7 +5,6 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination.astro";
-import TagCloud from "@components/TagCloud.astro";
 import { SITE } from "@config";
 import { getReadingTime } from "@utils/getReadingTime";
 import { tagHue } from "@utils/tagHue";
@@ -14,11 +13,10 @@ import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   page: Page<CollectionEntry<"blog">>;
-  tag: string;
   tagName: string;
 }
 
-const { page, tag, tagName } = Astro.props;
+const { page, tagName } = Astro.props;
 ---
 
 <Layout title={`#${tagName} | ${SITE.title}`}>
@@ -41,10 +39,6 @@ const { page, tag, tagName } = Astro.props;
       }
     </ul>
   </Main>
-
-  <aside class="side-rail">
-    <TagCloud currentTag={tag} limit={20} />
-  </aside>
 
   <Pagination {page} />
 

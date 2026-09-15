@@ -38,8 +38,6 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   return [...tagPages, ...retiredPages];
 }
 
-const params = Astro.params;
-const { tag } = params;
 const { page, tagName, redirectTo } = Astro.props as {
   page?: Page<CollectionEntry<"blog">>;
   tagName?: string;
@@ -52,4 +50,4 @@ if (redirectTo) return Astro.redirect(redirectTo, 301);
 if (!page || !tagName) return Astro.redirect("/tags/", 302);
 ---
 
-<TagPosts {page} {tag} {tagName} />
+<TagPosts {page} {tagName} />
