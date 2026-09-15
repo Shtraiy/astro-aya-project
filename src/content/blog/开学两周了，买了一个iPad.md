@@ -1,5 +1,6 @@
 ---
 title: 开学两周了，买了一个iPad
+category: 随笔
 tags: 
   - ipad
   - 笔记

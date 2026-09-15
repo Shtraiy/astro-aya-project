@@ -1,5 +1,6 @@
 ---
 title: 为ArchLinux安装N卡驱动
+category: 技术
 tags: 
   - Linux
   - 系统

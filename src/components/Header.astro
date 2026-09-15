@@ -6,6 +6,7 @@ import LinkButton from "./LinkButton.astro";
 export interface Props {
   activeNav?:
     | "posts"
+    | "categories"
     | "archives"
     | "tags"
     | "links"
@@ -66,6 +67,14 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/posts/" class={activeNav === "posts" ? "active" : ""}>
               文章
+            </a>
+          </li>
+          <li>
+            <a
+              href="/categories/"
+              class={activeNav === "categories" ? "active" : ""}
+            >
+              分类
             </a>
           </li>
           <li>

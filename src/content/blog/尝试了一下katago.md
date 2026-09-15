@@ -1,5 +1,6 @@
 ---
 title: 与Katago对弈
+category: 番剧游戏
 tags: 
   - 休闲
   - 下棋

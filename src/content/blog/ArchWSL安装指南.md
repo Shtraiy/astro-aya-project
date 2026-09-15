@@ -1,5 +1,6 @@
 ---
 title: ArchWSL安装指南
+category: 技术
 tags: 
   - 技术
   - Linux

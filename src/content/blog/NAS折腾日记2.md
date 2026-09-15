@@ -1,5 +1,6 @@
 ---
 title: "NAS折腾日记2"
+category: 技术
 tags:
   - 技术
   - 折腾

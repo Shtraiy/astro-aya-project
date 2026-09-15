@@ -28,6 +28,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  category,
   editPost,
 } = post.data;
 
@@ -147,6 +148,10 @@ const nextPost =
       <span class="post-meta-item">
         <Icon name="clock" />
         <span>阅读约 {readingTime}</span>
+      </span>
+      <span class="post-meta-item">
+        <Icon name="folder" />
+        <a href={`/categories/${category}/`}>{category}</a>
       </span>
       {
         tags.length > 0 && (

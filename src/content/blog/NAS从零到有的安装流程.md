@@ -1,5 +1,6 @@
 ---
 title: "NAS从零到有的安装流程"
+category: 技术
 tags:
   - 技术
   - 折腾

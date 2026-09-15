@@ -1,0 +1,55 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Card from "@components/Card";
+import Pagination from "@components/Pagination.astro";
+import CategoryList from "@components/CategoryList.astro";
+import { SITE } from "@config";
+import { getReadingTime } from "@utils/getReadingTime";
+import type { Category } from "@data/categories";
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+
+/**
+ * 分类文章列表页版式，和 TagPosts / Posts 同一套结构：
+ * 页头（图标块 + 分类名 + 说明）、文章卡片列表、右侧分类侧栏、分页。
+ */
+export interface Props {
+  page: Page<CollectionEntry<"blog">>;
+  category: Category;
+}
+
+const { page, category } = Astro.props;
+---
+
+<Layout title={`${category.name} | ${SITE.title}`}>
+  <Header activeNav="categories" />
+  <Main
+    pageTitle={category.name}
+    pageDesc={`${category.desc} · 共 ${page.total} 篇文章`}
+    icon={category.icon}
+    iconHue={category.hue}
+  >
+    <ul>
+      {
+        page.data.map(post => (
+          <Card
+            href={`/posts/${post.id}/`}
+            frontmatter={post.data}
+            readingTime={getReadingTime(post.body ?? "")}
+          />
+        ))
+      }
+    </ul>
+  </Main>
+
+  <aside class="side-rail">
+    <CategoryList current={category.name} />
+  </aside>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

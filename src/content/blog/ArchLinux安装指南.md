@@ -1,5 +1,6 @@
 ---
 title: ArchLinux安装指南
+category: 技术
 pubDatetime: 2021-01-26 12:23:19
 description: "记录了实机EFI引导安装ArchLinux的完整流程，面向没有Linux使用经验的新手。"
 tags: 

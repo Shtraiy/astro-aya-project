@@ -1,5 +1,6 @@
 ---
 title: Make a wish
+category: 随笔
 tags: 
   - 许愿
   - 休闲

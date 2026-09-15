@@ -1,0 +1,98 @@
+---
+import { getCollection } from "astro:content";
+import { sortedCategories } from "@data/categories";
+import postFilter from "@utils/postFilter";
+
+/**
+ * 分类侧栏：分类页右侧的窄栏用。
+ *
+ * 数量和顺序都在构建时算好；点开的是互斥栏目，和标签云（关键词）分工不同，
+ * 所以没有复用 TagCloud —— 两者的数据结构与语义都不一样。
+ */
+interface Props {
+  /** 当前所在分类，会被高亮 */
+  current?: string;
+}
+
+const { current } = Astro.props;
+
+const posts = (await getCollection("blog")).filter(postFilter);
+
+const counts = new Map<string, number>();
+for (const post of posts) {
+  counts.set(post.data.category, (counts.get(post.data.category) ?? 0) + 1);
+}
+
+const items = sortedCategories().map(category => ({
+  ...category,
+  count: counts.get(category.name) ?? 0,
+}));
+---
+
+<nav class="category-rail" aria-label="文章分类">
+  <p class="category-rail-title">分类</p>
+  <ul>
+    {
+      items.map(item => (
+        <li>
+          <a
+            href={`/categories/${item.name}/`}
+            class:list={[
+              "category-rail-item",
+              item.name === current && "is-current",
+            ]}
+            aria-current={item.name === current ? "page" : undefined}
+            style={`--cat-hue:${item.hue}`}
+          >
+            <span class="category-rail-dot" aria-hidden="true" />
+            <span class="category-rail-name">{item.name}</span>
+            <span class="category-rail-count">{item.count}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  @reference "../styles/base.css";
+
+  .category-rail-title {
+    @apply text-muted-foreground mb-3 text-xs tracking-widest uppercase;
+  }
+  .category-rail-item {
+    /* 每个分类固定一个色相，圆点和选中态都跟随它 */
+    --cat-color: hsl(var(--cat-hue) 62% 41%);
+    @apply flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm no-underline transition-colors;
+    color: rgb(var(--palette-muted-text));
+  }
+  .category-rail-item:hover {
+    color: rgb(var(--palette-text));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 70%,
+      transparent
+    );
+  }
+  .category-rail-item.is-current {
+    color: rgb(var(--palette-accent));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 10%,
+      transparent
+    );
+  }
+  .category-rail-dot {
+    @apply size-1.5 flex-none rounded-full;
+    background-color: var(--cat-color);
+  }
+  :global(html[data-theme="dark"]) .category-rail-item {
+    --cat-color: hsl(var(--cat-hue) 78% 72%);
+  }
+  .category-rail-name {
+    @apply flex-1 truncate;
+  }
+  .category-rail-count {
+    @apply flex-none text-xs tabular-nums opacity-70;
+  }
+</style>

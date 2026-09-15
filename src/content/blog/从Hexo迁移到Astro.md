@@ -1,5 +1,6 @@
 ---
 title: "最近将本站从Hexo移植到了Astro"
+category: 技术
 tags: 
   - 网页
   - 技术

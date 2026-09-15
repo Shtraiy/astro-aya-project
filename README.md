@@ -51,8 +51,8 @@ src/
 │   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
 │   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
 │   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Search
-├── pages/                 路由：posts / tags / archives / search / about /
-│                          links / collection（音乐）/ anime（追番）
+├── pages/                 路由：posts / categories（分类）/ tags / archives /
+│                          search / about / links / collection（音乐）/ anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
 ├── utils/                 纯函数：阅读时间、slug、标签色、chip 筛选、
 │                          GitHub 活跃度、OG 图模板
@@ -108,6 +108,7 @@ docs/                      详细文档：content / data-sync / deploy
 | 导航菜单                 | `src/components/Header.astro`                                 |
 | 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                      |
 | 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]` |
+| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里      |
 | 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                     |
 | 关于页内容               | `src/data/profile.ts`                                         |
 | 友链                     | `src/data/links.json`                                         |

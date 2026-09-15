@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import CategoryPosts from "@layouts/CategoryPosts.astro";
+import { CATEGORIES } from "@data/categories";
+import getPostsByCategory from "@utils/getPostsByCategory";
+import { SITE } from "@config";
+import type { GetStaticPathsOptions } from "astro";
+
+/*
+  分类详情路由：/categories/<分类>/（第二页起是 /categories/<分类>/2）。
+  分类名直接用中文 slug，和 /tags/随笔/ 保持一致的 URL 风格。
+*/
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = await getCollection("blog");
+
+  return CATEGORIES.flatMap(category => {
+    const categoryPosts = getPostsByCategory(posts, category.name);
+
+    return paginate(categoryPosts, {
+      params: { category: category.name },
+      props: { category },
+      pageSize: SITE.postPerPage,
+    });
+  });
+}
+
+const { page, category } = Astro.props;
+---
+
+<CategoryPosts {page} {category} />
