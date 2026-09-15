@@ -52,6 +52,10 @@ canonicalURL: "" # 可选
 标签颜色是**按标签名算出来的稳定色相**（`src/utils/tagHue.ts`），不用手工配置，
 同一个标签在任何页面都是同一个颜色。
 
+站外链接不用手写 `target="_blank"`：`rehype-external-links`（`astro.config.ts`）会给正文里
+所有 http/https 链接统一加新窗口、`rel="noopener noreferrer"` 与一枚 `↗` 尾标
+（尾标是 CSS 画的，所以复制粘贴不会带上它）。站内链接、`mailto:`、图片都不受影响。
+
 ## 正文里可嵌入的块
 
 正文是 `.md`，写不了 Astro 组件，所以这几块用「原生 HTML + `src/styles/base.css`

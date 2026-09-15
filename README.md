@@ -121,6 +121,9 @@ docs/                      详细文档：content / data-sync / deploy
    `<section>` 记得重置（见 `SectionBlock.astro`）。
 10. **构建时快照**：页面不做运行时请求（音频流除外）。改了 Bangumi / Navidrome /
     友链，要重跑同步脚本再构建。
+11. **站外链接**由 `rehype-external-links` 统一处理（新窗口 + `rel` + `.external-link`，
+    箭头是 CSS 画的，见 `base.css`）。写 `.md` 时不要手写 `target="_blank"`。
+    文章底部的上下篇导航按**同栏目**取，栏目内不足 3 篇才回落全站。
 
 ## 常用命令
 

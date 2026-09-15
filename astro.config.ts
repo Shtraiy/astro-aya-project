@@ -5,6 +5,7 @@ import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import { remarkAlert } from "remark-github-blockquote-alert";
+import rehypeExternalLinks from "rehype-external-links";
 
 import sitemap from "@astrojs/sitemap";
 import {
@@ -35,8 +36,32 @@ export default defineConfig({
           },
         ],
       ],
-      // 正文图片统一补上 loading="lazy" / decoding="async"（见插件注释）
-      rehypePlugins: [rehypeLazyImages],
+      /*
+        脚注标签中文化：Astro 默认是英文的 Footnotes / Back to content，
+        正文里冒出来会很突兀。这里跟参考主题对齐（返回内容用 ↑ 更省地方）。
+      */
+      remarkRehype: {
+        footnoteLabel: "脚注",
+        footnoteBackLabel: "返回内容",
+        footnoteBackContent: "↑",
+      },
+      rehypePlugins: [
+        // 正文图片统一补上 loading="lazy" / decoding="async"（见插件注释）
+        rehypeLazyImages,
+        /*
+          站外链接统一加新窗口 + rel，并打上 external-link 类（箭头由 CSS 画，
+          见 base.css：这样复制粘贴不会带上箭头，屏幕阅读器也不会念出它）。
+          默认只处理 http/https 的 <a>，相对链接、mailto、图片都不受影响。
+        */
+        [
+          rehypeExternalLinks,
+          {
+            target: "_blank",
+            rel: ["noopener", "noreferrer"],
+            properties: { className: ["external-link"] },
+          },
+        ],
+      ],
     }),
 
     shikiConfig: {

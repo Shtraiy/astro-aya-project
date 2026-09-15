@@ -82,21 +82,22 @@ const layoutProps = {
 };
 
 /* ========== Prev/Next Posts ==========
-   优先在同一「主标签」（frontmatter 里的第一个标签）内循环，读同一主题时更连贯；
-   标签下文章不足 3 篇就退回全站列表。到头绕回，不再出现"第一篇没有上一篇"。 */
+   优先在同一「栏目」内循环：栏目是一篇只属一个的稳定归属（标签现在只是细关键词，
+   同一个标签下的文章可能横跨好几个栏目）。栏目内不足 3 篇就退回全站列表。
+   到头绕回，所以不会出现"第一篇没有上一篇"。 */
 
-const allPosts = posts.map(({ data: { title, tags: postTags }, id }) => ({
-  id,
-  title,
-  tags: postTags,
-}));
+const allPosts = posts.map(
+  ({ data: { title, category: postCategory }, id }) => ({
+    id,
+    title,
+    category: postCategory,
+  })
+);
 
-const primaryTag = tags[0];
-const tagSiblings = primaryTag
-  ? allPosts.filter(entry => entry.tags.includes(primaryTag))
-  : [];
-
-const navigationList = tagSiblings.length >= 3 ? tagSiblings : allPosts;
+const sameCategory = allPosts.filter(entry => entry.category === category);
+const scopedToCategory = sameCategory.length >= 3;
+const navigationList = scopedToCategory ? sameCategory : allPosts;
+const scopeLabel = scopedToCategory ? category : null;
 const navigationTotal = navigationList.length;
 const currentPostIndex = navigationList.findIndex(
   entry => entry.id === post.id
@@ -224,13 +225,13 @@ const nextPost =
 
     <hr class="my-6 border-dashed" />
 
-    <!-- Previous/Next Post Buttons -->
-    <div class="flex flex-col gap-6 sm:flex-row sm:justify-between">
+    <!-- Previous/Next Post Buttons：同栏目内循环；移动端两条左对齐堆叠 -->
+    <nav class="post-nav" aria-label="文章导航">
       {
         prevPost && (
           <a
+            class="post-nav-item post-nav-item--prev"
             href={`/posts/${prevPost.id}`}
-            class="flex items-center gap-1 hover:opacity-75"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -242,28 +243,32 @@ const nextPost =
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
+              class="post-nav-icon"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M15 6l-6 6l6 6" />
             </svg>
-            <div>
-              <span>上一篇文章</span>
-              <div class="text-skin-accent/85 text-sm">{prevPost.title}</div>
-            </div>
+            <span class="post-nav-text">
+              <span class="post-nav-label">
+                {scopeLabel ? `上一篇 · ${scopeLabel}` : "上一篇"}
+              </span>
+              <span class="post-nav-title">{prevPost.title}</span>
+            </span>
           </a>
         )
       }
       {
         nextPost && (
           <a
+            class="post-nav-item post-nav-item--next"
             href={`/posts/${nextPost.id}`}
-            class="flex items-center justify-end gap-1 text-right hover:opacity-75 sm:ml-auto"
           >
-            <div>
-              <span>下一篇文章</span>
-              <div class="text-skin-accent/85 text-sm">{nextPost.title}</div>
-            </div>
+            <span class="post-nav-text">
+              <span class="post-nav-label">
+                {scopeLabel ? `下一篇 · ${scopeLabel}` : "下一篇"}
+              </span>
+              <span class="post-nav-title">{nextPost.title}</span>
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -274,7 +279,7 @@ const nextPost =
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
+              class="post-nav-icon"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M9 6l6 6l-6 6" />
@@ -282,7 +287,7 @@ const nextPost =
           </a>
         )
       }
-    </div>
+    </nav>
     <Comments />
     <aside class="side-rail">
       <TOC headings={headings} />
@@ -306,6 +311,59 @@ const nextPost =
   }
   .post-title {
     @apply text-skin-accent text-2xl font-semibold;
+  }
+  /*
+    上下篇导航：
+    - 移动端两条等宽堆叠、都靠左，右边那条的箭头推到最右 —— 这样两行左右边距一致，
+      不会像以前那样"上一篇文章贴左、下一篇文章贴右"，看着像没对齐
+    - ≥sm 变成左右分列，右侧那条整体右对齐（箭头在最右）
+  */
+  .post-nav {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .post-nav-item {
+    @apply flex items-center gap-2 rounded-2xl border px-4 py-3 no-underline transition-colors;
+    border-color: rgb(var(--palette-border));
+    color: rgb(var(--palette-text));
+  }
+  .post-nav-item:hover {
+    color: rgb(var(--palette-accent));
+    border-color: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 45%,
+      transparent
+    );
+  }
+  .post-nav-icon {
+    @apply size-5 flex-none;
+  }
+  .post-nav-text {
+    @apply flex min-w-0 flex-col;
+  }
+  .post-nav-label {
+    @apply text-xs;
+    color: rgb(var(--palette-muted-text));
+  }
+  .post-nav-title {
+    @apply truncate text-sm;
+  }
+  /* 移动端：箭头推到行尾，两行的文字起止位置就对齐了 */
+  .post-nav-item--next .post-nav-icon {
+    margin-inline-start: auto;
+  }
+  @media (min-width: 640px) {
+    .post-nav {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .post-nav-item--next {
+      justify-content: flex-end;
+      text-align: right;
+    }
+    .post-nav-item--next .post-nav-text {
+      align-items: flex-end;
+    }
   }
 </style>
 

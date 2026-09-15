@@ -171,6 +171,22 @@
     padding: 0.125rem 0.25rem;
     margin: -0.125rem -0.25rem;
   }
+  /*
+    站外链接的尾标：由 rehype-external-links 打上 .external-link 类（astro.config.ts），
+    箭头用 CSS 画而不是注入 " ↗" 文字 —— 复制粘贴不会带上它，
+    屏幕阅读器也不会把它念成内容。
+  */
+  .prose a.external-link::after {
+    content: "↗";
+    margin-inline-start: 0.15em;
+    font-size: 0.75em;
+    line-height: 1;
+    vertical-align: super;
+    opacity: 0.65;
+  }
+  .prose a.external-link:hover::after {
+    opacity: 1;
+  }
   .prose thead th:first-child,
   .prose tbody td:first-child,
   .prose tfoot td:first-child {
