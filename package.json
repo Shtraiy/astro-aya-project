@@ -2,7 +2,7 @@
   "name": "astro-aya",
   "version": "1.2.0",
   "private": true,
-  "description": "SilentCage —— 个人博客：随笔、技术笔记、Navidrome 音乐收藏与 Bangumi 追番",
+  "description": "SilentCage —— 个人博客：技术笔记、随笔与游记，Navidrome 音乐收藏与 Bangumi 追番，文章按分类与标签组织",
   "author": "Resalia",
   "license": "MIT",
   "repository": {
@@ -15,6 +15,7 @@
     "tailwindcss",
     "typescript",
     "silentcage",
+    "categories",
     "navidrome",
     "bangumi",
     "vercel"

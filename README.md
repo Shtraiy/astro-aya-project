@@ -1,8 +1,8 @@
 # SilentCage
 
-个人博客：随笔 + 技术笔记 + 音乐收藏 + 追番 + 友链圈。
+个人博客：技术笔记 + 随笔 + 游记 + 音乐 / 番剧 / 游戏收藏 + 友链圈。
 基于 [AstroPaper](https://github.com/satnaing/astro-paper) 改编，Astro 7 + Tailwind 4，
-**纯静态输出**。
+**纯静态输出**；文章按**分类（栏目）**与**标签（关键词）**两套索引组织。
 
 > **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
 > [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
@@ -13,6 +13,9 @@
 
 - **纯静态**：页面在构建时生成，运行时不查数据库、不调外部 API。外部数据都在构建时
   抓成 JSON 快照（`src/data/*.json`）+ 本地图片（`public/images/*`）。
+- **两套文章索引**：分类 = 六个互斥栏目（`src/data/categories.ts`），标签 = 自由关键词。
+  都从 `content/blog/*.md` 的 frontmatter 生成，页面在 `pages/categories`、`pages/tags`，
+  分工见下文「分类与标签怎么分工」。
 - **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
   Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
 - **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
@@ -33,6 +36,7 @@ src/
 │   ├── profile.ts         关于页/首页共用的个人信息，改数据只动这里
 │   ├── links.json         友链数据源（页面和同步脚本共用）
 │   ├── links.ts           给 links.json 补类型，外加本站信息/申请须知
+│   ├── categories.ts      文章分类（栏目）：名称 / 图标 / 色相 / 顺序，兼作 schema 枚举
 │   ├── navidrome.json     音乐快照（sync:navidrome 生成，⚠️ 含播放凭据）
 │   ├── bangumi.json       追番快照（sync:bangumi 生成）
 │   └── friends-posts.json 友链圈快照（sync:friend-circle 生成）
@@ -61,6 +65,24 @@ scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支�
 deploy/waline/             评论服务端部署说明（评论默认关闭）
 docs/                      详细文档：content / data-sync / deploy
 ```
+
+## 分类与标签怎么分工
+
+|      | 分类 `category`                       | 标签 `tags`               |
+| :--- | :------------------------------------ | :------------------------ |
+| 语义 | 栏目，互斥                            | 关键词，自由              |
+| 取值 | 六个之一，必填                        | 任意个                    |
+| 页面 | `/categories/`、`/categories/<栏目>/` | `/tags/`、`/tags/<标签>/` |
+| 用来 | 看「这个栏目有什么」                  | 找「这个具体话题」        |
+
+三条规则：
+
+1. 栏目名单只在 `src/data/categories.ts` 里定义，同时是 content schema 的枚举 —— 写错栏目名
+   `astro check` 会直接失败（故意的，避免静默进错栏目）。
+2. 标签**不要重复栏目名**（技术 / 随笔 / 游记 / 番剧游戏 / 音乐 / 分享）。重复会变成两套同义
+   索引，两个浏览入口互相打架；标签只留更细的词，例如 `Linux`、`NAS`、`STM32`、`香港`、`考研`。
+3. `/posts/` 是「全部文章按时间倒序 + 分页卡片」，`/archives/` 是「同一批文章按年份速查」——
+   同一集合的两种视图，不是两套内容。
 
 ## 关键约定与坑（改代码前扫一眼）
 

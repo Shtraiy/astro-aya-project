@@ -15,6 +15,10 @@ export interface Props {
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  /** 文章所属分类（栏目），有值才输出 article:section */
+  category?: string;
+  /** 文章标签（关键词），逐条输出为 article:tag */
+  tags?: string[];
   scrollSmooth?: boolean;
 }
 
@@ -26,6 +30,8 @@ const {
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   pubDatetime,
   modDatetime,
+  category,
+  tags,
   scrollSmooth = false,
 } = Astro.props;
 
@@ -33,6 +39,10 @@ const socialImageURL = new URL(
   ogImage ?? SITE.ogImage ?? "og.png",
   Astro.url.origin
 ).href;
+
+// OG 的 type 按"是不是文章"分流；locale 要下划线写法（zh_CN），和 html lang 不同
+const ogType = pubDatetime ? "article" : "website";
+const ogLocale = (LOCALE.langTag[0] ?? LOCALE.lang).replace("-", "_");
 ---
 
 <!doctype html>
@@ -62,10 +72,16 @@ const socialImageURL = new URL(
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:locale" content={ogLocale} />
+    <!-- OG 图实际输出尺寸，见 utils/og-templates（1200×630） -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Article Published/Modified time -->
     {
@@ -84,6 +100,9 @@ const socialImageURL = new URL(
         />
       )
     }
+    {pubDatetime && <meta property="article:author" content={SITE.profile} />}
+    {category && <meta property="article:section" content={category} />}
+    {tags?.map(tag => <meta property="article:tag" content={tag} />)}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />

@@ -15,6 +15,8 @@ export async function GET() {
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      /* 第一项是分类（栏目），后面跟标签（关键词）；两者都进 <category> */
+      categories: [data.category, ...data.tags],
     })),
   });
 }

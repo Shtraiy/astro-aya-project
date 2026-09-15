@@ -48,7 +48,11 @@ function getChineseNumber(num: number): string {
 
 <Layout title={`归档 | ${SITE.title}`}>
   <Header activeNav="archives" />
-  <Main pageTitle="归档" pageDesc="所有已归档文章" icon="archive">
+  <Main
+    pageTitle="归档"
+    pageDesc="同一批文章按年份速查 · 分页卡片视图在文章页"
+    icon="archive"
+  >
     {
       Object.entries(
         getPostsByGroupCondition(posts, post =>
