@@ -2,7 +2,6 @@
 title: "NAS折腾日记1"
 category: 技术
 tags:
-  - 技术
   - 折腾
   - NAS
 pubDatetime: 2026-07-09 00:00:00

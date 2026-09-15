@@ -3,14 +3,37 @@ import { getCollection } from "astro:content";
 import TagPosts from "@layouts/TagPosts.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
-import type { GetStaticPathsOptions } from "astro";
+import type { GetStaticPathsOptions, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 import { SITE } from "@config";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const posts = await getCollection("blog");
   const tags = getUniqueTags(posts);
 
-  return tags.flatMap(({ tag, tagName }) => {
+  /*
+    与分类同义的旧标签：文章已经不打这些标签了（见 README「分类与标签怎么分工」），
+    页面不会再由文章生成。旧链接和搜索引擎里的地址还在，这里补 301 跳到对应栏目，
+    避免 404 —— 和 /music → /collection 的处理方式一致。
+
+    注意：这段必须写在 getStaticPaths 内部。它会连同函数一起被抽出到独立模块里执行，
+    引用不到 frontmatter 里的模块级常量。
+  */
+  const categoryUrl = (name: string) =>
+    `/categories/${encodeURIComponent(name)}/`;
+
+  const retiredTags: Record<string, string> = {
+    /* 跳转目标要百分号编码：Location 头只能放 Latin-1，中文直接写会构建失败 */
+    技术: categoryUrl("技术"),
+    随笔: categoryUrl("随笔"),
+    音乐: categoryUrl("音乐"),
+    番剧: categoryUrl("番剧游戏"),
+    旅游: categoryUrl("游记"),
+    旅行: categoryUrl("游记"),
+    收藏: categoryUrl("分享"),
+  };
+
+  const tagPages = tags.flatMap(({ tag, tagName }) => {
     const tagPosts = getPostsByTag(posts, tag);
 
     return paginate(tagPosts, {
@@ -19,11 +42,27 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
       pageSize: SITE.postPerPage,
     });
   });
+
+  const retiredPages = Object.entries(retiredTags).map(([tag, redirectTo]) => ({
+    params: { tag },
+    props: { redirectTo },
+  }));
+
+  return [...tagPages, ...retiredPages];
 }
 
 const params = Astro.params;
 const { tag } = params;
-const { page, tagName } = Astro.props;
+const { page, tagName, redirectTo } = Astro.props as {
+  page?: Page<CollectionEntry<"blog">>;
+  tagName?: string;
+  redirectTo?: string;
+};
+
+/* 退场标签：旧地址 301 到对应栏目 */
+if (redirectTo) return Astro.redirect(redirectTo, 301);
+/* 兜底：有标签就一定有分页数据，走不到这里 */
+if (!page || !tagName) return Astro.redirect("/tags/", 302);
 ---
 
 <TagPosts {page} {tag} {tagName} />

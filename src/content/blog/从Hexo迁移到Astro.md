@@ -3,7 +3,6 @@ title: "最近将本站从Hexo移植到了Astro"
 category: 技术
 tags: 
   - 网页
-  - 技术
 description: "本文记录了将博客从Hexo框架迁移到Astro框架的过程。"
 pubDatetime: 2024-11-28 19:47:01
 ---

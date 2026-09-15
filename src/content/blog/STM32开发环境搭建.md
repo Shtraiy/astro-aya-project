@@ -2,7 +2,6 @@
 title: STM32开发环境搭建
 category: 技术
 tags: 
-  - 技术
   - 单片机
   - STM32
 pubDatetime: 2025-1-11 8:27:44

@@ -2,7 +2,6 @@
 title: ArchWSL安装指南
 category: 技术
 tags: 
-  - 技术
   - Linux
   - wsl2
 pubDatetime: 2024-12-5 00:02:00
@@ -141,4 +140,3 @@ ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
 ```
 L+     /tmp/.X11-unix -    -    -    -   /mnt/wslg/.X11-unix
 ```
-
