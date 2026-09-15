@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+import Posts from "@layouts/Posts.astro";
+import getSortedPosts from "@utils/getSortedPosts";
+
+/*
+  文章页不再分页：全部文章按年份分组，一页到底（版式见 layouts/Posts.astro）。
+  旧的 /posts/2 … /posts/6 由 vercel.json 里的 301 收回 /posts/。
+*/
+const posts = getSortedPosts(await getCollection("blog"));
+---
+
+<Posts {posts} />

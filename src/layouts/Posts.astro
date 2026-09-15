@@ -3,275 +3,151 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
 import TagCloud from "@components/TagCloud.astro";
 import { SITE } from "@config";
 import { getReadingTime } from "@utils/getReadingTime";
-import { getCollection } from "astro:content";
-import getSortedPosts from "@utils/getSortedPosts";
 import getPostsByGroupCondition from "@utils/getPostsByGroupCondition";
-import { MONTH_NAMES, shortDate, toChineseNumber } from "@utils/chineseMonth";
-import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
+/**
+ * 文章页版式：按年份分组的卡片流。
+ *
+ * 以前是「卡片 / 时间轴」两个视图来回切，但两者内容高度重叠，读者每次还得先选一次；
+ * 现在合成一个：年份当分组标题（延续原来那枚巨大的年份水印），组内直接排卡片，
+ * 页头的年份条负责"按年速查"这件时间轴唯一独有的好事。
+ *
+ * 不再分页：全部文章一页到底，旧的 /posts/2 … /posts/6 在 vercel.json 里 301 回这里。
+ */
 export interface Props {
-  page: Page<CollectionEntry<"blog">>;
+  /** 已经按时间倒序排好的文章 */
+  posts: CollectionEntry<"blog">[];
 }
 
-const { page } = Astro.props;
+const { posts } = Astro.props;
 
-/*
-  「时间轴」视图只在第一页给：它列的是全部文章，摆在分页页面上会让人误以为
-  这一页就是全部。原 /archives 页的按年速查能力并到这里，不再是独立入口。
-*/
-const showTimeline = page.currentPage === 1;
-
-const timeline = showTimeline
-  ? Object.entries(
-      getPostsByGroupCondition(
-        getSortedPosts(await getCollection("blog")),
-        post => post.data.pubDatetime.getFullYear()
-      )
-    )
-      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
-      .map(([year, yearPosts]) => ({
-        year,
-        count: yearPosts.length,
-        months: Object.entries(
-          getPostsByGroupCondition(
-            yearPosts,
-            post => post.data.pubDatetime.getMonth() + 1
-          )
-        )
-          .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
-          .map(([month, monthPosts]) => ({ month, posts: monthPosts })),
-      }))
-  : [];
+const years = Object.entries(
+  getPostsByGroupCondition(posts, post => post.data.pubDatetime.getFullYear())
+)
+  .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+  .map(([year, yearPosts]) => ({
+    year,
+    count: yearPosts.length,
+    posts: yearPosts,
+  }));
 ---
 
 <Layout title={`文章 | ${SITE.title}`}>
   <Header activeNav="posts" />
   <Main
     pageTitle="文章"
-    pageDesc="全部文章，按时间倒序 · 可切时间轴按年月速查，按栏目看走分类"
+    pageDesc={`全部 ${posts.length} 篇，按年份分组 · 想按栏目看走分类页`}
     icon="book"
   >
-    <div class="posts-views" data-view-root>
+    <nav class="year-strip" aria-label="按年份跳转">
       {
-        showTimeline && (
-          /* 有 JS 才显示：没有脚本时两块内容依次铺开，不留一个点不动的按钮 */
-          <div class="view-switch" data-view-switch hidden>
-            <button
-              type="button"
-              class="view-switch-btn is-active"
-              data-view-btn="cards"
-              aria-pressed="true"
-            >
-              卡片
-            </button>
-            <button
-              type="button"
-              class="view-switch-btn"
-              data-view-btn="timeline"
-              aria-pressed="false"
-            >
-              时间轴
-            </button>
-          </div>
-        )
+        years.map(({ year, count }) => (
+          <a class="year-chip" href={`#year-${year}`}>
+            <span class="year-chip-year">{year}</span>
+            <span class="year-chip-count">{count}</span>
+          </a>
+        ))
       }
+    </nav>
 
-      <div data-view-panel="cards">
-        <ul>
-          {
-            page.data.map(post => (
+    {
+      years.map(({ year, count, posts: yearPosts }) => (
+        <div class="year-group" id={`year-${year}`}>
+          <h2 class="year-head">
+            {/* 装饰用的巨大年份水印，压在标题下面 */}
+            <span class="year-ghost" aria-hidden="true">
+              {year}
+            </span>
+            <span class="year-label">{year}</span>
+            <span class="year-count">{count} 篇</span>
+          </h2>
+          <ul>
+            {yearPosts.map(post => (
               <Card
                 href={`/posts/${post.id}/`}
                 frontmatter={post.data}
                 readingTime={getReadingTime(post.body ?? "")}
               />
-            ))
-          }
-        </ul>
-      </div>
-
-      {
-        showTimeline && (
-          <div class="timeline" data-view-panel="timeline">
-            {timeline.map(({ year, count, months }) => (
-              <section class="timeline-year">
-                <h2 class="timeline-year-head">
-                  <span class="timeline-year-label">{year}</span>
-                  <span class="timeline-year-count">{count} 篇</span>
-                </h2>
-                {months.map(({ month, posts }) => (
-                  <div class="timeline-month">
-                    <p class="timeline-month-label">
-                      {MONTH_NAMES[month]} · {toChineseNumber(posts.length)}篇
-                    </p>
-                    <ul class="timeline-list">
-                      {posts.map(post => (
-                        <li>
-                          <a class="timeline-item" href={`/posts/${post.id}/`}>
-                            <time class="timeline-date">
-                              {shortDate(post.data.pubDatetime)}
-                            </time>
-                            <span class="timeline-title">
-                              {post.data.title}
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </section>
             ))}
-          </div>
-        )
-      }
-    </div>
+          </ul>
+        </div>
+      ))
+    }
   </Main>
 
   <aside class="side-rail">
     <TagCloud limit={20} />
   </aside>
 
-  <Pagination {page} />
-
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer />
 </Layout>
 
 <style>
   @reference "../styles/base.css";
 
-  /* ===== 视图切换条 ===== */
-  .view-switch {
-    @apply mb-6 inline-flex items-center gap-1 rounded-xl p-1;
-    border: 1px solid rgb(var(--palette-border));
-    background-color: color-mix(
+  /* ===== 年份快捷条（替代原时间轴视图的速查作用）===== */
+  .year-strip {
+    @apply mb-8 flex flex-wrap gap-2;
+  }
+  .year-chip {
+    @apply inline-flex items-center gap-1.5 rounded-xl border px-3 py-1 text-sm no-underline transition-colors;
+    border-color: rgb(var(--palette-border));
+    color: rgb(var(--palette-text));
+  }
+  .year-chip:hover {
+    color: rgb(var(--palette-accent));
+    border-color: color-mix(
       in srgb,
-      rgb(var(--palette-muted)) 55%,
+      rgb(var(--palette-accent)) 45%,
       transparent
     );
   }
-  .view-switch[hidden] {
-    display: none;
+  .year-chip-year {
+    @apply font-mono;
   }
-  .view-switch-btn {
-    @apply cursor-pointer rounded-lg px-3 py-1 text-sm;
-    font-family: inherit;
+  .year-chip-count {
+    @apply text-xs;
     color: rgb(var(--palette-muted-text));
-    transition:
-      color 0.2s ease,
-      background-color 0.2s ease;
-  }
-  .view-switch-btn:hover {
-    color: rgb(var(--palette-text));
-  }
-  .view-switch-btn.is-active {
-    color: rgb(var(--palette-accent));
-    background-color: rgb(var(--palette-fill));
-    font-weight: 600;
-  }
-  [data-view-panel][hidden] {
-    display: none;
   }
 
-  /* ===== 时间轴：一屏扫完所有年份，每篇只占一行 ===== */
-  .timeline-year {
+  /* ===== 年份分组 ===== */
+  .year-group {
     @apply mb-10;
+    /* 从年份条跳过来时，给标题留一点上边距 */
+    scroll-margin-top: 1.5rem;
   }
-  .timeline-year-head {
-    @apply mb-2 flex items-baseline gap-2;
+  /*
+    年份水印：给标题单独留出一条高带，让放大的年份整个待在带内，
+    这样它只和年份标题叠在一起，不会糊到下面的卡片上。
+  */
+  .year-head {
+    position: relative;
+    padding-top: 2.75rem;
+    @apply mb-2 flex items-baseline gap-3;
   }
-  .timeline-year-label {
-    @apply text-2xl font-bold;
-  }
-  .timeline-year-count {
-    @apply text-sm;
-    color: rgb(var(--palette-muted-text));
-  }
-  .timeline-month {
-    @apply mt-4 flex flex-col gap-1 sm:flex-row sm:gap-4;
-  }
-  .timeline-month-label {
-    @apply m-0 shrink-0 pt-1 text-sm font-bold sm:w-30;
-    color: rgb(var(--palette-muted-text));
-  }
-  .timeline-list {
-    @apply m-0 flex min-w-0 flex-1 list-none flex-col gap-0.5 p-0;
-  }
-  .timeline-item {
-    @apply flex items-baseline gap-3 rounded-lg px-2 py-1 no-underline transition-colors;
+  .year-ghost {
+    position: absolute;
+    top: 0;
+    left: -0.05em;
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
     color: rgb(var(--palette-text));
+    opacity: 0.06;
+    pointer-events: none;
+    user-select: none;
   }
-  .timeline-item:hover {
-    color: rgb(var(--palette-accent));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted)) 60%,
-      transparent
-    );
+  .year-label {
+    @apply relative z-10 text-2xl font-bold;
   }
-  .timeline-date {
-    @apply shrink-0 font-mono text-xs;
+  .year-count {
+    @apply relative z-10 text-sm;
     color: rgb(var(--palette-muted-text));
-  }
-  .timeline-title {
-    @apply min-w-0 text-sm;
   }
 </style>
-
-<script>
-  /**
-   * 「卡片 / 时间轴」切换。
-   *
-   * 渐进增强：脚本没跑起来时切换条保持隐藏、两块内容依次显示，页面依然完整。
-   * 与站内其它脚本同一套路 —— data-ready 守卫 + astro:after-swap 重新初始化。
-   */
-  function initPostViews(root: ParentNode = document) {
-    const containers = root.querySelectorAll<HTMLElement>("[data-view-root]");
-
-    for (const container of containers) {
-      if (container.dataset.ready === "true") continue;
-
-      const switcher =
-        container.querySelector<HTMLElement>("[data-view-switch]");
-      const buttons = [
-        ...container.querySelectorAll<HTMLButtonElement>("[data-view-btn]"),
-      ];
-      const panels = new Map(
-        [...container.querySelectorAll<HTMLElement>("[data-view-panel]")].map(
-          panel => [panel.dataset.viewPanel ?? "", panel]
-        )
-      );
-
-      if (!switcher || buttons.length === 0 || panels.size < 2) continue;
-
-      container.dataset.ready = "true";
-      switcher.hidden = false;
-
-      const show = (key: string) => {
-        for (const [name, panel] of panels) panel.hidden = name !== key;
-        for (const button of buttons) {
-          const active = button.dataset.viewBtn === key;
-          button.classList.toggle("is-active", active);
-          button.setAttribute("aria-pressed", String(active));
-        }
-      };
-
-      for (const button of buttons) {
-        button.addEventListener("click", () =>
-          show(button.dataset.viewBtn ?? "")
-        );
-      }
-
-      show("cards");
-    }
-  }
-
-  initPostViews();
-  document.addEventListener("astro:after-swap", () => initPostViews());
-</script>

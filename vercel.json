@@ -4,6 +4,11 @@
   "outputDirectory": "dist",
   "redirects": [
     { "source": "/archives", "destination": "/posts/", "permanent": true },
-    { "source": "/archives/", "destination": "/posts/", "permanent": true }
+    { "source": "/archives/", "destination": "/posts/", "permanent": true },
+    {
+      "source": "/posts/:page(\\d+)",
+      "destination": "/posts/",
+      "permanent": true
+    }
   ]
 }

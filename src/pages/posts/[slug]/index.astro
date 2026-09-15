@@ -12,8 +12,14 @@ export async function getStaticPaths() {
   const allPosts = await getCollection("blog");
   const sortedPosts = getSortedPosts(allPosts);
 
+  /*
+    草稿：开发时照常生成页面，方便直接开 URL 预览（列表里仍然不显示）；
+    正式构建时排除。只翻 draft 标记、不改这里，就能决定发不发。
+  */
+  const includeDrafts = import.meta.env.DEV;
+
   return allPosts
-    .filter(({ data }) => !data.draft)
+    .filter(({ data }) => includeDrafts || !data.draft)
     .map(post => ({
       params: { slug: post.id },
       props: { post, sortedPosts },
