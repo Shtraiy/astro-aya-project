@@ -1,6 +1,6 @@
 {
   "serverUrl": "https://music.frp.wynio.pw:62026",
-  "syncedAt": "2026-09-15T02:08:38.981Z",
+  "syncedAt": "2026-09-16T16:30:41.948Z",
   "albums": [
     {
       "id": "4LKmMz6R9bqf9SWJC29y2Q",
@@ -239,6 +239,81 @@
           "title": "標本Ⅶ：芍薬(Instrumental)",
           "track": 2,
           "duration": 373
+        }
+      ]
+    },
+    {
+      "id": "0Wl01em1bgDVHsj5DTl8EI",
+      "name": "NEGA FRAGMENTS",
+      "artist": "AcuticNotes",
+      "artistId": "6BXjlh3kAbRWpCWk59v85o",
+      "year": 2015,
+      "genre": null,
+      "songCount": 10,
+      "duration": 2468,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/0Wl01em1bgDVHsj5DTl8EI.jpg",
+      "tracks": [
+        {
+          "id": "x3nTkJrkfE9L1jgNwTwCkB",
+          "title": "0",
+          "track": 1,
+          "duration": 87
+        },
+        {
+          "id": "OSTAZmtvjiNCjNoTDl0kBi",
+          "title": "Encounter",
+          "track": 2,
+          "duration": 273
+        },
+        {
+          "id": "IqQRy3acziy1vphivfAZzq",
+          "title": "最初の白",
+          "track": 3,
+          "duration": 269
+        },
+        {
+          "id": "tBcTc9WqK5gSmNq2usjkbq",
+          "title": "Reminiscence",
+          "track": 4,
+          "duration": 279
+        },
+        {
+          "id": "2eOMSOerawSRNehDyMiOT9",
+          "title": "一瞬",
+          "track": 5,
+          "duration": 340
+        },
+        {
+          "id": "m7xuCBzAyqc7QeQFbWsI23",
+          "title": "E_ffect Line",
+          "track": 6,
+          "duration": 300
+        },
+        {
+          "id": "WSaBFdi1g1LzcBLLzcp3H0",
+          "title": "Entorevolution",
+          "track": 7,
+          "duration": 313
+        },
+        {
+          "id": "KqVvIoJvwmHRx4OAU8gSF8",
+          "title": "Krach",
+          "track": 8,
+          "duration": 304
+        },
+        {
+          "id": "UNe9WsLo5iGg6ICBst2qdW",
+          "title": "最後",
+          "track": 9,
+          "duration": 228
+        },
+        {
+          "id": "MDhiMekhLHJLqcNMaLbFnQ",
+          "title": "-2",
+          "track": 10,
+          "duration": 72
         }
       ]
     },
@@ -4641,7 +4716,7 @@
       ]
     },
     {
-      "id": "4RZF7TZG9s2yqsbWWUE8en",
+      "id": "0MPHicIgeWNnZxDgB8ujEO",
       "name": "シンクロ",
       "artist": "森羅万象",
       "artistId": "5nPuRMPvIGJJIwsZ3BcAkx",
@@ -4651,7 +4726,7 @@
       "duration": 2614,
       "starred": false,
       "playCount": 0,
-      "cover": "/images/navidrome/4RZF7TZG9s2yqsbWWUE8en.jpg",
+      "cover": "/images/navidrome/0MPHicIgeWNnZxDgB8ujEO.jpg",
       "tracks": [
         {
           "id": "vFjW4pI4bYP77zxl1Pa20t",
@@ -4661,7 +4736,7 @@
         },
         {
           "id": "ioh7cruuoolPspuIMpQELS",
-          "title": "エピック·リカバリー",
+          "title": "エピック・リカバリー",
           "track": 2,
           "duration": 244
         },
@@ -4709,9 +4784,66 @@
         },
         {
           "id": "MwpMbPd98ayVrG84d6NrGD",
-          "title": "これからの「　」",
+          "title": "これからの「 」",
           "track": 10,
           "duration": 267
+        }
+      ]
+    },
+    {
+      "id": "5u6lgSkvBtJ48KXvS8ZXaO",
+      "name": "きらら トリビュート コレクション「結束バンドの歌ってみた」",
+      "artist": "結束バンド",
+      "artistId": "761WIBBzoHw5YeOyEu5Za4",
+      "year": 2024,
+      "genre": null,
+      "songCount": 7,
+      "duration": 1773,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/5u6lgSkvBtJ48KXvS8ZXaO.jpg",
+      "tracks": [
+        {
+          "id": "be1syd9Xn7uG8lL5HtinHU",
+          "title": "ドラマパート ある日の結束バンド 〜その1〜",
+          "track": 1,
+          "duration": 325
+        },
+        {
+          "id": "HyXvWtgHnJFstvyzKt1v6x",
+          "title": "Cagayake!GIRLS",
+          "track": 2,
+          "duration": 250
+        },
+        {
+          "id": "37SzdtZ1wEqcs1be22b5aL",
+          "title": "Daydream café",
+          "track": 3,
+          "duration": 228
+        },
+        {
+          "id": "chiArz1LKx13cGn3K8oUbd",
+          "title": "キルミーのベイベー!",
+          "track": 4,
+          "duration": 153
+        },
+        {
+          "id": "JdFyBNK7sWc1XyGxfSIEoc",
+          "title": "SHINY DAYS",
+          "track": 5,
+          "duration": 262
+        },
+        {
+          "id": "Gl2VrHTgQ5mKyxaZLp6Je9",
+          "title": "Won(*3*)Chu KissMe!",
+          "track": 6,
+          "duration": 285
+        },
+        {
+          "id": "mkszzMxTdMyW1r2gBZxkSt",
+          "title": "ドラマパート ある日の結束バンド 〜その2〜",
+          "track": 7,
+          "duration": 266
         }
       ]
     },
@@ -4729,22 +4861,10 @@
       "cover": "/images/navidrome/1uGH2ZjluoMbqXRoImySQo.jpg",
       "tracks": [
         {
-          "id": "HKYpfqPevB7665dB7kSjgm",
-          "title": "青春コンプレックス",
-          "track": 1,
-          "duration": 203
-        },
-        {
           "id": "wgKInWU5qOmLoQvwzlBwXt",
           "title": "青春コンプレックス",
           "track": 1,
           "duration": 203
-        },
-        {
-          "id": "ypOBmUxGGkrZSogrk5Hrew",
-          "title": "ひとりぼっち東京",
-          "track": 2,
-          "duration": 232
         },
         {
           "id": "8x8AO6x6qLUmG4RDWrrqfr",
@@ -4753,22 +4873,10 @@
           "duration": 232
         },
         {
-          "id": "lhQOLyAIhHz8jUesfVK3VJ",
-          "title": "Distortion!!",
-          "track": 3,
-          "duration": 203
-        },
-        {
           "id": "M4SojvLMWbzsSm09lMpkdz",
           "title": "Distortion!!",
           "track": 3,
           "duration": 203
-        },
-        {
-          "id": "1a8cURoAehKIrPxIAl4adf",
-          "title": "ひみつ基地",
-          "track": 4,
-          "duration": 232
         },
         {
           "id": "wYwCdJzUCkCj3Xwkl7fjTL",
@@ -4777,22 +4885,10 @@
           "duration": 232
         },
         {
-          "id": "nJxzP1mjNOi5kgM9ZkHmrg",
-          "title": "ギターと孤独と蒼い惑星",
-          "track": 5,
-          "duration": 228
-        },
-        {
           "id": "hFc4fB73z42AqHffej2GGa",
           "title": "ギターと孤独と蒼い惑星",
           "track": 5,
           "duration": 228
-        },
-        {
-          "id": "D7DyUYwvsqKZUfgF2liNy7",
-          "title": "ラブソングが歌えない",
-          "track": 6,
-          "duration": 188
         },
         {
           "id": "yXq8PwGrKgta8qDtuBYrVe",
@@ -4801,22 +4897,10 @@
           "duration": 188
         },
         {
-          "id": "WVhQrbONv33cfv0fhu2KZu",
-          "title": "あのバンド",
-          "track": 7,
-          "duration": 213
-        },
-        {
           "id": "bP0PcWpbzkpfUnpWgjJ6jy",
           "title": "あのバンド",
           "track": 7,
           "duration": 213
-        },
-        {
-          "id": "BOXQjKUJTv6q3wlnFv5rny",
-          "title": "カラカラ",
-          "track": 8,
-          "duration": 265
         },
         {
           "id": "TjsG7VZH8xH8jQleJjtMDt",
@@ -4825,22 +4909,10 @@
           "duration": 265
         },
         {
-          "id": "8ZRU5K9Hk3lbH4G1h6uLBK",
-          "title": "小さな海",
-          "track": 9,
-          "duration": 223
-        },
-        {
           "id": "A86GT76fFjzsaaD5RMfx8v",
           "title": "小さな海",
           "track": 9,
           "duration": 223
-        },
-        {
-          "id": "P36Mls2ec9Mz73Izh6tQh1",
-          "title": "なにが悪い",
-          "track": 10,
-          "duration": 227
         },
         {
           "id": "GXtzSFrWBFUERIx8e3PAwY",
@@ -4849,22 +4921,10 @@
           "duration": 227
         },
         {
-          "id": "0sy9Gmux7QKIYLzwyT2vbk",
-          "title": "忘れてやらない",
-          "track": 11,
-          "duration": 223
-        },
-        {
           "id": "79Yp4IOZjJrqJJLxU5RcdB",
           "title": "忘れてやらない",
           "track": 11,
           "duration": 223
-        },
-        {
-          "id": "FA0rxIX15hCbDFa4BkhwlT",
-          "title": "星座になれたら",
-          "track": 12,
-          "duration": 258
         },
         {
           "id": "DFkRaHGABP3SUg2l7iv1Bj",
@@ -4873,22 +4933,10 @@
           "duration": 258
         },
         {
-          "id": "6IxHZjUTWWZh1RdiJXffIt",
-          "title": "フラッシュバッカー",
-          "track": 13,
-          "duration": 275
-        },
-        {
           "id": "g7cR6Zh71uINnKU8Uz5FHp",
           "title": "フラッシュバッカー",
           "track": 13,
           "duration": 275
-        },
-        {
-          "id": "W75f7YLGPqEAn8ahGA71pn",
-          "title": "転がる岩、君に朝が降る",
-          "track": 14,
-          "duration": 271
         },
         {
           "id": "RN2W8ZoBjzHLAjDFDWXkI4",
@@ -4970,6 +5018,51 @@
           "title": "クラリムステラ",
           "track": 10,
           "duration": 277
+        }
+      ]
+    },
+    {
+      "id": "3UCJ4tt1f2Hq3aTHxGw1V4",
+      "name": "Baby Romantica",
+      "artist": "藍月なくる x まめこ",
+      "artistId": "6oSJ1HIHsGf8OTMyFcin4c",
+      "year": 2020,
+      "genre": null,
+      "songCount": 5,
+      "duration": 1322,
+      "starred": false,
+      "playCount": 0,
+      "cover": "/images/navidrome/3UCJ4tt1f2Hq3aTHxGw1V4.jpg",
+      "tracks": [
+        {
+          "id": "87rM1pUJ4PKaSgP63faH5E",
+          "title": "月と蝶の小夜曲",
+          "track": 1,
+          "duration": 258
+        },
+        {
+          "id": "ylbu8I6qqA8d7f0iuXrIOd",
+          "title": "Verdelia",
+          "track": 2,
+          "duration": 280
+        },
+        {
+          "id": "PgSaUNfuaK6A8gsf6kvf5g",
+          "title": "Rusmir",
+          "track": 3,
+          "duration": 248
+        },
+        {
+          "id": "0qY5qwL4EVDIDoCPrpX9K3",
+          "title": "姫遊戯Secrecy",
+          "track": 4,
+          "duration": 236
+        },
+        {
+          "id": "BzPgIj44dgO8vq0m0SHslC",
+          "title": "深淵Amnesia",
+          "track": 5,
+          "duration": 297
         }
       ]
     },
@@ -5126,8 +5219,8 @@
   ],
   "stream": {
     "user": "guest",
-    "token": "d1a3f310024f3e65c20c4bbf31a7254f",
-    "salt": "21wd14c72x",
+    "token": "fb39fa801731bd984c725e1f146628d1",
+    "salt": "wqsgy7stgn",
     "client": "silentcage-blog"
   }
 }
