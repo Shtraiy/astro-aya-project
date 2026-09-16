@@ -119,8 +119,29 @@ sudo pacman -S foo
 
 ## 图片
 
-正文图片会在构建时自动补上 `loading="lazy"` / `decoding="async"`
-（`src/plugins/rehype-lazy-images.mjs`），不用手动写。
+正文图片会在构建时自动补上 `loading="lazy"` / `decoding="async"` /
+`width` / `height`（`src/plugins/rehype-lazy-images.mjs`），不用手动写。
+
+### 加图片的流程
+
+图片最终要落在仓库里（`public/images/<分组>/`），站点对图床/NAS 没有运行时依赖。
+推荐的写法是「照旧传图床，发之前跑一次命令」：
+
+1. 照常把图传到自己的图床，正文里写图床链接：
+   `![说明](https://images.frp.wynio.pw:62026/api/images/<分组>/<文件名>)`
+2. 发之前跑一次 **`npm run images:optimize`**：它会把正文里的图床链接下载到
+   `public/images/<分组>/`、转成 WebP（GIF 保留动画、宽度上限 1600px），
+   并把正文引用改成本地路径。**幂等**，只处理新图，随时可以重复跑；
+   被替换掉的原图会备份到 `.trash/image-optimize-<日期>/`（确认没问题就能删）。
+3. 图片和正文一起提交。构建时会自动补 `width`/`height`（`npm run images:sizes`），
+   不用手写尺寸。
+
+也可以直接把图丢进 `public/images/<分组>/`：尺寸照样自动补，但要压缩还是在第 2 步跑一次
+`npm run images:optimize`。
+
+**路径里不能有空格**：`![a](/images/x y/z.png)` 会被 markdown 解析成「地址 + 标题」，
+整句变成纯文本、图直接不显示（踩过一次）。需要空格就写 `%20`（`images:optimize` 会
+自动编码；`npm run check:assets` 也会拦住这种写法）。
 
 ## 关于页 / 首页的个人信息
 

@@ -136,6 +136,9 @@ docs/                      详细文档：content / data-sync / deploy
     整句变纯文本、图直接不显示（踩过）；需要空格就写 `%20`，`check:assets` 会拦这种写法。
     尺寸由 `images:sizes` 预生成成 `src/data/image-sizes.json`，插件同步查表
     （本项目的 markdown 管线不会等异步 rehype 插件）。
+    写新文章加图时照旧传图床、发之前跑一次 `images:optimize` 即可（**故意不接进
+    `build`**：否则构建要联网去 NAS 拉图，图床一挂部署就失败）。详见
+    [docs/content.md](docs/content.md) 的「加图片的流程」。
 
 ## 常用命令
 
