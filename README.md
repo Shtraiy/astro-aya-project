@@ -28,8 +28,9 @@
   Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
 - **正文图在仓库里**：`public/images/<分组>/`，统一 WebP（GIF 保留动画），构建时自动带上
   `width`/`height`。图片不再走自建图床，站点对家里的 NAS 没有运行时依赖。
-- **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
-  （⚠️ 见 [docs/data-sync.md](docs/data-sync.md) 的「播放凭据」）。
+- **运行时只有两处外联**：播放器的音频直连 Navidrome，前端因此带一份只读凭据
+  （⚠️ 见 [docs/data-sync.md](docs/data-sync.md) 的「播放凭据」）；曲库本身走同源的
+  `/collection/data.json`（构建期生成的静态 JSON），点播放时才取。
 - **部署**：Vercel。`vercel.json` 把构建命令设成 `npm run build:vercel`，
   会在构建前自动跑同步脚本。Node `>= 22.12`（`.nvmrc` 指定 24）。
 
@@ -60,7 +61,8 @@ src/
 │   ├── Section.astro      「左标签 · 右内容」版式（首页分区）
 │   ├── SectionBlock.astro 「图标块 + 标题 + 说明」分区（关于页/友链页）
 │   ├── StatsStrip.astro   分段统计条（首页/收藏/追番共用，容器查询自适应列数）
-│   ├── CollectionPlayer.astro 收藏页浮空播放窗 + 最小化迷你条（播放逻辑都在这里）
+│   ├── MusicPlayer.astro  站内音乐播放器：浮空面板 + 迷你条，挂在 Layout 上常驻，
+│   │                      站内跳转不断播（曲库走 /collection/data.json）
 │   ├── Comments.astro     评论区（Waline，默认关闭，未配置时整块不渲染）
 │   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
 │   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
@@ -69,7 +71,10 @@ src/
 ├── pages/                 路由：posts（按年份分组）/ categories（分类）/ tags /
 │                          search / about / links / collection（音乐）/ anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
-├── utils/                 纯函数：阅读时间、slug、标签色、chip 筛选、
+│                          music-player.css 是播放器的样式（曲目行由脚本生成，必须全局）
+├── utils/                 纯函数与浏览器侧小工具：阅读时间、slug、标签色、chip 筛选、
+│                          collectionFilter（收藏页的药丸 + 搜索 + 排序）、
+│                          musicLibrary（曲库加载缓存，播放器与搜索共用）、
 │                          GitHub 活跃度、OG 图模板
 └── plugins/               markdown 管线插件（图片懒加载等）
 scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支持代理）；

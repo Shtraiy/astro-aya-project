@@ -2,71 +2,22 @@
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import Icon from "@components/Icon.astro";
-import CollectionPlayer from "@components/CollectionPlayer.astro";
 import StatsStrip from "@components/StatsStrip.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
-import { readFileSync } from "node:fs";
-import path from "node:path";
+import { loadCollection } from "@utils/collectionData";
 
 /**
  * Navidrome 音乐收藏。
  *
- * 数据是构建时快照（src/data/navidrome.json，由 `npm run sync:navidrome`
- * 生成），所以页面本身是纯静态的，运行时不依赖 Navidrome，前端也没有任何凭据。
- * 页面上不做播放：点专辑卡片会跳到 Navidrome 自己的页面播放。
+ * 数据是构建时快照（src/data/navidrome.json，由 `npm run sync:navidrome` 生成），
+ * 所以封面墙与统计在构建期就渲染好了，页面本身是静态的。
+ *
+ * 播放交给 Layout 里的常驻播放器（MusicPlayer.astro）：这一页只负责给专辑卡打上
+ * `data-album-open="<专辑 id>"`，再放两个全库入口（顺序 / 随机）。
  */
-interface Album {
-  id: string;
-  name: string;
-  artist: string;
-  year: number | null;
-  genre: string | null;
-  songCount: number | null;
-  duration: number | null;
-  starred: boolean;
-  cover: string | null;
-  tracks: {
-    id: string;
-    title: string;
-    track: number | null;
-    duration: number | null;
-  }[];
-}
-
-interface CollectionData {
-  serverUrl: string;
-  syncedAt: string | null;
-  stream: { user: string; token: string; salt: string; client: string };
-  albums: Album[];
-}
-
-/**
- * 数据快照由 `npm run sync:navidrome` 生成。这里读文件而不是 `import` JSON，
- * 是为了让文件缺失时退回空状态（页面显示导入引导），而不是整个构建失败 ——
- * 这样数据文件提交与否、CI 上有没有，都不会把站点构建搞挂。
- */
-const loadCollection = (): CollectionData => {
-  try {
-    const file = path.join(process.cwd(), "src", "data", "navidrome.json");
-    return JSON.parse(readFileSync(file, "utf8")) as CollectionData;
-  } catch {
-    return {
-      serverUrl: "",
-      syncedAt: null,
-      stream: { user: "", token: "", salt: "", client: "" },
-      albums: [],
-    };
-  }
-};
-
-const { serverUrl, syncedAt, stream, albums } = loadCollection();
-
-// 播放窗只收有曲目的专辑，索引要和下面按钮里的 data-album-open 对上
-const playableIds = albums
-  .filter(album => album.tracks.length > 0)
-  .map(album => album.id);
+const { syncedAt, albums } = loadCollection();
 
 const slugify = (value: string) =>
   value
@@ -199,29 +150,118 @@ const stats = [
             </div>
           )}
 
-          <ul class="album-grid">
+          {/* 这一行是页面控件（搜索 / 排序 / 播放全部），不该进站内搜索索引 */}
+          <div class="album-tools" data-pagefind-ignore>
+            <div class="album-search">
+              <Icon name="search" class="album-search-icon" />
+              <input
+                type="search"
+                class="album-search-input"
+                data-album-search
+                placeholder="搜专辑 / 艺术家 / 曲名"
+                aria-label="搜索专辑、艺术家或曲名"
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                class="album-search-clear"
+                data-album-search-clear
+                aria-label="清除搜索"
+                hidden
+              >
+                ✕
+              </button>
+            </div>
+            <label class="album-sort">
+              <span class="album-sort-label">排序</span>
+              <select class="album-sort-select" data-album-sort>
+                <option value="default">默认</option>
+                <option value="name">专辑名</option>
+                <option value="artist">艺术家</option>
+                <option value="year">年份</option>
+                <option value="songs">曲目数</option>
+              </select>
+            </label>
+            <span class="album-count" data-album-count />
+
+            <div class="album-actions">
+              <button
+                type="button"
+                class="album-action album-action-play"
+                data-play-all
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 5v14l12-7z" />
+                </svg>
+                <span>全部播放</span>
+                <span class="album-action-note">{totalSongs} 首</span>
+              </button>
+              <button type="button" class="album-action" data-play-all-shuffle>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 3h5v5" />
+                  <path d="M4 20L21 3" />
+                  <path d="M21 16v5h-5" />
+                  <path d="M15 15l6 6" />
+                  <path d="M4 4l5 5" />
+                </svg>
+                <span>随机播放全部</span>
+              </button>
+            </div>
+          </div>
+
+          <ul class="album-grid" data-album-grid>
             {albums.map((album, index) => {
               const artist = album.artist || "未知艺术家";
               const meta = [
                 album.year ? String(album.year) : null,
                 album.songCount ? `${album.songCount} 首` : null,
               ].filter(Boolean);
-              const playableIndex = playableIds.indexOf(album.id);
+              // 没有曲目的专辑点不动（播放器那边也是按 id 找专辑，不再传索引）
+              const playable = album.tracks.length > 0;
 
               return (
                 <li
                   class="album"
+                  data-album={album.id}
+                  data-name={album.name}
                   data-artist={slugify(artist)}
+                  data-artist-name={artist}
+                  data-year={album.year ? String(album.year) : ""}
+                  data-songs={String(album.songCount ?? 0)}
                   style={`--album-hue:${hueOf(album.name)}`}
                 >
+                  {playable && (
+                    <button
+                      type="button"
+                      class="album-enqueue"
+                      data-album-enqueue={album.id}
+                      title="加入队列"
+                      aria-label={`把《${album.name}》加入队列`}
+                    >
+                      <svg
+                        class="icon-plus"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 5v14" />
+                        <path d="M5 12h14" />
+                      </svg>
+                      <svg
+                        class="icon-check"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12l5 5l10 -10" />
+                      </svg>
+                    </button>
+                  )}
+
                   <button
                     class="album-link"
                     title={`${album.name} — ${artist}`}
                     type="button"
-                    data-album-open={
-                      playableIndex >= 0 ? String(playableIndex) : undefined
-                    }
-                    disabled={playableIndex < 0}
+                    data-album-open={playable ? album.id : undefined}
+                    disabled={!playable}
                   >
                     <span class="album-cover">
                       {album.cover ? (
@@ -244,7 +284,7 @@ const stats = [
                         </span>
                       )}
 
-                      {playableIndex >= 0 && (
+                      {playable && (
                         <span class="album-hover" aria-hidden="true">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -262,60 +302,38 @@ const stats = [
                       <span class="album-meta">{meta.join(" · ")}</span>
                     )}
                   </button>
+
+                  {/* 搜索命中曲名时由脚本填进来：点一行直接播那一首 */}
+                  <span class="album-hits" data-album-hits hidden />
                 </li>
               );
             })}
           </ul>
+
+          <p class="album-empty" data-album-empty data-pagefind-ignore hidden>
+            没有匹配的专辑。
+            <button type="button" class="album-empty-reset" data-album-reset>
+              清除筛选
+            </button>
+          </p>
         </>
       )
     }
   </Main>
 
-  <CollectionPlayer serverUrl={serverUrl} stream={stream} albums={albums} />
-
   <Footer />
 </Layout>
 
 <script>
-  import { initChipFilter } from "@utils/chipFilter";
+  import { initCollectionFilter } from "@utils/collectionFilter";
 
   /*
-    收藏页的交互：艺术家筛选（共用工具）+「展开全部」药丸。
-    用 astro:page-load 而不是只在模块顶层跑一次 —— 站内客户端跳转进来时，
+    收藏页的交互（艺术家药丸 + 搜索 + 排序 +「展开全部」）都收在 collectionFilter 里，
+    那边自己挡住重复绑定。这里用 astro:page-load 是因为站内客户端跳转进来时，
     模块脚本不会重新执行。
   */
-  function initArtistChipsToggle() {
-    const toggle = document.querySelector<HTMLButtonElement>(
-      "[data-artist-toggle]"
-    );
-    if (!toggle || toggle.dataset.bound === "true") return;
-    toggle.dataset.bound = "true";
-
-    // 「展开全部」：默认收起的那批艺术家药丸
-    const extraChips = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-artist-chip]")
-    );
-    const toggleLabel = toggle.textContent ?? "";
-    toggle.addEventListener("click", () => {
-      const expanded = toggle.getAttribute("aria-expanded") === "true";
-      toggle.setAttribute("aria-expanded", String(!expanded));
-      for (const chip of extraChips) chip.hidden = expanded;
-      toggle.textContent = expanded ? toggleLabel : "收起";
-    });
-  }
-
-  function initCollectionPage() {
-    initChipFilter({
-      buttonSelector: "[data-artist-filter]",
-      buttonKey: "artistFilter",
-      itemSelector: "[data-artist]",
-      itemKey: "artist",
-    });
-    initArtistChipsToggle();
-  }
-
-  initCollectionPage();
-  document.addEventListener("astro:page-load", initCollectionPage);
+  initCollectionFilter();
+  document.addEventListener("astro:page-load", initCollectionFilter);
 </script>
 
 <style>
@@ -358,6 +376,153 @@ const stats = [
     border-style: dashed;
   }
 
+  /* ── 工具行：搜索 + 排序 + 全库入口（播放动作在常驻播放器里） ── */
+  .album-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .album-search {
+    position: relative;
+    display: flex;
+    flex: 1 1 13rem;
+    align-items: center;
+    max-width: 20rem;
+  }
+  .album-search-icon {
+    position: absolute;
+    left: 0.6875rem;
+    width: 0.875rem;
+    height: 0.875rem;
+    color: rgb(var(--palette-muted-text));
+    pointer-events: none;
+  }
+  .album-search-input {
+    width: 100%;
+    padding: 0.4375rem 2rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 999px;
+    background-color: rgb(var(--palette-fill));
+    color: rgb(var(--palette-text));
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+  .album-search-input:focus {
+    border-color: rgb(var(--palette-accent));
+    outline: none;
+  }
+  /* 自己画清除按钮，两个都留会出现两个 ✕ */
+  .album-search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none;
+  }
+  .album-search-clear {
+    position: absolute;
+    right: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: rgb(var(--palette-muted-text));
+    font-size: 0.75rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .album-search-clear:hover {
+    background-color: rgb(var(--palette-muted));
+    color: rgb(var(--palette-text));
+  }
+  .album-search-clear[hidden] {
+    display: none;
+  }
+  .album-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+    font-size: 0.75rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .album-sort-select {
+    padding: 0.4375rem 0.5rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 999px;
+    background-color: rgb(var(--palette-fill));
+    color: rgb(var(--palette-text));
+    font-family: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  .album-sort-select:focus {
+    border-color: rgb(var(--palette-accent));
+    outline: none;
+  }
+  .album-count {
+    font-size: 0.75rem;
+    color: rgb(var(--palette-muted-text));
+  }
+  .album-count:empty {
+    display: none;
+  }
+
+  /* ── 全库入口：顺序播放 / 随机播放全部 ── */
+  .album-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .album-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.4375rem 0.75rem;
+    border: 1px solid rgb(var(--palette-border));
+    border-radius: 999px;
+    background-color: rgb(var(--palette-fill));
+    color: rgb(var(--palette-text));
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .album-action:hover {
+    border-color: rgb(var(--palette-accent));
+    color: rgb(var(--palette-accent));
+  }
+  .album-action:focus-visible {
+    outline: 2px dashed rgb(var(--palette-accent));
+    outline-offset: 0.25rem;
+  }
+  .album-action svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* 播放键是实心三角，随机键是线稿，两个图标的画法不一样 */
+  .album-action-play svg {
+    fill: currentColor;
+    stroke: none;
+  }
+  .album-action-note {
+    font-size: 0.75rem;
+    color: rgb(var(--palette-muted-text));
+  }
+
   /* ── 封面墙：对齐 Navidrome 的专辑网格 ── */
   .album-grid {
     display: grid;
@@ -376,6 +541,73 @@ const stats = [
   .album[hidden] {
     display: none;
   }
+  /* 「加入队列」按钮定位在卡片上（落点＝封面右上角） */
+  .album {
+    position: relative;
+  }
+  /* 卡片右上角的「加入队列」：往队列里追加这张专辑，不打断正在放的那首。
+     定位在 <li> 上，落点就是封面右上角；收藏星标因此挪到左上角（见 .album-star）。 */
+  .album-enqueue {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(0 0 0 / 0.48);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    transition:
+      opacity 0.15s ease,
+      background-color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .album:hover .album-enqueue,
+  .album-enqueue:focus-visible {
+    opacity: 1;
+  }
+  .album-enqueue:hover {
+    background-color: rgb(0 0 0 / 0.72);
+    transform: scale(1.06);
+  }
+  .album-enqueue svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .album-enqueue .icon-check {
+    display: none;
+  }
+  /* 加好了：图标换成 ✓，按钮保持可见 1.6 秒（面板收起来时也能看到反馈） */
+  .album-enqueue.is-added {
+    opacity: 1;
+    background-color: rgb(var(--palette-accent));
+  }
+  .album-enqueue.is-added .icon-plus {
+    display: none;
+  }
+  .album-enqueue.is-added .icon-check {
+    display: block;
+  }
+  /* 触屏没有 hover，直接常显（半透明，不抢封面） */
+  @media (hover: none) {
+    .album-enqueue {
+      opacity: 0.9;
+    }
+  }
+
   .album-link {
     display: flex;
     flex-direction: column;
@@ -441,7 +673,8 @@ const stats = [
   .album-star {
     position: absolute;
     top: 0.375rem;
-    right: 0.375rem;
+    /* 右上角让给「加入队列」按钮 */
+    left: 0.375rem;
     padding: 0 0.3125rem;
     border-radius: 0.5rem;
     font-size: 0.75rem;
@@ -449,6 +682,35 @@ const stats = [
     color: #fff;
     background-color: rgb(0 0 0 / 0.45);
     backdrop-filter: blur(4px);
+  }
+  /* 搜索命中曲名时列出来的可点行（脚本填入，最多两行） */
+  .album-hits {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-top: 0.25rem;
+  }
+  .album-hits[hidden] {
+    display: none;
+  }
+  .album-hit {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    color: rgb(var(--palette-accent));
+    font-family: inherit;
+    font-size: 0.6875rem;
+    line-height: 1.35;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .album-hit:hover {
+    text-decoration: underline;
   }
   /* 悬停遮罩：点封面是去 Navidrome 打开，不是站内播放 */
   .album-hover {
@@ -494,6 +756,29 @@ const stats = [
     line-height: 1.3;
     @apply text-muted-foreground;
     opacity: 0.7;
+  }
+
+  /* ── 搜索/筛选后一张都不剩 ── */
+  .album-empty {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border: 1px dashed rgb(var(--palette-border));
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    @apply text-muted-foreground;
+  }
+  .album-empty[hidden] {
+    display: none;
+  }
+  .album-empty-reset {
+    padding: 0;
+    border: none;
+    background: none;
+    color: rgb(var(--palette-accent));
+    font-family: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   /* ── 未同步时的引导 ── */

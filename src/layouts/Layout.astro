@@ -1,5 +1,6 @@
 ---
 import { LOCALE, SITE } from "@config";
+import MusicPlayer from "@components/MusicPlayer.astro";
 import "@styles/base.css";
 import "remark-github-blockquote-alert/alert.css";
 /*
@@ -153,5 +154,11 @@ const ogLocale = (LOCALE.langTag[0] ?? LOCALE.lang).replace("-", "_");
   </head>
   <body>
     <slot />
+    <!--
+      音乐播放器常驻在布局里（带 transition:persist）：读者从收藏页点开一张专辑后，
+      站内翻到任何一页，音乐都不断，右下角的迷你条一直跟着。
+      面板默认 hidden，没在放音乐时它只是一个不占位的空壳。
+    -->
+    <MusicPlayer />
   </body>
 </html>

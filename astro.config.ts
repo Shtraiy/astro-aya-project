@@ -22,6 +22,9 @@ import rehypeLazyImages from "./src/plugins/rehype-lazy-images.mjs";
 /** 只做跳转、没有内容的页面：sitemap 不该收录 */
 const REDIRECT_PAGES = ["/archives/", "/categories/", "/music/", "/search/"];
 
+/** 不是网页的构建产物：播放器的曲库 JSON，别当成页面推给搜索引擎 */
+const DATA_ASSETS = ["/collection/data.json"];
+
 /** decodeURIComponent 遇到非法编码会抛错，这里退回原串 */
 function safeDecode(value: string) {
   try {
@@ -45,6 +48,7 @@ export default defineConfig({
       filter: page => {
         const path = safeDecode(new URL(page).pathname);
         if (REDIRECT_PAGES.includes(path)) return false;
+        if (DATA_ASSETS.includes(path)) return false;
 
         return !RETIRED_TAG_NAMES.some(tag => path === `/tags/${tag}/`);
       },

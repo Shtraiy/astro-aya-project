@@ -1,0 +1,629 @@
+/**
+ * 站内音乐播放器（MusicPlayer.astro）的样式。
+ *
+ * 从原 CollectionPlayer.astro 里整块搬过来，改成独立样式表：曲目行是脚本用
+ * innerHTML 生成的，样式必须是全局的，放独立文件比塞回组件更清楚。
+ */
+
+/* ── 浮空面板：桌面右下角，窄屏变底部抽屉 ── */
+.np {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: min(70vh, 40rem);
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 1.125rem;
+  background-color: rgb(var(--palette-fill));
+  box-shadow: 0 22px 60px rgb(0 0 0 / 0.28);
+  overflow: hidden;
+}
+.np[hidden] {
+  display: none;
+}
+@media (max-width: 40rem) {
+  .np {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: auto;
+    max-height: 64vh;
+  }
+}
+
+/* ── 头部：封面 + 专辑信息 + 外链 / 关闭 ── */
+.np-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 0.875rem 0.75rem;
+  border-bottom: 1px solid rgb(var(--palette-border));
+}
+.np-cover {
+  flex: none;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.625rem;
+  object-fit: cover;
+  background-color: rgb(var(--palette-muted));
+}
+.np-meta {
+  flex: 1;
+  min-width: 0;
+}
+.np-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--palette-text));
+}
+.np-artist {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--palette-muted-text));
+}
+.np-now {
+  margin: 0.125rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--palette-accent));
+}
+.np-now:empty {
+  display: none;
+}
+
+.np-icon-btn {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background: none;
+  color: rgb(var(--palette-muted-text));
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+.np-icon-btn:hover {
+  background-color: rgb(var(--palette-muted));
+  color: rgb(var(--palette-text));
+}
+.np-icon-btn svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.np-icon-btn svg.fill-icon {
+  fill: currentColor;
+  stroke: none;
+}
+#np-icon-play,
+#np-icon-pause {
+  width: 1.375rem;
+  height: 1.375rem;
+  fill: currentColor;
+  stroke: none;
+}
+
+/* ── 曲目列表 ── */
+.np-tracks {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0.375rem;
+  overflow-y: auto;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+.np-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  width: 100%;
+  padding: 0.5625rem 0.625rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: none;
+  color: rgb(var(--palette-text));
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  /* 「全部播放」时队列有几百行，离屏的行先不做布局与绘制 */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 2.25rem;
+}
+.np-track:hover {
+  background-color: rgb(var(--palette-muted));
+}
+.np-track.is-current {
+  color: rgb(var(--palette-accent));
+  font-weight: 600;
+}
+.np-tnum {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: none;
+  width: 1.25rem;
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+  font-size: 0.75rem;
+  color: rgb(var(--palette-muted-text));
+}
+.np-track.is-current .np-tnum {
+  color: rgb(var(--palette-accent));
+}
+/* 曲目之间的分隔线（之前 16% 太淡，看着像没有分隔） */
+.np-tracks li + li {
+  border-top: 1px solid
+    color-mix(in srgb, rgb(var(--palette-muted-text)) 30%, transparent);
+}
+/* 当前曲目：左侧主题色竖条 + 整行淡底 + 序号换成跳动的音浪条 */
+.np-track.is-current::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background-color: rgb(var(--palette-accent));
+}
+.np-track.is-current {
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-accent)) 16%,
+    transparent
+  );
+}
+.np-track.is-current .np-tname {
+  font-weight: 600;
+}
+.np-track.is-current .np-tdur {
+  color: rgb(var(--palette-accent));
+}
+.np-track:hover .np-tnum {
+  color: rgb(var(--palette-accent));
+}
+.np-eq {
+  display: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.8125rem;
+}
+.np-track.is-current .np-eq {
+  display: inline-flex;
+}
+.np-track.is-current .np-tnum-text {
+  display: none;
+}
+.np-eq i {
+  width: 3px;
+  height: 35%;
+  border-radius: 1px;
+  background: currentColor;
+  animation: np-eq 0.9s ease-in-out infinite;
+}
+.np-eq i:nth-child(2) {
+  height: 100%;
+  animation-delay: 0.15s;
+}
+.np-eq i:nth-child(3) {
+  height: 62%;
+  animation-delay: 0.3s;
+}
+.np:not(.is-playing) .np-eq i {
+  animation-play-state: paused;
+}
+@keyframes np-eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.np-tname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.np-tdur {
+  flex: none;
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+  font-size: 0.75rem;
+  color: rgb(var(--palette-muted-text));
+}
+
+/* ── 状态行 ──
+     加载 / 缓冲 / 失败提示：大 FLAC 走 FRP 时首帧可能等几秒，
+     没有这行字用户会以为"点了没反应"。
+     只有出错才配上「重试」（自动跳下一首连跳三次之后，它是唯一的出路）。 */
+.np-status-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0.875rem 0;
+}
+.np-status-row[hidden] {
+  display: none;
+}
+.np-status {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgb(var(--palette-muted-text));
+}
+.np-status.is-error {
+  color: #d14343;
+}
+.np-status-retry {
+  flex: none;
+  padding: 0;
+  border: none;
+  background: none;
+  color: rgb(var(--palette-accent));
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.np-status-retry[hidden] {
+  display: none;
+}
+.np-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem 0;
+}
+.np-time {
+  flex: none;
+  min-width: 2.25rem;
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+  font-size: 0.6875rem;
+  color: rgb(var(--palette-muted-text));
+}
+.np-time:last-child {
+  text-align: right;
+}
+.np-progress {
+  position: relative;
+  flex: 1;
+  height: 1rem;
+  cursor: pointer;
+  touch-action: none;
+}
+.np-progress::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 4px;
+  border-radius: 999px;
+  background-color: rgb(var(--palette-muted));
+  transform: translateY(-50%);
+}
+.np-fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 4px;
+  border-radius: 999px;
+  background-color: rgb(var(--palette-accent));
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* ── 控制 ── */
+.np-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem 0.875rem;
+}
+/* 随机按钮靠左、音量靠右，中间的上一首/播放/下一首保持居中 */
+#np-shuffle {
+  margin-right: auto;
+}
+#np-shuffle[aria-pressed="true"] {
+  color: rgb(var(--palette-accent));
+  background-color: color-mix(
+    in srgb,
+    rgb(var(--palette-accent)) 14%,
+    transparent
+  );
+}
+.np-vol {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.np-vol-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4.25rem;
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(var(--palette-muted));
+  outline: none;
+  cursor: pointer;
+}
+.np-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgb(var(--palette-accent));
+  cursor: pointer;
+}
+.np-vol-slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: none;
+  border-radius: 50%;
+  background: rgb(var(--palette-accent));
+  cursor: pointer;
+}
+.np-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(var(--palette-accent));
+  color: rgb(var(--palette-fill));
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, rgb(var(--palette-accent)) 42%, transparent);
+}
+.np-play:hover {
+  transform: scale(1.06);
+}
+.np-play:active {
+  transform: scale(0.97);
+}
+
+/* ── 播放模式按钮：图标 + 「顺序 / 随机」文字 ── */
+.np-mode {
+  width: auto;
+  gap: 0.3125rem;
+  padding-inline: 0.5rem;
+}
+.np-mode-label {
+  font-size: 0.6875rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ── 最小化后的迷你条 ── */
+.np-mini {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: min(23rem, calc(100vw - 2rem));
+  padding: 0.375rem 0.5rem 0.375rem 0.375rem;
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 999px;
+  background-color: rgb(var(--palette-fill));
+  box-shadow: 0 14px 36px rgb(0 0 0 / 0.22);
+}
+.np-mini[hidden] {
+  display: none;
+}
+@media (max-width: 40rem) {
+  .np-mini {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    max-width: none;
+  }
+}
+.np-mini-main {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.125rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.np-mini-cover {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  background-color: rgb(var(--palette-muted));
+}
+.np-mini-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.np-mini-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--palette-text));
+  transition: color 0.2s ease;
+}
+.np-mini-main:hover .np-mini-title {
+  color: rgb(var(--palette-accent));
+}
+.np-mini-sub {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--palette-muted-text));
+}
+/* 迷你条里的音浪条：只在播放时显示/动 */
+.np-mini-eq {
+  margin-inline-start: 0.25rem;
+}
+.np-mini.is-playing .np-mini-eq {
+  display: flex;
+}
+.np-mini:not(.is-playing) .np-eq i {
+  animation-play-state: paused;
+}
+#np-mini-icon-play,
+#np-mini-icon-pause {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* ── 队列进度：3/12（跨专辑的队列里，用户最需要知道自己在哪） ── */
+.np-count {
+  flex: none;
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+  font-size: 0.6875rem;
+  color: rgb(var(--palette-muted-text));
+}
+.np-count:empty {
+  display: none;
+}
+
+/* ── 队列行：主按钮负责播放，右侧的按钮负责「下一首播放」 ── */
+.np-track-main {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.np-track-main:focus-visible {
+  outline: 2px solid rgb(var(--palette-accent));
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+/* 默认藏着，鼠标悬停 / 键盘聚焦才出现；触屏没有 hover，直接常显 */
+.np-track-next {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.375rem;
+  background: none;
+  color: rgb(var(--palette-muted-text));
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+.np-track:hover .np-track-next,
+.np-track:focus-within .np-track-next {
+  opacity: 1;
+}
+.np-track-next:hover {
+  background-color: rgb(var(--palette-muted));
+  color: rgb(var(--palette-accent));
+}
+.np-track-next svg {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  fill: currentColor;
+  stroke: none;
+}
+@media (hover: none) {
+  .np-track-next {
+    opacity: 1;
+  }
+}
+
+/* ── 跨专辑队列的专辑分组标题（队列只有一张专辑时不画） ── */
+.np-tracks li.np-group {
+  padding: 0.625rem 0.625rem 0.25rem;
+  border-top: none;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: rgb(var(--palette-muted-text));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.np-tracks li.np-group:first-child {
+  padding-top: 0.25rem;
+}
+.np-tracks li.np-group + li {
+  border-top: none;
+}
+
+/*
+    迷你条是 fixed 的：窄屏下它会盖住正文/页脚的最后一行，
+    所以迷你条可见时（html.mp-mini-open）给 body 补一份底部内边距。
+    桌面端迷你条在右下角悬浮，不影响页面高度，就不动。
+  */
+@media (max-width: 40rem) {
+  html.mp-mini-open body {
+    padding-bottom: 4.75rem;
+  }
+}

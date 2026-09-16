@@ -1,0 +1,1256 @@
+---
+/**
+ * 站内音乐播放器（常驻）。
+ *
+ * 与上一版（CollectionPlayer.astro，只挂在收藏页）的区别：
+ * - 挂在 Layout 上并带 `transition:persist`：站内跳转时这个元素不重建，
+ *   音乐不断，迷你条跟着读者走到任何页面。
+ * - 曲库不再内联进页面，改成按需 fetch `/collection/data.json`（构建期生成的静态 JSON）。
+ * - 队列从「专辑索引 + 曲目索引」改成扁平的 `{albumId, trackId}[]`，因此可以跨专辑：
+ *   收藏页的「全部播放 / 随机播放全部」、曲目行的「下一首播放」都作用在这一条队列上。
+ * - 补上 Media Session（锁屏 / 耳机线控 / 系统媒体面板）与 sessionStorage 里的播放现场。
+ *
+ * 页面 → 播放器的入口都走文档级事件委托（只绑一次）：
+ *   [data-album-open="<专辑 id>"]   播放这张专辑（替换队列）
+ *   [data-play-all]                全库顺序播放
+ *   [data-play-all-shuffle]        全库随机播放
+ *
+ * 样式在 @styles/music-player.css：曲目行由脚本生成，样式必须全局。
+ */
+import "@styles/music-player.css";
+---
+
+<music-player transition:persist="music-player">
+  <audio id="np-audio" preload="none"></audio>
+
+  <div class="np" id="np" hidden>
+    <div class="np-head">
+      <img class="np-cover" id="np-cover" alt="" width="52" height="52" />
+      <div class="np-meta">
+        <p class="np-title" id="np-title"></p>
+        <p class="np-artist" id="np-artist"></p>
+        <p class="np-now" id="np-now"></p>
+      </div>
+      <span class="np-count" id="np-count"></span>
+      <a
+        class="np-icon-btn"
+        id="np-ext"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="在 Navidrome 打开"
+        aria-label="在 Navidrome 打开"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 17l9.2-9.2"></path>
+          <path d="M17 17V7H7"></path>
+        </svg>
+      </a>
+      <button
+        class="np-icon-btn"
+        id="np-close"
+        type="button"
+        title="最小化（继续播放）"
+        aria-label="最小化播放器"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6l6 -6"></path>
+        </svg>
+      </button>
+    </div>
+
+    <ol class="np-tracks" id="np-tracks"></ol>
+
+    <div class="np-status-row" id="np-status-row" hidden>
+      <p class="np-status" id="np-status"></p>
+      <button class="np-status-retry" id="np-retry" type="button" hidden>
+        重试
+      </button>
+    </div>
+
+    <div class="np-progress-row">
+      <span class="np-time" id="np-cur">0:00</span>
+      <div
+        class="np-progress"
+        id="np-progress"
+        role="slider"
+        tabindex="0"
+        aria-label="播放进度"
+        aria-valuemin="0"
+        aria-valuemax="0"
+        aria-valuenow="0"
+      >
+        <div class="np-fill" id="np-fill"></div>
+      </div>
+      <span class="np-time" id="np-dur">0:00</span>
+    </div>
+
+    <div class="np-ctrl">
+      <button
+        class="np-icon-btn np-mode"
+        id="np-shuffle"
+        type="button"
+        title="切换播放模式：顺序 / 随机（作用在整个队列上）"
+        aria-label="播放模式"
+        aria-pressed="false"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 3h5v5"></path>
+          <path d="M4 20L21 3"></path>
+          <path d="M21 16v5h-5"></path>
+          <path d="M15 15l6 6"></path>
+          <path d="M4 4l5 5"></path>
+        </svg>
+        <span class="np-mode-label" id="np-mode-label">顺序</span>
+      </button>
+      <button
+        class="np-icon-btn"
+        id="np-prev"
+        type="button"
+        aria-label="上一首"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="fill-icon">
+          <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+        </svg>
+      </button>
+      <button class="np-play" id="np-play" type="button" aria-label="播放">
+        <svg viewBox="0 0 24 24" aria-hidden="true" id="np-icon-play">
+          <path d="M7 5v14l12-7z"></path>
+        </svg>
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          id="np-icon-pause"
+          style="display:none"
+        >
+          <rect x="5" y="4" width="5" height="16" rx="1"></rect>
+          <rect x="14" y="4" width="5" height="16" rx="1"></rect>
+        </svg>
+      </button>
+      <button
+        class="np-icon-btn"
+        id="np-next"
+        type="button"
+        aria-label="下一首"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="fill-icon">
+          <path d="M6 18l8.5-6L6 6v12zm10-12v12h2V6z"></path>
+        </svg>
+      </button>
+
+      <div class="np-vol">
+        <button
+          class="np-icon-btn"
+          id="np-mute"
+          type="button"
+          title="静音"
+          aria-label="静音"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            class="fill-icon"
+            id="np-vol-on"
+          >
+            <path
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.5v7a4.5 4.5 0 002.5-3.5zM14 4.5v2.1c2.9.9 5 3.5 5 6.4s-2.1 5.5-5 6.4v2.1c4-.9 7-4.5 7-8.5s-3-7.6-7-8.5z"
+            ></path>
+          </svg>
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            class="fill-icon"
+            id="np-vol-mute"
+            style="display:none"
+          >
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13 3l4-4m0 4l-4-4"></path>
+          </svg>
+        </button>
+        <input
+          type="range"
+          id="np-vol"
+          class="np-vol-slider"
+          min="0"
+          max="100"
+          value="80"
+          aria-label="音量"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!--
+    最小化后的迷你条：面板上的 ↓ 只是把窗口收起来，音频继续放；
+    这里点标题区展开回去，✕ 才是真的停止。
+  -->
+  <div class="np-mini" id="np-mini" hidden>
+    <button
+      class="np-mini-main"
+      id="np-mini-open"
+      type="button"
+      title="展开播放器"
+      aria-label="展开播放器"
+    >
+      <img
+        class="np-mini-cover"
+        id="np-mini-cover"
+        alt=""
+        width="36"
+        height="36"
+      />
+      <span class="np-mini-text">
+        <span class="np-mini-title" id="np-mini-title"></span>
+        <span class="np-mini-sub" id="np-mini-sub"></span>
+      </span>
+      <span class="np-eq np-mini-eq" aria-hidden="true"
+        ><i></i><i></i><i></i></span
+      >
+    </button>
+    <button
+      class="np-icon-btn"
+      id="np-mini-play"
+      type="button"
+      aria-label="播放"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        class="fill-icon"
+        id="np-mini-icon-play"
+      >
+        <path d="M7 5v14l12-7z"></path>
+      </svg>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        class="fill-icon"
+        id="np-mini-icon-pause"
+        style="display:none"
+      >
+        <rect x="5" y="4" width="5" height="16" rx="1"></rect>
+        <rect x="14" y="4" width="5" height="16" rx="1"></rect>
+      </svg>
+    </button>
+    <button
+      class="np-icon-btn"
+      id="np-mini-stop"
+      type="button"
+      title="停止并关闭"
+      aria-label="停止并关闭播放器"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12"></path>
+        <path d="M18 6L6 18"></path>
+      </svg>
+    </button>
+  </div>
+</music-player>
+
+<script>
+  /*
+    曲库（/collection/data.json）由 @utils/musicLibrary 统一加载与缓存：
+    收藏页的搜索也要用它匹配曲名，两边共用一份，不会各拉一次 79 KB。
+  */
+  import {
+    loadLibrary,
+    type Library as Payload,
+    type LibraryAlbum as Album,
+    type LibraryTrack as Track,
+  } from "@utils/musicLibrary";
+
+  /** 队列里的一项：某张专辑的某一首。队列是扁平的，所以能跨专辑 */
+  interface QueueItem {
+    albumId: string;
+    trackId: string;
+  }
+
+  /** 存在 sessionStorage 里的播放现场：刷新 / 站内跳转后接着听 */
+  interface SavedState {
+    queue: QueueItem[];
+    index: number;
+    position: number;
+    shuffle: boolean;
+  }
+
+  const STATE_KEY = "np:state";
+
+  const fmt = (seconds: number) => {
+    if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+    const total = Math.floor(seconds);
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return `${m}:${String(s).padStart(2, "0")}`;
+  };
+
+  function streamUrl(payload: Payload, songId: string) {
+    const { serverUrl, stream } = payload;
+    const query = new URLSearchParams({
+      id: songId,
+      u: stream.user,
+      t: stream.token,
+      s: stream.salt,
+      v: "1.16.1",
+      c: stream.client,
+    });
+    return `${serverUrl}/rest/stream?${query}`;
+  }
+
+  function initPlayer() {
+    const host = document.querySelector<HTMLElement>("music-player");
+    if (!host || host.dataset.ready === "true") return;
+    host.dataset.ready = "true";
+
+    const pick = <T extends HTMLElement>(id: string) =>
+      document.getElementById(id) as T;
+
+    const panel = pick<HTMLElement>("np");
+    const audio = pick<HTMLAudioElement>("np-audio");
+    const cover = pick<HTMLImageElement>("np-cover");
+    const titleEl = pick<HTMLElement>("np-title");
+    const artistEl = pick<HTMLElement>("np-artist");
+    const nowEl = pick<HTMLElement>("np-now");
+    const countEl = pick<HTMLElement>("np-count");
+    const statusRow = pick<HTMLElement>("np-status-row");
+    const statusEl = pick<HTMLElement>("np-status");
+    const retryBtn = pick<HTMLButtonElement>("np-retry");
+    const extLink = pick<HTMLAnchorElement>("np-ext");
+    const listEl = pick<HTMLElement>("np-tracks");
+    const fill = pick<HTMLElement>("np-fill");
+    const progress = pick<HTMLElement>("np-progress");
+    const curEl = pick<HTMLElement>("np-cur");
+    const durEl = pick<HTMLElement>("np-dur");
+    const playBtn = pick<HTMLButtonElement>("np-play");
+    const iconPlay = pick<HTMLElement>("np-icon-play");
+    const iconPause = pick<HTMLElement>("np-icon-pause");
+    const shuffleBtn = pick<HTMLButtonElement>("np-shuffle");
+    const muteBtn = pick<HTMLButtonElement>("np-mute");
+    const volSlider = pick<HTMLInputElement>("np-vol");
+    const volOn = pick<HTMLElement>("np-vol-on");
+    const volMute = pick<HTMLElement>("np-vol-mute");
+    const mini = pick<HTMLElement>("np-mini");
+    const miniCover = pick<HTMLImageElement>("np-mini-cover");
+    const miniTitle = pick<HTMLElement>("np-mini-title");
+    const miniSub = pick<HTMLElement>("np-mini-sub");
+    const miniOpen = pick<HTMLButtonElement>("np-mini-open");
+    const miniPlayBtn = pick<HTMLButtonElement>("np-mini-play");
+    const miniStopBtn = pick<HTMLButtonElement>("np-mini-stop");
+    const miniIconPlay = pick<HTMLElement>("np-mini-icon-play");
+    const miniIconPause = pick<HTMLElement>("np-mini-icon-pause");
+    const modeLabel = pick<HTMLElement>("np-mode-label");
+
+    // ── 状态 ──
+    /** 曲库快照，第一次真要用的时候才取 */
+    let payload: Payload | null = null;
+    /** 专辑按 id 索引：队列里存 id，页面按钮传进来的也是 id */
+    let byId = new Map<string, Album>();
+    /** 播放队列（扁平）：上一首 / 下一首 / 播完自动接都在这条队列里走 */
+    let queue: QueueItem[] = [];
+    /** 当前播的是 queue[index] */
+    let index = -1;
+    let playing = false;
+    let seeking = false;
+    /** 连续失败计数：整条队列都放不了时不要无限跳 */
+    let failedStreak = 0;
+    /** 是否已经载入过曲目：面板和迷你条至少有一个在 */
+    let opened = false;
+    /** 面板收起成迷你条（音频继续放，不是停止） */
+    let minimized = false;
+    /** 恢复现场时的进度：等音频真正加载后再 seek，避免白下一遍音频 */
+    let pendingSeek: number | null = null;
+    /** 恢复了现场但还没上音源时记下的进度，留给第一次播放用 */
+    let restoredPosition = 0;
+    /** 页面原本的标题，播放时前面加一个 ▶ 标记 */
+    let baseTitle = document.title;
+    let lastSave = 0;
+
+    // 音量 / 随机开关记在本机，下次打开还是这个设置
+    const readStored = <T,>(key: string, fallback: T): T => {
+      try {
+        const raw = localStorage.getItem(`np:${key}`);
+        return raw === null ? fallback : (JSON.parse(raw) as T);
+      } catch {
+        return fallback;
+      }
+    };
+    const writeStored = (key: string, value: unknown) => {
+      try {
+        localStorage.setItem(`np:${key}`, JSON.stringify(value));
+      } catch {
+        /* 隐私模式 / 禁用存储时忽略 */
+      }
+    };
+
+    let shuffle = readStored("shuffle", false);
+    let lastVolume = readStored("volume", 80);
+
+    const setStatus = (text: string | null, isError = false) => {
+      statusEl.textContent = text ?? "";
+      statusRow.hidden = !text;
+      statusEl.classList.toggle("is-error", Boolean(text) && isError);
+      // 只有出错才给「重试」：缓冲中、被拦下自动播放这些都不需要它
+      retryBtn.hidden = !isError;
+    };
+
+    /** 播放现场存进 sessionStorage：同一次会话里刷新、跳转都还在 */
+    const saveState = (immediate = false) => {
+      if (!opened || index < 0) return;
+      const now = Date.now();
+      if (!immediate && now - lastSave < 3000) return;
+      lastSave = now;
+      try {
+        const state: SavedState = {
+          queue,
+          index,
+          position: audio.currentTime || restoredPosition,
+          shuffle,
+        };
+        sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
+      } catch {
+        /* 隐私模式或超出配额，忽略 */
+      }
+    };
+    const clearState = () => {
+      try {
+        sessionStorage.removeItem(STATE_KEY);
+      } catch {
+        /* 忽略 */
+      }
+    };
+    const readState = (): SavedState | null => {
+      try {
+        const raw = sessionStorage.getItem(STATE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw) as SavedState;
+        return parsed?.queue?.length ? parsed : null;
+      } catch {
+        return null;
+      }
+    };
+
+    /** 曲库按需加载（缓存与重试在 musicLibrary 里）；失败后返回 null，调用方给提示 */
+    async function ensurePayload(): Promise<Payload | null> {
+      if (payload) return payload;
+      const data = await loadLibrary();
+      if (!data) return null;
+      payload = data;
+      byId = new Map(data.albums.map(album => [album.id, album]));
+      return payload;
+    }
+
+    const trackOf = (item: QueueItem | undefined) => {
+      const album = item ? byId.get(item.albumId) : undefined;
+      const track = album?.tracks.find(t => t.id === item?.trackId);
+      return album && track ? { album, track } : null;
+    };
+
+    const shuffled = <T,>(list: T[]) => {
+      const out = [...list];
+      for (let i = out.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [out[i], out[j]] = [out[j], out[i]];
+      }
+      return out;
+    };
+
+    // ── 界面同步 ──
+    const syncMode = () => {
+      shuffleBtn.setAttribute("aria-pressed", String(shuffle));
+      modeLabel.textContent = shuffle ? "随机" : "顺序";
+    };
+
+    function syncIcon() {
+      iconPlay.style.display = playing ? "none" : "";
+      iconPause.style.display = playing ? "" : "none";
+      playBtn.setAttribute("aria-label", playing ? "暂停" : "播放");
+      // 面板上的 is-playing 用来控制音浪条动画
+      panel.classList.toggle("is-playing", playing);
+      // 迷你条上的播放键和音浪条跟着一起切
+      mini.classList.toggle("is-playing", playing);
+      miniIconPlay.style.display = playing ? "none" : "";
+      miniIconPause.style.display = playing ? "" : "none";
+      miniPlayBtn.setAttribute("aria-label", playing ? "暂停" : "播放");
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = playing ? "playing" : "paused";
+      }
+    }
+
+    /** 当前这首所在的专辑：跨专辑播放时头部信息要跟着换 */
+    function syncHeader(album: Album, track: Track) {
+      titleEl.textContent = album.name;
+      artistEl.textContent = album.artist;
+      nowEl.textContent = track.title;
+      countEl.textContent =
+        queue.length > 1 ? `${index + 1}/${queue.length}` : "";
+      cover.src = album.cover ?? "";
+      cover.alt = album.name;
+      if (payload?.serverUrl) {
+        extLink.href = `${payload.serverUrl}/app/#/album/${album.id}/show`;
+        extLink.hidden = false;
+      } else {
+        extLink.hidden = true;
+      }
+    }
+
+    /** 迷你条上的封面 / 曲名 / 作者 */
+    function syncMini(album: Album, track: Track) {
+      miniCover.src = album.cover ?? "";
+      miniCover.alt = album.name;
+      miniTitle.textContent = track.title;
+      miniSub.textContent = album.artist;
+    }
+
+    /** 标签页标题带上正在播放的曲目，切到别的标签也知道在放什么 */
+    function syncTitle(trackTitle: string | null) {
+      document.title = trackTitle
+        ? `▶ ${trackTitle} · ${baseTitle}`
+        : baseTitle;
+    }
+
+    function syncMedia(album: Album, track: Track) {
+      if (!("mediaSession" in navigator)) return;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track.title,
+        artist: album.artist,
+        album: album.name,
+        artwork: album.cover
+          ? [
+              {
+                src: new URL(album.cover, location.origin).href,
+                sizes: "300x300",
+                type: "image/jpeg",
+              },
+            ]
+          : [],
+      });
+    }
+
+    /** 面板和迷你条二选一：收起时只留右下方那一条 */
+    function syncPanels() {
+      panel.hidden = !opened || minimized;
+      mini.hidden = !opened || !minimized;
+      /*
+        迷你条是 fixed 的：窄屏下它会盖住正文/页脚最后一行，
+        所以给它一个类，由样式表在窄屏给 body 补一份底部内边距。
+      */
+      document.documentElement.classList.toggle("mp-mini-open", !mini.hidden);
+    }
+
+    // ── 队列渲染 ──
+    /**
+     * 队列里跨了多张专辑才画分组标题，单专辑时保持和以前一样干净的列表。
+     * 「全部播放」是全库队列（几百首），所以每行要轻，长列表的开销交给 CSS 的
+     * content-visibility。
+     */
+    function renderQueue() {
+      const albumCount = new Set(queue.map(item => item.albumId)).size;
+      const grouped = albumCount > 1;
+      const groups: string[] = [];
+      let lastAlbumId = "";
+      let html = "";
+
+      queue.forEach((item, position) => {
+        const resolved = trackOf(item);
+        if (!resolved) return;
+        const { album, track } = resolved;
+        if (grouped && album.id !== lastAlbumId) {
+          lastAlbumId = album.id;
+          groups.push(album.name);
+          html += `<li class="np-group"></li>`;
+        }
+        html += `
+          <li>
+            <div class="np-track${position === index ? " is-current" : ""}" data-track="${position}">
+              <button type="button" class="np-track-main" data-track-play="${position}" title="播放">
+                <span class="np-tnum">
+                  <span class="np-tnum-text">${String(track.track ?? position + 1).padStart(2, "0")}</span>
+                  <span class="np-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                </span>
+                <span class="np-tname"></span>
+                <span class="np-tdur">${track.duration ? fmt(track.duration) : ""}</span>
+              </button>
+              <button
+                type="button"
+                class="np-track-next"
+                data-track-next="${position}"
+                title="下一首播放"
+                aria-label="下一首播放"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 4.5l9 7.5l-9 7.5z"></path>
+                  <path d="M17 4v16h2.4V4z"></path>
+                </svg>
+              </button>
+            </div>
+          </li>`;
+      });
+
+      listEl.innerHTML = html;
+      // 文字一律用 textContent 写，避免歌名 / 专辑名里的特殊字符被当成 HTML
+      listEl.querySelectorAll<HTMLElement>(".np-group").forEach((el, i) => {
+        el.textContent = groups[i] ?? "";
+      });
+      listEl.querySelectorAll<HTMLElement>(".np-tname").forEach((el, i) => {
+        el.textContent = trackOf(queue[i])?.track.title ?? "";
+      });
+    }
+
+    function highlight() {
+      listEl.querySelectorAll<HTMLElement>(".np-track").forEach(el => {
+        el.classList.toggle("is-current", Number(el.dataset.track) === index);
+      });
+    }
+
+    /** 把当前这首滚进可视区：自动接歌时用户才知道放到哪了 */
+    function scrollToCurrent() {
+      const row = listEl.querySelector<HTMLElement>(".np-track.is-current");
+      if (!row || panel.hidden) return;
+      /*
+        block: "nearest" —— 已经看得见就不动它；面板是 fixed 的，
+        所以这里不会把外层页面一起滚走。曲目行开了 content-visibility，
+        用 scrollIntoView 让浏览器自己算，比手工量 offset 准。
+      */
+      row.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+
+    // ── 播放 ──
+    function playIndex(next: number, seek: number | null = null) {
+      const resolved = trackOf(queue[next]);
+      if (!resolved || !payload) return;
+      const { album, track } = resolved;
+      index = next;
+      pendingSeek = seek;
+      setStatus("加载中…");
+      audio.src = streamUrl(payload, track.id);
+      durEl.textContent = track.duration ? fmt(track.duration) : "0:00";
+      progress.setAttribute("aria-valuemax", String(track.duration ?? 0));
+      fill.style.width = "0%";
+      curEl.textContent = "0:00";
+      syncHeader(album, track);
+      syncMini(album, track);
+      syncTitle(track.title);
+      syncMedia(album, track);
+      highlight();
+      scrollToCurrent();
+      saveState(true);
+      audio.play().catch(() => {
+        playing = false;
+        syncIcon();
+        /*
+          音源本身加载失败时（网络被拦、文件坏了），play() 也会 reject，
+          这时由 error 处理器说明原因并给出「重试」—— 别把那条提示覆盖掉。
+        */
+        if (audio.error) return;
+        setStatus("浏览器拦下了自动播放，点播放键继续");
+      });
+    }
+
+    /** 播放 / 暂停（恢复现场时音源还没上，第一次点这里才真正加载） */
+    function togglePlay() {
+      if (index < 0 || !queue.length) return;
+      if (!audio.src) {
+        playIndex(index, restoredPosition);
+        return;
+      }
+      if (playing) audio.pause();
+      else audio.play().catch(() => {});
+    }
+
+    /**
+     * 在队列里往前走 / 往后走一步（走到头会绕回，不会跑出队列）。
+     * auto = 上一首放完了自动接的：随机模式下重新洗牌，免得一整轮顺序都固定。
+     */
+    function step(delta: number, auto = false) {
+      if (!queue.length) return;
+      let next = index + delta;
+      if (next < 0 || next >= queue.length) {
+        if (auto && shuffle) {
+          // 当前这首留在队首，避免刚洗完牌又立刻转回同一首
+          const current = queue[index];
+          const rest = queue.filter((_, position) => position !== index);
+          queue = current ? [current, ...shuffled(rest)] : shuffled(rest);
+          renderQueue();
+          playIndex(1);
+          return;
+        }
+        next = (next + queue.length) % queue.length;
+      }
+      playIndex(next);
+    }
+
+    /** 把队列里的某首挪到当前这首后面播放（队列里不留重复项） */
+    function playNext(position: number) {
+      const item = queue[position];
+      if (!item || position === index) return;
+      const moved = { ...item };
+      queue.splice(position, 1);
+      const at = position < index ? index - 1 : index;
+      queue.splice(at + 1, 0, moved);
+      index = at;
+      renderQueue();
+      highlight();
+      saveState(true);
+      setStatus("已设为下一首播放");
+      window.setTimeout(() => {
+        if (statusEl.textContent === "已设为下一首播放") setStatus(null);
+      }, 1600);
+    }
+
+    /**
+     * 用一张专辑替换队列（收藏页点专辑卡就是这个）；开了随机就打乱。
+     * trackId 有值时从那一首起播（搜索结果里点「含《某曲》」走的就是这条路）。
+     */
+    function setQueueFromAlbum(album: Album, trackId: string | null = null) {
+      const items = album.tracks.map(track => ({
+        albumId: album.id,
+        trackId: track.id,
+      }));
+      queue = shuffle ? shuffled(items) : items;
+      index = -1;
+      renderQueue();
+      const at = trackId
+        ? queue.findIndex(item => item.trackId === trackId)
+        : 0;
+      playIndex(at >= 0 ? at : 0);
+    }
+
+    /** 全库播放：所有专辑的所有曲目进队列，随机模式再整体打乱 */
+    function setQueueFromAll() {
+      const items: QueueItem[] = [];
+      byId.forEach(album => {
+        album.tracks.forEach(track => {
+          items.push({ albumId: album.id, trackId: track.id });
+        });
+      });
+      if (!items.length) return;
+      queue = shuffle ? shuffled(items) : items;
+      index = -1;
+      renderQueue();
+      playIndex(0);
+    }
+
+    // ── 页面入口 ──
+    async function openAlbum(albumId: string, trackId: string | null = null) {
+      const data = await ensurePayload();
+      if (!data) {
+        opened = true;
+        minimized = false;
+        syncPanels();
+        setStatus("曲库没加载出来，检查网络后再试一次", true);
+        return;
+      }
+      const album = byId.get(albumId);
+      if (!album?.tracks.length) return;
+      /*
+        同一张专辑再点一次（或从迷你条展开）：只把窗口收回来，
+        不重置队列、也不打断正在放的那首。指定了曲目时例外 —— 那是要求听那一首。
+      */
+      if (
+        !trackId &&
+        opened &&
+        queue.length &&
+        queue.every(item => item.albumId === album.id)
+      ) {
+        minimized = false;
+        syncPanels();
+        return;
+      }
+      opened = true;
+      minimized = false;
+      syncPanels();
+      setQueueFromAlbum(album, trackId);
+    }
+
+    /**
+     * 把一张专辑追加到队列末尾（卡片右上角的「加入队列」）。
+     * 队列里已有的曲目跳过，不留重复；正在放的那首不受影响。
+     * 还没开始听的时候等同于播放这张专辑。返回「是否真的加进去了」。
+     */
+    async function enqueueAlbum(albumId: string): Promise<boolean> {
+      const data = await ensurePayload();
+      if (!data) {
+        opened = true;
+        minimized = false;
+        syncPanels();
+        setStatus("曲库没加载出来，检查网络后再试一次", true);
+        return false;
+      }
+      const album = byId.get(albumId);
+      if (!album?.tracks.length) return false;
+      if (!opened) {
+        opened = true;
+        minimized = false;
+        syncPanels();
+        setQueueFromAlbum(album);
+        return true;
+      }
+      const queued = new Set(queue.map(item => item.trackId));
+      const items = album.tracks
+        .filter(track => !queued.has(track.id))
+        .map(track => ({ albumId: album.id, trackId: track.id }));
+      if (!items.length) return false;
+      queue = [...queue, ...items];
+      renderQueue();
+      highlight();
+      saveState(true);
+      return true;
+    }
+
+    /** 加了队列的按钮自己给反馈（面板收起来时看不到状态行） */
+    function flashEnqueue(button: HTMLElement, added: boolean) {
+      const label =
+        button.dataset.baseLabel ??
+        button.getAttribute("aria-label") ??
+        "加入队列";
+      button.dataset.baseLabel = label;
+      button.classList.toggle("is-added", added);
+      button.title = added ? "已加入队列" : "已经在队列里了";
+      button.setAttribute("aria-label", button.title);
+      window.setTimeout(() => {
+        button.classList.remove("is-added");
+        button.title = "加入队列";
+        button.setAttribute("aria-label", label);
+      }, 1600);
+    }
+
+    /** 全库播放 / 全库随机：按钮同时决定播放模式，之后自动接歌才一致 */
+    async function playAll(random: boolean) {
+      const data = await ensurePayload();
+      if (!data) {
+        opened = true;
+        minimized = false;
+        syncPanels();
+        setStatus("曲库没加载出来，检查网络后再试一次", true);
+        return;
+      }
+      shuffle = random;
+      writeStored("shuffle", shuffle);
+      syncMode();
+      opened = true;
+      minimized = false;
+      syncPanels();
+      setQueueFromAll();
+    }
+
+    /** 收起窗口：音频继续放，右下角留一条迷你条可以再展开 */
+    function minimize() {
+      if (!opened) return;
+      minimized = true;
+      setStatus(null);
+      syncPanels();
+    }
+
+    /** 展开回完整面板 */
+    function restorePanel() {
+      if (!opened) return;
+      minimized = false;
+      syncPanels();
+      scrollToCurrent();
+      saveState(true);
+    }
+
+    /** 真正停止：暂停、清掉音源、两个窗口一起收掉、现场也清掉 */
+    function stop() {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      playing = false;
+      index = -1;
+      queue = [];
+      opened = false;
+      minimized = false;
+      pendingSeek = null;
+      restoredPosition = 0;
+      clearState();
+      syncIcon();
+      syncPanels();
+      setStatus(null);
+      syncTitle(null);
+      if ("mediaSession" in navigator) navigator.mediaSession.metadata = null;
+    }
+
+    /**
+     * 恢复上次的播放现场：队列、曲目、模式都回来，但先不出声 ——
+     * 浏览器不允许没有用户手势的自动播放，而且也不该为了一屏信息白下一遍音频。
+     * 第一次点播放时才真正取流，并从上次的进度接着放。
+     */
+    async function restore(saved: SavedState) {
+      const data = await ensurePayload();
+      if (!data) return;
+      const items = saved.queue.filter(item => Boolean(trackOf(item)));
+      const at = Math.max(0, Math.min(items.length - 1, saved.index));
+      const resolved = trackOf(items[at]);
+      if (!resolved) {
+        clearState();
+        return;
+      }
+      shuffle = Boolean(saved.shuffle);
+      writeStored("shuffle", shuffle);
+      syncMode();
+      queue = items;
+      index = at;
+      restoredPosition =
+        Number.isFinite(saved.position) && saved.position > 0
+          ? saved.position
+          : 0;
+      opened = true;
+      minimized = true;
+      renderQueue();
+      highlight();
+      syncHeader(resolved.album, resolved.track);
+      syncMini(resolved.album, resolved.track);
+      syncTitle(resolved.track.title);
+      syncMedia(resolved.album, resolved.track);
+      syncPanels();
+      // 进度条先按记下的位置画出来（音源还没取，时长用曲目元数据）
+      const duration = resolved.track.duration ?? 0;
+      durEl.textContent = duration ? fmt(duration) : "0:00";
+      progress.setAttribute("aria-valuemax", String(duration));
+      curEl.textContent = fmt(restoredPosition);
+      fill.style.width = duration
+        ? `${Math.min(100, (restoredPosition / duration) * 100)}%`
+        : "0%";
+    }
+
+    // ── 事件绑定 ──
+    // 页面上的按钮 → 播放器。文档级委托只绑一次（这个元素常驻，不会重复 init）
+    document.addEventListener("click", event => {
+      const target = event.target as HTMLElement;
+      const enqueueTrigger = target.closest<HTMLElement>(
+        "[data-album-enqueue]"
+      );
+      if (enqueueTrigger) {
+        event.preventDefault();
+        const button = enqueueTrigger;
+        void enqueueAlbum(button.dataset.albumEnqueue ?? "").then(added => {
+          flashEnqueue(button, added);
+        });
+        return;
+      }
+      const albumTrigger = target.closest<HTMLElement>("[data-album-open]");
+      if (albumTrigger) {
+        event.preventDefault();
+        void openAlbum(
+          albumTrigger.dataset.albumOpen ?? "",
+          albumTrigger.dataset.albumTrack ?? null
+        );
+        return;
+      }
+      if (target.closest("[data-play-all]")) {
+        event.preventDefault();
+        void playAll(false);
+        return;
+      }
+      if (target.closest("[data-play-all-shuffle]")) {
+        event.preventDefault();
+        void playAll(true);
+      }
+    });
+
+    listEl.addEventListener("click", event => {
+      const target = event.target as HTMLElement;
+      const nextBtn = target.closest<HTMLElement>("[data-track-next]");
+      if (nextBtn) {
+        playNext(Number(nextBtn.dataset.trackNext));
+        return;
+      }
+      const rowBtn = target.closest<HTMLElement>("[data-track-play]");
+      if (!rowBtn) return;
+      const position = Number(rowBtn.dataset.trackPlay);
+      if (position !== index) {
+        playIndex(position);
+        return;
+      }
+      if (playing) audio.pause();
+      else audio.play().catch(() => {});
+    });
+
+    playBtn.addEventListener("click", togglePlay);
+    miniPlayBtn.addEventListener("click", togglePlay);
+    // 面板上的 ↓ 只是最小化（音乐继续），迷你条上的 ✕ 才是停止
+    pick<HTMLButtonElement>("np-close").addEventListener("click", minimize);
+    pick<HTMLButtonElement>("np-prev").addEventListener("click", () =>
+      step(-1)
+    );
+    pick<HTMLButtonElement>("np-next").addEventListener("click", () => step(1));
+    miniOpen.addEventListener("click", restorePanel);
+    miniStopBtn.addEventListener("click", stop);
+    // 播放失败时把当前这首从上次的位置重新加载，不再往后跳
+    retryBtn.addEventListener("click", () => {
+      if (index < 0) return;
+      const at =
+        Number.isFinite(audio.currentTime) && audio.currentTime > 0
+          ? audio.currentTime
+          : null;
+      failedStreak = 0;
+      setStatus(null);
+      playIndex(index, at);
+    });
+
+    // 随机：作用在整条队列上（单专辑时就是以前的「本专辑随机」）
+    shuffleBtn.addEventListener("click", () => {
+      shuffle = !shuffle;
+      syncMode();
+      writeStored("shuffle", shuffle);
+      if (index < 0) return;
+      const current = queue[index];
+      const rest = queue.filter((_, position) => position !== index);
+      queue = current ? [current, ...shuffled(rest)] : shuffled(rest);
+      index = 0;
+      renderQueue();
+      highlight();
+      saveState(true);
+    });
+
+    // 音量 + 静音
+    const applyVolume = () => {
+      const value = Number(volSlider.value);
+      audio.volume = value / 100;
+      const silent = value === 0;
+      volOn.style.display = silent ? "none" : "";
+      volMute.style.display = silent ? "" : "none";
+      muteBtn.setAttribute("aria-label", silent ? "取消静音" : "静音");
+    };
+    volSlider.value = String(lastVolume);
+    applyVolume();
+    volSlider.addEventListener("input", () => {
+      lastVolume = Number(volSlider.value);
+      applyVolume();
+      writeStored("volume", lastVolume);
+    });
+    muteBtn.addEventListener("click", () => {
+      if (Number(volSlider.value) > 0) {
+        lastVolume = Number(volSlider.value);
+        volSlider.value = "0";
+      } else {
+        volSlider.value = String(lastVolume || 80);
+      }
+      applyVolume();
+      writeStored("volume", Number(volSlider.value));
+    });
+
+    // ── 音频事件 ──
+    audio.addEventListener("play", () => {
+      playing = true;
+      syncIcon();
+      saveState(true);
+    });
+    // 开始出声 / 有足够数据可播时，清掉提示
+    audio.addEventListener("playing", () => {
+      failedStreak = 0;
+      setStatus(null);
+    });
+    audio.addEventListener("canplay", () => {
+      failedStreak = 0;
+      setStatus(null);
+    });
+    audio.addEventListener("waiting", () => {
+      setStatus("缓冲中…");
+    });
+    /*
+      播放失败（网络、格式、文件损坏等）：给出原因并自动跳下一首。
+      跨专辑的队列也一样 —— 下一首可能是另一张专辑，头部信息会跟着换。
+    */
+    audio.addEventListener("error", () => {
+      // 用户已经停止（或窗口已收掉）时不要自作主张再跳下一首
+      if (!opened) return;
+      failedStreak += 1;
+      const detail = audio.error ? `（code ${audio.error.code}）` : "";
+      if (queue.length <= 1 || failedStreak >= 3) {
+        setStatus(`这首播放失败${detail}`, true);
+        return;
+      }
+      setStatus(`这首播放失败${detail}，正在跳到下一首…`, true);
+      window.setTimeout(() => {
+        if (opened && host.isConnected && failedStreak < 3) step(1);
+      }, 900);
+    });
+    audio.addEventListener("pause", () => {
+      playing = false;
+      syncIcon();
+      saveState(true);
+    });
+    audio.addEventListener("ended", () => {
+      // 播完自动接下一首：按队列走，队列跨专辑也照走
+      step(1, true);
+    });
+    audio.addEventListener("timeupdate", () => {
+      if (seeking || pendingSeek !== null || !audio.duration) return;
+      fill.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+      curEl.textContent = fmt(audio.currentTime);
+      progress.setAttribute(
+        "aria-valuenow",
+        String(Math.floor(audio.currentTime))
+      );
+      if ("mediaSession" in navigator) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: audio.duration,
+            playbackRate: audio.playbackRate,
+            position: audio.currentTime,
+          });
+        } catch {
+          /* 时长还没稳定时参数可能非法，忽略 */
+        }
+      }
+      saveState();
+    });
+    audio.addEventListener("loadedmetadata", () => {
+      durEl.textContent = fmt(audio.duration);
+      progress.setAttribute("aria-valuemax", String(audio.duration));
+      if (pendingSeek === null) return;
+      const at = Math.min(pendingSeek, Math.max(0, audio.duration - 1));
+      audio.currentTime = at;
+      fill.style.width = `${(at / audio.duration) * 100}%`;
+      curEl.textContent = fmt(at);
+      pendingSeek = null;
+    });
+
+    // 拖动进度条
+    const seekTo = (clientX: number) => {
+      const rect = progress.getBoundingClientRect();
+      const ratio = Math.min(
+        1,
+        Math.max(0, (clientX - rect.left) / rect.width)
+      );
+      if (audio.duration) {
+        audio.currentTime = ratio * audio.duration;
+        fill.style.width = `${ratio * 100}%`;
+        curEl.textContent = fmt(ratio * audio.duration);
+      }
+    };
+    progress.addEventListener("pointerdown", event => {
+      seeking = true;
+      progress.setPointerCapture(event.pointerId);
+      seekTo(event.clientX);
+    });
+    progress.addEventListener("pointermove", event => {
+      if (seeking) seekTo(event.clientX);
+    });
+    const endSeek = () => {
+      seeking = false;
+      saveState(true);
+    };
+    progress.addEventListener("pointerup", endSeek);
+    progress.addEventListener("pointercancel", endSeek);
+
+    // 键盘：焦点在播放器里时，左右方向键快退 / 快进 5 秒
+    host.addEventListener("keydown", event => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      if (!audio.duration) return;
+      event.preventDefault();
+      const delta = event.key === "ArrowRight" ? 5 : -5;
+      audio.currentTime = Math.max(
+        0,
+        Math.min(audio.duration, audio.currentTime + delta)
+      );
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !panel.hidden) minimize();
+    });
+
+    /*
+      锁屏 / 耳机线控 / 系统媒体面板：手机端缺这一段，播放器就只是页面里的一个声源。
+    */
+    if ("mediaSession" in navigator) {
+      const session = navigator.mediaSession;
+      const on = (
+        action: MediaSessionAction,
+        handler: MediaSessionActionHandler | null
+      ) => {
+        try {
+          session.setActionHandler(action, handler);
+        } catch {
+          /* 浏览器不认识这个动作，跳过 */
+        }
+      };
+      on("play", () => void audio.play().catch(() => {}));
+      on("pause", () => audio.pause());
+      on("previoustrack", () => step(-1));
+      on("nexttrack", () => step(1));
+      on("stop", stop);
+      on("seekbackward", details => {
+        audio.currentTime = Math.max(
+          0,
+          audio.currentTime - (details.seekOffset ?? 10)
+        );
+      });
+      on("seekforward", details => {
+        audio.currentTime = Math.min(
+          audio.duration || Number.POSITIVE_INFINITY,
+          audio.currentTime + (details.seekOffset ?? 10)
+        );
+      });
+      on("seekto", details => {
+        if (typeof details.seekTime === "number") {
+          audio.currentTime = details.seekTime;
+        }
+      });
+    }
+
+    /*
+      站内跳转时这个元素会被 Astro 在文档之间搬一次（transition:persist），
+      中途会触发 disconnectedCallback —— 所以收尾要延后一拍，确认它是真的走了。
+    */
+    if (!customElements.get("music-player")) {
+      customElements.define(
+        "music-player",
+        class extends HTMLElement {
+          disconnectedCallback() {
+            window.setTimeout(() => {
+              if (this.isConnected) return;
+              (
+                this as HTMLElement & { __npRelease?: () => void }
+              ).__npRelease?.();
+            }, 800);
+          }
+        }
+      );
+    }
+    (host as HTMLElement & { __npRelease?: () => void }).__npRelease = () => {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      playing = false;
+      opened = false;
+      minimized = false;
+      syncIcon();
+      syncPanels();
+    };
+
+    syncMode();
+    syncIcon();
+
+    /*
+      收藏页上有专辑按钮：空闲时先把曲库取回来，点专辑就能立刻出声。
+      其他页面不预热 —— 曲库只有真要用的时候才值得下。
+    */
+    const idle = (
+      window as Window & {
+        requestIdleCallback?: (
+          callback: () => void,
+          options?: { timeout: number }
+        ) => number;
+      }
+    ).requestIdleCallback;
+    const warm = () => {
+      if (document.querySelector("[data-album-open]")) void ensurePayload();
+    };
+    if (idle) idle(warm, { timeout: 2500 });
+    else window.setTimeout(warm, 800);
+
+    // 刷新 / 从别的页面进来：把上次的播放现场接回来
+    const saved = readState();
+    if (saved) void restore(saved);
+
+    // 站内跳转后标题换成了新页面的，重新记一遍并补上 ▶ 标记
+    document.addEventListener("astro:page-load", () => {
+      baseTitle = document.title.replace(/^▶ .*? · /, "");
+      // 站内跳转进来时也预热一次：跳到收藏页再点专辑，同样能立刻出声
+      warm();
+      const current = trackOf(queue[index]);
+      if (current) syncTitle(current.track.title);
+    });
+  }
+
+  initPlayer();
+  document.addEventListener("astro:page-load", initPlayer);
+</script>
