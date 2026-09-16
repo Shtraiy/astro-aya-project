@@ -20,5 +20,8 @@
 # Pagefind 生成的搜索索引与运行时（search:index:dev 会写进 public/）
 /public/pagefind
 
+# 构建前生成的图片尺寸清单（npm run images:sizes）
+/src/data/image-sizes.json
+
 # 文章正文由作者手写维护，不参与 Prettier，避免工具改写正文排版
 /src/content/blog

@@ -289,6 +289,23 @@
   color: inherit;
 }
 
+/* ===== 尊重系统的「减少动态效果」设置 =====
+   平滑滚动、各种过渡与动画对前庭敏感的人很折磨；系统开了这个偏好就全关掉
+   （不是取消样式，只是把时长压到几乎为 0，逻辑不受影响）。 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ===== 打印样式 ===== */
 @media print {
   header,

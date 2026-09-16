@@ -66,7 +66,7 @@ Tips：本次安装使用y7000p进行实机安装
 
  这里选择第一个选项或是等待过后自动进入安装页面
 
-![1](/images/其他旧图/3.png)
+![1](/images/其他旧图/3.webp)
 
 ### 首先确定自己的引导方式
 
@@ -111,7 +111,7 @@ ping通了就说明连上网了
 
 会出现以下情况
 
-![1](/images/其他旧图/4.png)
+![1](/images/其他旧图/4.webp)
 
 有的人可能会像我这样，设备的powered是off的，这时候可以执行rfkill unblock wlan
 
@@ -145,7 +145,7 @@ station name connect WIFI # 使用wlan0连接到你家WIFI
 
 ```fdisk -l```
 
-![1](/images/其他旧图/5.png)
+![1](/images/其他旧图/5.webp)
 
 可以先清空磁盘，删除掉不需要的分区，需要注意的是不要删错，下面以我为例
 
@@ -165,7 +165,7 @@ station name connect WIFI # 使用wlan0连接到你家WIFI
 
 大小输入300M，回车，创建一个EFI分区
 
-![1](/images/其他旧图/38.png)
+![1](/images/其他旧图/38.webp)
 
 此时已经创建了一个EFI分区
 
@@ -234,7 +234,7 @@ Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
 Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch
 ```
 
-之后用`:wq`保存并退出即可![1](/images/表情包/动漫-开心1.png)
+之后用`:wq`保存并退出即可![1](/images/表情包/动漫-开心1.webp)
 
 ---
 
@@ -351,7 +351,7 @@ echo 主机名 > /etc/hostname
 vim /etc/hosts
 ```
 
-![1](/images/其他旧图/39.png)
+![1](/images/其他旧图/39.webp)
 
 其中的anastasia改为上一步你设置的主机名字
 

@@ -21,7 +21,7 @@ Katago是由David J. Wu 所研究并开发的一套围棋软件
 
 并且以DeepMind的AlphaGo Zero与AlphaZero论文为基础为基础，训练速度更快，棋力更强
 
-黑色是我![被乱杀](/images/其他旧图/28.png)
+黑色是我![被乱杀](/images/其他旧图/28.webp)
 
 ~~开局被乱杀~~
 
@@ -63,7 +63,7 @@ KataGo的权重文件可以到[这里](https://katagotraining.org/networks/)下�
 
 配置完后打开这个运行
 
-![1](/images/其他旧图/31.png)
+![1](/images/其他旧图/31.webp)
 
 等候几十秒就加载完成了
 

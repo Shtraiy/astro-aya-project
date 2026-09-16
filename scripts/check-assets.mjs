@@ -109,6 +109,21 @@ const missing = [...referencedAssets].filter(
   asset => !publicSet.has(asset) && !asset.startsWith("http")
 );
 
+/*
+  markdown 图片地址里不能有空格：`![alt](/a b/x.png)` 会被解析器当成
+  「地址是 /a，后面一串是标题」，整张图变成一行纯文本（踩过一次）。
+  要写带空格的路径，得编码成 %20，或用尖括号包住。
+*/
+for (const match of referenceText.matchAll(/\]\((\/[^)]+)\)/g)) {
+  const body = match[1];
+  // 标题用引号包着，所以地址就是第一个引号之前的部分（没有标题时就是整串）
+  const quoteIndex = body.indexOf('"');
+  const url = (quoteIndex === -1 ? body : body.slice(0, quoteIndex)).trimEnd();
+  if (!assetExtension.test(url) || !url.includes(" ")) continue;
+
+  missing.push(`（地址含空格，markdown 解析不了）${url}`);
+}
+
 /* ---------- 2. 文件在但没人引用 ---------- */
 const unreferenced = publicFiles
   .filter(asset => !ignoredPublicPaths.some(pattern => pattern.test(asset)))

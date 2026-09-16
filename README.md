@@ -7,7 +7,7 @@
 > **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
 > [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
 
-> 当前版本 **2.0.1**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+> 当前版本 **2.1.0**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
 
@@ -26,6 +26,8 @@
   发布，运行时不请求 Google Fonts / jsdelivr。
 - **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
   Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
+- **正文图在仓库里**：`public/images/<分组>/`，统一 WebP（GIF 保留动画），构建时自动带上
+  `width`/`height`。图片不再走自建图床，站点对家里的 NAS 没有运行时依赖。
 - **唯一的运行时外链**：收藏页的音频直连 Navidrome，前端因此带一份只读凭据
   （⚠️ 见 [docs/data-sync.md](docs/data-sync.md) 的「播放凭据」）。
 - **部署**：Vercel。`vercel.json` 把构建命令设成 `npm run build:vercel`，
@@ -129,6 +131,11 @@ docs/                      详细文档：content / data-sync / deploy
 11. **站外链接**由 `rehype-external-links` 统一处理（新窗口 + `rel` + `.external-link`，
     箭头是 CSS 画的，见 `base.css`）。写 `.md` 时不要手写 `target="_blank"`。
     文章底部的上下篇导航按**同栏目**取，栏目内不足 3 篇才回落全站。
+12. **正文图片**放进 `public/images/<分组>/`，用 `npm run images:optimize` 统一压缩。
+    引用路径里**不能有空格** —— markdown 会把 `![a](/x y.png)` 当「地址 + 标题」，
+    整句变纯文本、图直接不显示（踩过）；需要空格就写 `%20`，`check:assets` 会拦这种写法。
+    尺寸由 `images:sizes` 预生成成 `src/data/image-sizes.json`，插件同步查表
+    （本项目的 markdown 管线不会等异步 rehype 插件）。
 
 ## 常用命令
 
@@ -145,6 +152,9 @@ docs/                      详细文档：content / data-sync / deploy
 | `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`        |
 | `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）    |
 | `npm run check:assets`       | 静态资源体检：坏引用报错、孤儿文件提示（CI 会跑） |
+| `npm run check`              | 只跑 `astro check`（类型 + 内容校验）             |
+| `npm run images:optimize`    | 正文图本地化 + 转 WebP（幂等；原图进 `.trash/`）  |
+| `npm run images:sizes`       | 生成 `src/data/image-sizes.json`（`build` 已含）  |
 
 ## 改哪里
 

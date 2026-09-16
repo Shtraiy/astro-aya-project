@@ -87,10 +87,11 @@ const layoutProps = {
    到头绕回，所以不会出现"第一篇没有上一篇"。 */
 
 const allPosts = posts.map(
-  ({ data: { title, category: postCategory }, id }) => ({
+  ({ data: { title, category: postCategory, tags: postTags }, id }) => ({
     id,
     title,
     category: postCategory,
+    tags: postTags,
   })
 );
 
@@ -114,6 +115,26 @@ const nextCandidate =
 // 列表只有两篇时 prev / next 会指向同一篇，别左右各显示一次
 const nextPost =
   nextCandidate && nextCandidate.id !== prevPost?.id ? nextCandidate : null;
+
+/* ========== 相关阅读 ==========
+   同栏目算 2 分、每共用一个标签算 1 分，取前 3 篇；自己与上下篇已经在别处出现，不再重复。
+   构建时算好，页面里零 JS。 */
+const tagSet = new Set(tags);
+const alreadyShown = new Set(
+  [post.id, prevPost?.id, nextPost?.id].filter(Boolean) as string[]
+);
+
+const relatedPosts = allPosts
+  .filter(entry => !alreadyShown.has(entry.id))
+  .map(entry => ({
+    ...entry,
+    score:
+      (entry.category === category ? 2 : 0) +
+      entry.tags.filter(tag => tagSet.has(tag)).length,
+  }))
+  .filter(entry => entry.score > 0)
+  .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+  .slice(0, 3);
 ---
 
 <Layout {...layoutProps}>
@@ -194,6 +215,14 @@ const nextPost =
       class="prose mt-8 max-w-3xl text-lg"
       data-pagefind-body
     >
+      {
+        /*
+          搜索结果按栏目筛选：Pagefind 的「筛选」读 data-pagefind-filter
+          （data-pagefind-meta 只是给结果附元数据）。放在 data-pagefind-body
+          内部才会进索引；正文里不显示，所以加 hidden。
+        */
+      }
+      <span data-pagefind-filter="栏目" hidden>{category}</span>
       <Content />
     </article>
 
@@ -288,6 +317,23 @@ const nextPost =
         )
       }
     </nav>
+    {
+      relatedPosts.length > 0 && (
+        <nav class="related" aria-label="相关阅读">
+          <h2 class="related-title">相关阅读</h2>
+          <ul>
+            {relatedPosts.map(item => (
+              <li>
+                <a href={`/posts/${item.id}`}>
+                  <span class="related-item-title">{item.title}</span>
+                  <span class="related-item-category">{item.category}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
     <Comments />
     <aside class="side-rail">
       <TOC headings={headings} />
@@ -364,6 +410,44 @@ const nextPost =
     .post-nav-item--next .post-nav-text {
       align-items: flex-end;
     }
+  }
+
+  /* ===== 相关阅读 ===== */
+  .related {
+    @apply mt-10;
+  }
+  .related-title {
+    @apply mb-3 text-base font-semibold;
+  }
+  .related ul {
+    @apply m-0 flex list-none flex-col gap-2 p-0;
+  }
+  .related li {
+    @apply m-0;
+  }
+  .related a {
+    @apply flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-xl px-2 py-1.5 no-underline transition-colors;
+    color: rgb(var(--palette-text));
+  }
+  .related a:hover {
+    color: rgb(var(--palette-accent));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 60%,
+      transparent
+    );
+  }
+  .related-item-title {
+    @apply text-sm font-medium;
+  }
+  .related-item-category {
+    @apply rounded-full px-2 py-0.5 text-xs;
+    color: rgb(var(--palette-muted-text));
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 70%,
+      transparent
+    );
   }
 </style>
 

@@ -1,6 +1,6 @@
 {
   "name": "astro-aya",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "private": true,
   "description": "SilentCage —— 个人博客：技术笔记、随笔与游记，文章按栏目筛选、按年份分组，Pagefind 全文搜索，Navidrome 音乐收藏与 Bangumi 追番",
   "author": "Resalia",
@@ -24,11 +24,13 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && npm run search:index",
+    "build": "npm run images:sizes && astro check && astro build && npm run search:index",
     "build:vercel": "npm run sync:bangumi && npm run sync:friend-circle && npm run build",
     "preview": "astro preview",
     "search:index": "pagefind --site dist",
     "search:index:dev": "pagefind --site dist --output-subdir ../public/pagefind",
+    "images:sizes": "node scripts/image-sizes.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs",
     "sync": "astro sync",
     "sync:navidrome": "node --env-file-if-exists=.env scripts/sync-navidrome.mjs",
     "sync:bangumi": "node --env-file-if-exists=.env scripts/sync-bangumi.mjs",
@@ -37,6 +39,7 @@
     "format:check": "prettier --check . --plugin=prettier-plugin-astro",
     "format": "prettier --write . --plugin=prettier-plugin-astro",
     "lint": "eslint .",
+    "check": "astro check",
     "check:assets": "node scripts/check-assets.mjs"
   },
   "engines": {
@@ -83,6 +86,7 @@
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.4",
     "typescript-eslint": "^8.5.0"
   }
 }
