@@ -115,26 +115,6 @@ const nextCandidate =
 // 列表只有两篇时 prev / next 会指向同一篇，别左右各显示一次
 const nextPost =
   nextCandidate && nextCandidate.id !== prevPost?.id ? nextCandidate : null;
-
-/* ========== 相关阅读 ==========
-   同栏目算 2 分、每共用一个标签算 1 分，取前 3 篇；自己与上下篇已经在别处出现，不再重复。
-   构建时算好，页面里零 JS。 */
-const tagSet = new Set(tags);
-const alreadyShown = new Set(
-  [post.id, prevPost?.id, nextPost?.id].filter(Boolean) as string[]
-);
-
-const relatedPosts = allPosts
-  .filter(entry => !alreadyShown.has(entry.id))
-  .map(entry => ({
-    ...entry,
-    score:
-      (entry.category === category ? 2 : 0) +
-      entry.tags.filter(tag => tagSet.has(tag)).length,
-  }))
-  .filter(entry => entry.score > 0)
-  .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-  .slice(0, 3);
 ---
 
 <Layout {...layoutProps}>
@@ -317,23 +297,6 @@ const relatedPosts = allPosts
         )
       }
     </nav>
-    {
-      relatedPosts.length > 0 && (
-        <nav class="related" aria-label="相关阅读">
-          <h2 class="related-title">相关阅读</h2>
-          <ul>
-            {relatedPosts.map(item => (
-              <li>
-                <a href={`/posts/${item.id}`}>
-                  <span class="related-item-title">{item.title}</span>
-                  <span class="related-item-category">{item.category}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
     <Comments />
     <aside class="side-rail">
       <TOC headings={headings} />
@@ -410,44 +373,6 @@ const relatedPosts = allPosts
     .post-nav-item--next .post-nav-text {
       align-items: flex-end;
     }
-  }
-
-  /* ===== 相关阅读 ===== */
-  .related {
-    @apply mt-10;
-  }
-  .related-title {
-    @apply mb-3 text-base font-semibold;
-  }
-  .related ul {
-    @apply m-0 flex list-none flex-col gap-2 p-0;
-  }
-  .related li {
-    @apply m-0;
-  }
-  .related a {
-    @apply flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-xl px-2 py-1.5 no-underline transition-colors;
-    color: rgb(var(--palette-text));
-  }
-  .related a:hover {
-    color: rgb(var(--palette-accent));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted)) 60%,
-      transparent
-    );
-  }
-  .related-item-title {
-    @apply text-sm font-medium;
-  }
-  .related-item-category {
-    @apply rounded-full px-2 py-0.5 text-xs;
-    color: rgb(var(--palette-muted-text));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted)) 70%,
-      transparent
-    );
   }
 </style>
 

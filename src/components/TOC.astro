@@ -18,6 +18,34 @@ const { headings, minItems = 2 } = Astro.props;
 
 const toc = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 const show = toc.length >= minItems;
+
+/*
+  目录配色：色相按「节」分配，每开一节色相往前推 60°（彩虹顺序循环）。
+
+  哪一级算"一节"：目录里最浅的那一级。文章用 ## 分节时，一个二级标题开一节，
+  它下面的三级标题沿用同一色相、只是去饱和压淡；有的文章通篇只有 ###（没有二级），
+  那每个三级标题自己就是一节，颜色照样一节一换，不会整列一个色。
+
+  于是侧栏里两件事都能一眼看出来：文章分成几节（颜色在换），
+  哪几项属于同一节（同色相 + 缩进）。
+  起手取主题蓝的色相（202），往下正好落在蓝 → 紫 → 品红 → 橙 → 黄绿 → 青这一圈上。
+*/
+const HUE_START = 202;
+const HUE_STEP = 60;
+
+/** 目录里最浅的一级（通常是 2）；空目录时给个兜底值 */
+const topDepth = toc.length ? Math.min(...toc.map(h => h.depth)) : 2;
+
+let sectionIndex = -1;
+const tocItems = toc.map(heading => {
+  if (heading.depth === topDepth) sectionIndex += 1;
+  return {
+    ...heading,
+    hue: (HUE_START + sectionIndex * HUE_STEP) % 360,
+    /** 比最浅一级更深的项才是"子项"（缩进 + 浅色） */
+    isSub: heading.depth > topDepth,
+  };
+});
 ---
 
 {
@@ -25,8 +53,11 @@ const show = toc.length >= minItems;
     <toc-nav class="toc">
       <p class="toc-title">目录</p>
       <ul class="toc-list">
-        {toc.map(heading => (
-          <li class:list={["toc-item", heading.depth === 3 && "toc-item-sub"]}>
+        {tocItems.map(heading => (
+          <li
+            class:list={["toc-item", heading.isSub && "toc-item-sub"]}
+            style={`--toc-hue:${heading.hue}`}
+          >
             <span class="toc-bar" aria-hidden="true">
               <span class="toc-bar-fill" />
             </span>
@@ -70,13 +101,31 @@ const show = toc.length >= minItems;
     display: flex;
     align-items: stretch;
     gap: 0.5rem;
+    /*
+      每个目录项带一个色相（由组件按"节"写进 --toc-hue）：
+      节标题是本节主色，子项是同色相去饱和的次级色；
+      左侧色条与阅读进度用同一个色相。
+      颜色都用 hsl() 直接写，不用 color-mix —— 免得旧浏览器把整条声明判成无效值。
+    */
+    --toc-color: hsl(var(--toc-hue) 62% 40%);
+    --toc-color-sub: hsl(var(--toc-hue) 34% 46%);
+    --toc-rail: hsl(var(--toc-hue) 55% 55% / 0.55);
+    --toc-rail-sub: hsl(var(--toc-hue) 45% 55% / 0.32);
+    --toc-active-bg: hsl(var(--toc-hue) 65% 50% / 0.12);
+  }
+  :global(html[data-theme="dark"]) .toc-item {
+    --toc-color: hsl(var(--toc-hue) 76% 72%);
+    --toc-color-sub: hsl(var(--toc-hue) 40% 70%);
+    --toc-rail: hsl(var(--toc-hue) 60% 60% / 0.5);
+    --toc-rail-sub: hsl(var(--toc-hue) 50% 60% / 0.3);
+    --toc-active-bg: hsl(var(--toc-hue) 60% 58% / 0.16);
   }
   .toc-bar {
     position: relative;
     flex: none;
     width: 2px;
     border-radius: 999px;
-    @apply bg-border;
+    background-color: var(--toc-rail);
     overflow: hidden;
   }
   .toc-bar-fill {
@@ -85,7 +134,7 @@ const show = toc.length >= minItems;
     right: 0;
     left: 0;
     height: 0;
-    @apply bg-primary;
+    background-color: var(--toc-color);
     transition: height 0.15s linear;
   }
   .toc-link {
@@ -95,22 +144,40 @@ const show = toc.length >= minItems;
     border-radius: 0.375rem;
     font-size: 0.8125rem;
     line-height: 1.5;
-    @apply text-muted-foreground;
+    color: var(--toc-color);
     text-decoration: none;
     transition:
       color 0.15s ease,
       background-color 0.15s ease;
   }
-  .toc-link:hover {
-    @apply text-foreground;
-  }
-  .toc-link.is-active {
-    @apply text-primary;
+  /* 开一节的那一项比它的子项重一档 —— 颜色之外再加一层"这是分节标题"的提示 */
+  .toc-item:not(.toc-item-sub) .toc-link {
     font-weight: 500;
+  }
+  .toc-item .toc-link:hover {
+    @apply text-foreground;
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 70%,
+      transparent
+    );
+  }
+  .toc-item .toc-link.is-active {
+    color: var(--toc-color);
+    font-weight: 600;
+    background-color: var(--toc-active-bg);
   }
   .toc-item-sub .toc-link {
     padding-inline-start: 1rem;
     font-size: 0.78125rem;
+    font-weight: 400;
+    color: var(--toc-color-sub);
+  }
+  .toc-item-sub .toc-bar {
+    background-color: var(--toc-rail-sub);
+  }
+  .toc-item-sub .toc-bar-fill {
+    background-color: var(--toc-color-sub);
   }
 </style>
 

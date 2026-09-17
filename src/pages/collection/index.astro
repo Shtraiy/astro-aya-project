@@ -683,34 +683,57 @@ const stats = [
     background-color: rgb(0 0 0 / 0.45);
     backdrop-filter: blur(4px);
   }
-  /* 搜索命中曲名时列出来的可点行（脚本填入，最多两行） */
+  /*
+    搜索命中曲名时列出来的可点行（脚本填入，最多两行）。
+    按钮是 collectionFilter.ts 里 createElement 出来的，没有 Astro 的作用域类，
+    所以这一块必须用 :global 选中，不然样式全部落空 —— 之前那几个字就是因此
+    以正文字号糊在卡片下面。
+  */
   .album-hits {
     display: flex;
     flex-direction: column;
-    gap: 0.125rem;
-    margin-top: 0.25rem;
+    align-items: flex-start;
+    gap: 0.25rem;
+    margin-top: 0.375rem;
   }
   .album-hits[hidden] {
     display: none;
   }
-  .album-hit {
-    display: block;
-    width: 100%;
-    padding: 0;
-    border: none;
+  .album-hits :global(.album-hit) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 100%;
+    padding: 0.1875rem 0.5rem;
+    /* 描边式胶囊，和「全部播放 / 随机播放全部」那排按钮同一副长相 */
+    border: 1px solid
+      color-mix(in srgb, rgb(var(--palette-accent)) 45%, transparent);
+    border-radius: 999px;
     background: none;
     color: rgb(var(--palette-accent));
     font-family: inherit;
     font-size: 0.6875rem;
-    line-height: 1.35;
+    line-height: 1.4;
     text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .album-hits :global(.album-hit:hover) {
+    border-color: rgb(var(--palette-accent));
+  }
+  .album-hits :global(.album-hit svg) {
+    flex: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    fill: currentColor;
+  }
+  .album-hits :global(.album-hit-title) {
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    cursor: pointer;
-  }
-  .album-hit:hover {
-    text-decoration: underline;
   }
   /* 悬停遮罩：点封面是去 Navidrome 打开，不是站内播放 */
   .album-hover {

@@ -32,30 +32,32 @@ import "@styles/music-player.css";
         <p class="np-now" id="np-now"></p>
       </div>
       <span class="np-count" id="np-count"></span>
-      <a
-        class="np-icon-btn"
-        id="np-ext"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="在 Navidrome 打开"
-        aria-label="在 Navidrome 打开"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 17l9.2-9.2"></path>
-          <path d="M17 17V7H7"></path>
-        </svg>
-      </a>
-      <button
-        class="np-icon-btn"
-        id="np-close"
-        type="button"
-        title="最小化（继续播放）"
-        aria-label="最小化播放器"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 9l6 6l6 -6"></path>
-        </svg>
-      </button>
+      <div class="np-head-actions">
+        <a
+          class="np-icon-btn"
+          id="np-ext"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="在 Navidrome 打开"
+          aria-label="在 Navidrome 打开"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 17l9.2-9.2"></path>
+            <path d="M17 17V7H7"></path>
+          </svg>
+        </a>
+        <button
+          class="np-icon-btn"
+          id="np-close"
+          type="button"
+          title="最小化（继续播放）"
+          aria-label="最小化播放器"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6l6 -6"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <ol class="np-tracks" id="np-tracks"></ol>
@@ -563,6 +565,7 @@ import "@styles/music-player.css";
                 <span class="np-tnum">
                   <span class="np-tnum-text">${String(track.track ?? position + 1).padStart(2, "0")}</span>
                   <span class="np-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span class="np-tplay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 </span>
                 <span class="np-tname"></span>
                 <span class="np-tdur">${track.duration ? fmt(track.duration) : ""}</span>
@@ -595,7 +598,13 @@ import "@styles/music-player.css";
 
     function highlight() {
       listEl.querySelectorAll<HTMLElement>(".np-track").forEach(el => {
-        el.classList.toggle("is-current", Number(el.dataset.track) === index);
+        const isCurrent = Number(el.dataset.track) === index;
+        el.classList.toggle("is-current", isCurrent);
+        /* 屏幕阅读器也要认得出「这一行就是正在播的那首」 */
+        el.querySelector<HTMLButtonElement>(".np-track-main")?.setAttribute(
+          "aria-current",
+          isCurrent ? "true" : "false"
+        );
       });
     }
 

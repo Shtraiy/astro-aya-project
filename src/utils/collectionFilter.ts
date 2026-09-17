@@ -74,7 +74,14 @@ export function initCollectionFilter(): void {
       .map(track => ({ id: track.id, title: track.title }));
   };
 
-  /** 曲名命中那一行：点它直接播这首（复用播放器的 data-album-open + data-album-track） */
+  /**
+   * 曲名命中那一行：点它直接播这首（复用播放器的 data-album-open + data-album-track）。
+   *
+   * 这一行是脚本 createElement 出来的，拿不到 Astro 的作用域类，
+   * 所以 `.album-hit` 的样式写在页面里并标了 :global（否则样式一条都不生效，
+   * 那几个字会以正文的 1rem+ 字号糊在卡片下面）。
+   * 歌名一律走 textContent，别让它当 HTML 解析。
+   */
   const renderHits = (
     card: AlbumCard,
     hits: { id: string; title: string }[]
@@ -93,7 +100,12 @@ export function initCollectionFilter(): void {
       button.dataset.albumOpen = card.dataset.album;
       button.dataset.albumTrack = hit.id;
       button.title = `播放《${hit.title}》`;
-      button.textContent = `含《${hit.title}》`;
+      button.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+      const label = document.createElement("span");
+      label.className = "album-hit-title";
+      label.textContent = hit.title;
+      button.append(label);
       box.append(button);
     }
   };

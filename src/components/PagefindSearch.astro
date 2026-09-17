@@ -59,13 +59,161 @@ import "@pagefind/default-ui/css/ui.css";
   .search-shell .pagefind-ui__result-excerpt {
     color: rgb(var(--palette-muted-text));
   }
-  .search-shell mark {
-    background-color: color-mix(
+  /*
+    命中的词：原来是一块 22% 强调色的底色，连着后面的空格一起变成一个方块，
+    在深色主题下很像贴了张膏药。改成"强调色 + 细下划线"，一样能一眼扫到。
+  */
+  .search-shell .pagefind-ui mark {
+    padding: 0;
+    background: none;
+    color: rgb(var(--palette-accent));
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: color-mix(
       in srgb,
-      rgb(var(--palette-accent)) 22%,
+      rgb(var(--palette-accent)) 45%,
       transparent
     );
-    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  /*
+    结果列表：Pagefind 默认给每条结果 30/40px 的上下内边距 + 21px 的粗标题 + 整宽描边，
+    一屏只装得下三四条，看着很臃肿。这里收成一条条紧凑的列表项：标题降到 1rem、
+    摘要 0.8125rem 并截两行，去掉描边，改用悬停底色表示"这是一条可点的结果"。
+
+    选择器写得长是有原因的：Pagefind 的默认样式挂着两个 Svelte 作用域类
+    （`.pagefind-ui__result.svelte-xxx.svelte-xxx`，特异性 0,3,0），
+    层级不够的写法压不住它。
+  */
+  .search-shell .pagefind-ui .pagefind-ui__results .pagefind-ui__result {
+    gap: 0;
+    padding: 0.5rem 0.75rem 0.625rem;
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: 0.75rem;
+    transition: background-color 0.15s ease;
+  }
+  .search-shell .pagefind-ui .pagefind-ui__results .pagefind-ui__result:hover {
+    background-color: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 65%,
+      transparent
+    );
+  }
+  .search-shell .pagefind-ui .pagefind-ui__results .pagefind-ui__result-inner {
+    margin-top: 0;
+    gap: 0.125rem;
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-title
+    .pagefind-ui__result-link {
+    color: rgb(var(--palette-text));
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-title
+    .pagefind-ui__result-link:hover {
+    color: rgb(var(--palette-accent));
+    text-decoration: none;
+  }
+  /* 摘要：最多两行，长摘要不把列表撑开 */
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-excerpt {
+    display: -webkit-box;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  /* 一条结果里的多个命中位置（小标题）再降一级，只做引路的线索 */
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-nested {
+    gap: 0;
+    padding-left: 0.75rem;
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-nested:first-of-type {
+    padding-top: 0.25rem;
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-nested
+    .pagefind-ui__result-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-nested
+    .pagefind-ui__result-link {
+    color: rgb(var(--palette-muted-text));
+  }
+  .search-shell
+    .pagefind-ui
+    .pagefind-ui__results
+    .pagefind-ui__result
+    .pagefind-ui__result-nested
+    .pagefind-ui__result-link:hover {
+    color: rgb(var(--palette-accent));
+    text-decoration: none;
+  }
+  /* 「共 N 条结果」这行：跟着列表一起收紧 */
+  .search-shell .pagefind-ui .pagefind-ui__message {
+    height: auto;
+    padding: 0 0 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(var(--palette-text));
+  }
+  /* 「加载更多结果」跟着站内的胶囊按钮走 */
+  .search-shell .pagefind-ui .pagefind-ui__button {
+    height: 2.5rem;
+    margin-top: 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  /* 栏目筛选块底部那条 2px 的强调色描边太抢眼，压成一根细线 */
+  .search-shell .pagefind-ui .pagefind-ui__filter-block {
+    border-bottom-width: 1px;
+  }
+  /* 窄屏下筛选栏和结果区是上下堆叠的，60px 的间距会白掉半屏 */
+  @media (max-width: 40rem) {
+    .search-shell .pagefind-ui .pagefind-ui__drawer {
+      gap: 1.25rem;
+    }
   }
   .search-note {
     margin-top: 1.5rem;

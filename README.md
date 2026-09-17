@@ -7,7 +7,7 @@
 > **Attribution:** Adapted from [AstroPaper](https://github.com/satnaing/astro-paper) by
 > [Sat Naing](https://satnaing.dev), MIT License. Original copyright © 2023 Sat Naing.
 
-> 当前版本 **2.1.0**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+> 当前版本 **2.2.1**，完整变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
 
@@ -21,6 +21,9 @@
 - **站内搜索**：Pagefind。构建后扫一遍 HTML 生成静态索引（同源，不依赖任何第三方），
   只有标了 `data-pagefind-body` 的页面进索引：32 篇文章正文 + 关于 / 友链 / 收藏 / 追番。
   导航、栏目页、标签云这些"每页都差不多"的部分不进索引，否则搜一个词会被侧栏命中几十次。
+- **站内音乐播放器**：挂在 `Layout` 上常驻（`transition:persist`），站内翻页不断播；
+  浮空面板 + 右下角迷你条两态，队列跨专辑、支持 Media Session 与现场恢复，
+  外观与交互细节见[播放器精修说明](docs/superpowers/specs/2026-09-17-player-ui-polish-design.md)。
 - **字体自托管**：中文用霞鹜文楷屏幕版（按 unicode-range 切成 97 片，浏览器只下当前页面
   真正用到的那几片），西文与代码用 Fontsource 的 Inter / IBM Plex Mono。字体随构建产物
   发布，运行时不请求 Google Fonts / jsdelivr。
@@ -55,7 +58,7 @@ src/
 │   ├── Layout.astro       <html> 骨架、字体、ClientRouter、主题脚本
 │   ├── Main.astro         常规页面容器 + 统一页头（图标块 + 标题 + 说明）
 │   ├── PostDetails.astro  文章页：正文、版权卡、上下篇、评论区挂载点、文章级脚本
-│   └── Posts / TagPosts / AboutLayout / LinksLayout / CommonPage
+│   └── Posts / TagPosts / CategoryPosts   列表页与栏目页布局
 ├── components/
 │   ├── Card.tsx           文章列表卡片（首页/列表/标签页共用）
 │   ├── Section.astro      「左标签 · 右内容」版式（首页分区）
@@ -63,11 +66,13 @@ src/
 │   ├── StatsStrip.astro   分段统计条（首页/收藏/追番共用，容器查询自适应列数）
 │   ├── MusicPlayer.astro  站内音乐播放器：浮空面板 + 迷你条，挂在 Layout 上常驻，
 │   │                      站内跳转不断播（曲库走 /collection/data.json）
+│   ├── TOC.astro          文章右侧粘性目录：按「节」上色（每节色相 +60°），
+│   │                      左侧色条同时充当阅读进度
 │   ├── Comments.astro     评论区（Waline，默认关闭，未配置时整块不渲染）
 │   ├── PostCopyright.astro 文章底部版权卡（复制链接 / 二维码 / 分享）
 │   ├── GitHubActivity.astro 关于页的 GitHub 热力图（构建时抓数据，渲染成 SVG）
 │   ├── PagefindSearch.astro 搜索页本体（Pagefind UI + 中文文案 + 主题变量）
-│   └── Header / Footer / Icon / TOC / TagCloud / Pagination / Card
+│   └── Header / Footer / Icon / TagCloud / Pagination / CategoryList
 ├── pages/                 路由：posts（按年份分组）/ categories（分类）/ tags /
 │                          search / about / links / collection（音乐）/ anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
@@ -81,6 +86,7 @@ scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支�
                            check-assets.mjs 是静态资源体检（npm run check:assets）
 deploy/waline/             评论服务端部署说明（评论默认关闭）
 docs/                      详细文档：content / data-sync / deploy
+                           superpowers/specs/ 是每轮改动的设计说明（背景 / 取舍 / 验证）
 ```
 
 ## 分类与标签怎么分工
@@ -118,7 +124,9 @@ docs/                      详细文档：content / data-sync / deploy
 2. **根字号 18px**：页面里的 `rem` 按 18px 算，媒体查询里的 `rem` 按 16px 算
    —— 涉及宽度阈值的写 `px`，别用 `rem` 猜。
 3. **Astro scoped style**：脚本用 `innerHTML` 生成的元素拿不到 scope 类，
-   这类样式必须写在 `<style is:global>`（`CollectionPlayer.astro` 就是例子）。
+   这类样式得用 `<style is:global>` 或 `:global()` 选中 —— 收藏页「命中曲名」那个胶囊
+   （`pages/collection/index.astro` 的 `.album-hits :global(.album-hit)`）就是后者：
+   漏了 `:global()` 的话样式一条都不生效，字会以正文字号糊在卡片下面。
 4. **内联脚本**要加 `data-astro-rerun` 才会在站内软跳转后重跑；
    重复绑定用 `dataset.bound` 守卫（`utils/chipFilter.ts` 已内置这套）。
 5. **`.md` 里可以写 HTML**，但标签后要**空一行**内容才按 markdown 解析；
@@ -166,22 +174,24 @@ docs/                      详细文档：content / data-sync / deploy
 
 ## 改哪里
 
-| 想改的东西               | 改哪里                                                                               |
-| :----------------------- | :----------------------------------------------------------------------------------- |
-| 站点名 / 描述 / 社交链接 | `src/config.ts`                                                                      |
-| 导航菜单                 | `src/components/Header.astro`                                                        |
-| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                                             |
-| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                        |
-| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                             |
-| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                               |
-| 站内搜索                 | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body`         |
-| 字体（自托管）           | `src/layouts/Layout.astro` 顶部的一组 import；字体栈在 `styles/base.css` 的 `@theme` |
-| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                                            |
-| 关于页内容               | `src/data/profile.ts`                                                                |
-| 友链                     | `src/data/links.json`                                                                |
-| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                                                   |
-| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                                               |
-| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                                                     |
+| 想改的东西                  | 改哪里                                                                                    |
+| :-------------------------- | :---------------------------------------------------------------------------------------- |
+| 站点名 / 描述 / 社交链接    | `src/config.ts`                                                                           |
+| 导航菜单                    | `src/components/Header.astro`                                                             |
+| 页头（图标块 + 标题）       | `src/layouts/Main.astro`                                                                  |
+| 主题色 / 深浅色板           | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                             |
+| 文章分类（六个栏目）        | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                                  |
+| 404 错误页                  | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                                    |
+| 站内搜索                    | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body`              |
+| 音乐播放器（面板 / 迷你条） | `src/components/MusicPlayer.astro`（结构 + 行为）；外观全在 `src/styles/music-player.css` |
+| 文章右侧目录                | `src/components/TOC.astro`（配色常数 `HUE_START` / `HUE_STEP` 在文件顶部）                |
+| 字体（自托管）              | `src/layouts/Layout.astro` 顶部的一组 import；字体栈在 `styles/base.css` 的 `@theme`      |
+| 首页 hero 与分区            | `src/pages/index.astro` + `Section.astro`                                                 |
+| 关于页内容                  | `src/data/profile.ts`                                                                     |
+| 友链                        | `src/data/links.json`                                                                     |
+| 文章排版 / 正文块语法       | [docs/content.md](docs/content.md)                                                        |
+| 数据同步与环境变量          | [docs/data-sync.md](docs/data-sync.md)                                                    |
+| 部署 / 评论服务端           | [docs/deploy.md](docs/deploy.md)                                                          |
 
 ## 有意保留的遗留项
 
