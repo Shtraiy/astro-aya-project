@@ -354,19 +354,23 @@
 }
 
 /* ===== 宽屏右侧栏（文章目录 / 标签云共用） =====
-   正文列 48rem 在本项目等于 864px（根字号 18px），右侧栏 14rem ≈ 252px，
-   两侧各留 1.5rem 间距共需约 300px 空档 —— 1440px 以下放不下，直接隐藏。
+   正文列 48rem 在本项目等于 864px（根字号 18px），所以它离视口中心 24rem，
+   侧栏挂在正文列右边 1rem 处（left = 50% + 25rem），宽度取右边剩下的空档：
+   50% - 24rem - 1rem 间隙 - 0.5rem 右边距 = 50% - 25.5rem。
+   1440px 以上空档够，取满宽 14rem ≈ 252px；再窄就跟着空档一起收缩 ——
+   浏览器缩放会让视口的 CSS 像素变窄，以前一刀切隐藏，缩放后目录就整个没了。
+   空档连 10rem 都不到才真的放不下，也就是 1280px 以下，这时才隐藏。
    注意媒体查询里的 rem 按初始 16px 计算，与页面内的 rem 不同，故这里用 px。 */
 .side-rail {
   display: none;
 }
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
   .side-rail {
     display: block;
     position: fixed;
     top: 6rem;
     left: calc(50% + 25rem);
-    width: 14rem;
+    width: min(14rem, calc(50% - 25.5rem));
     max-height: calc(100vh - 8rem);
     overflow-y: auto;
     overscroll-behavior: contain;
