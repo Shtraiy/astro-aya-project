@@ -106,6 +106,22 @@
     --palette-muted-text: 98, 106, 118;
     /* 次级表面（卡片 hover、代码块表头等），只比底色深一点点 */
     --palette-muted: 236, 239, 242;
+    /*
+      正文各级标题的色相：起点和右侧目录一样是主题蓝（202），每深一级往前推 48°，
+      五级正好落在 蓝 → 靛 → 紫 → 玫 → 橙 这一段上。
+      目录那边按「节」走 60° 一档（见 TOC.astro），这里按「层级」走，
+      步进小一档是为了绕开黄绿那段浅色区 —— 那一段在小字号标题上对比度不够。
+      色相只写这一处，明度与饱和度按主题分别给（--heading-s / --heading-l）。
+      h1 不参与 —— 页面标题在 .prose 之外，正文里也几乎不会写 h1。
+    */
+    --heading-hue-2: 202;
+    --heading-hue-3: 250;
+    --heading-hue-4: 298;
+    --heading-hue-5: 346;
+    --heading-hue-6: 34;
+    /* 浅色底上压深、压低饱和，只是给层级一个提示，不抢正文的注意力 */
+    --heading-s: 45%;
+    --heading-l: 38%;
   }
   html[data-theme="dark"] {
     --palette-fill: 33, 39, 55;
@@ -117,6 +133,9 @@
     --palette-border: 171, 75, 8;
     --palette-muted-text: 156, 166, 182;
     --palette-muted: 44, 52, 72;
+    /* 深色底上反过来：提亮 + 提饱和，色相沿用浅色那一组 */
+    --heading-s: 55%;
+    --heading-l: 72%;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -152,6 +171,39 @@
   }
   .prose {
     @apply prose-headings:mb-3! prose-headings:!text-skin-base prose-h3:italic prose-p:!text-skin-base prose-a:!text-skin-base prose-a:decoration-dashed! prose-a:underline-offset-8 hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent/50 prose-blockquote:opacity-80 prose-figcaption:!text-skin-base prose-figcaption:opacity-70 prose-strong:!text-skin-base prose-code:rounded-sm prose-code:bg-skin-card/75 prose-code:p-1 prose-code:before:content-none! prose-code:after:content-none! prose-ol:!text-skin-base prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent prose-table:text-skin-base prose-th:border prose-th:border-skin-line prose-td:border prose-td:border-skin-line prose-hr:!border-skin-line;
+  }
+  /*
+    标题按层级换色。字号本来就有区别，但字号只差一档时扫过去很难分清
+    哪一行是二级、哪一行是三级，颜色在这时候比字号好认得多。
+
+    这里的 !important 是为了压过上一行 prose-headings:!text-skin-base ——
+    那条工具类也在 !important 档，靠层叠顺序（!important 下 base 层优先于 utilities 层）取胜。
+    想改回纯文字色，删掉下面五条即可。
+  */
+  .prose h2 {
+    color: hsl(
+      var(--heading-hue-2) var(--heading-s) var(--heading-l)
+    ) !important;
+  }
+  .prose h3 {
+    color: hsl(
+      var(--heading-hue-3) var(--heading-s) var(--heading-l)
+    ) !important;
+  }
+  .prose h4 {
+    color: hsl(
+      var(--heading-hue-4) var(--heading-s) var(--heading-l)
+    ) !important;
+  }
+  .prose h5 {
+    color: hsl(
+      var(--heading-hue-5) var(--heading-s) var(--heading-l)
+    ) !important;
+  }
+  .prose h6 {
+    color: hsl(
+      var(--heading-hue-6) var(--heading-s) var(--heading-l)
+    ) !important;
   }
   .prose a {
     @apply hover:!text-skin-accent wrap-break-word;
@@ -219,7 +271,8 @@
     line-height: inherit;
     text-decoration: none;
     opacity: 0;
-    color: rgb(var(--palette-accent));
+    /* 跟着所在标题的颜色走，免得蓝色的 # 挂在紫色标题后面 */
+    color: currentColor;
     transition: opacity 0.2s ease;
     vertical-align: baseline;
   }
