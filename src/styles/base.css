@@ -986,6 +986,53 @@ details.collapsible > summary + * {
   user-select: auto;
 }
 
+/* --- 色彩对照：<div class="color-pairs"> 里放若干 <div class="color-pair"> ---
+   每行左右各一项，色点颜色由行内的 --swatch 提供（比如角色的应援色），
+   所以这里的样式跟主题色无关，只负责布局，以及给色点描一圈边 ——
+   浅色点在浅色底上会糊成一团。描边跟着正文色走，深浅色自动反转。 */
+.color-pairs {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+.color-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid rgb(var(--palette-border));
+  border-radius: 0.75rem;
+}
+.color-pair__side {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(var(--palette-muted-text));
+}
+/* 色点本体 */
+.color-pair__side::before {
+  content: "";
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 999px;
+  background-color: var(--swatch, currentColor);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, rgb(var(--palette-text)) 28%, transparent);
+}
+.color-pair__side b {
+  font-weight: 600;
+  color: rgb(var(--palette-text));
+}
+/* 中间的双向箭头把两侧推开；窄屏换行时它自己占一行，也不会挤在一起 */
+.color-pair__sep {
+  margin-inline: auto;
+  color: rgb(var(--palette-muted-text));
+}
+
 /* ===== 代码行标注 =====
    写在代码行末尾、渲染时会被 shiki 的 transformers 删掉，页面上看不到它们：
      // [!code highlight]        高亮这一行

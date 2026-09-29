@@ -97,10 +97,21 @@ sudo pacman -S foo
 
 结局是<span class="spoiler">主角其实早就把坑填完了</span>。
 
+<!-- 色彩对照：左右各一项，色点颜色由行内的 --swatch 提供 -->
+<div class="color-pairs">
+
+<div class="color-pair"><span class="color-pair__side" style="--swatch:#FF4444"><b>红</b> #FF4444</span><span class="color-pair__sep">↔</span><span class="color-pair__side" style="--swatch:#77FFFF"><b>青</b> #77FFFF</span></div>
+
+</div>
+
 `````
 
 > 折叠块不能叫 `.collapse` —— Tailwind 自带 `.collapse { visibility: collapse }`，
 > 会把 summary 直接藏掉。
+
+> 色彩对照块只负责把颜色画出来：色点取行内 `--swatch` 的值，跟主题色无关，
+> 描边用正文色，所以深浅色模式都看得清。正文里仍要保留色值文字，
+> 否则 RSS 与无样式环境下这些颜色就彻底丢了。
 
 ## 代码行的标注
 
