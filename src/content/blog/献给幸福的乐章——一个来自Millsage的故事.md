@@ -17,7 +17,7 @@ description: "看完《BanG Dream! Our Notes》里 millsage 全20话乐队剧情
 > [!WARNING]
 > 本文含有《BanG Dream! Our Notes》中 millsage 乐队剧情（全20话）的大量剧透，包括结局与角色真相。还没看完的朋友请立刻退出，不要学我。
 
-先说结论：millsage 这段剧情，是我在邦邦里看过最完整、也最让我难受的一段故事
+millsage这段剧情，是我在邦邦里看过最完整、也最让我难受的一段故事
 
 要知道在不久前之前，我对新邦的期待值已经被母鸡卡和梦限大磨没了，结果Our Notes刚开服，直接端上来一盘这样的东西，只能说确实是意料之外
 
