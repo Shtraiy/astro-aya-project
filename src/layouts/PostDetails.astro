@@ -377,270 +377,358 @@ const nextPost =
 </style>
 
 <script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
-  function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+  /**
+   * 文章页的交互增强：顶部阅读进度条、标题锚点、代码块头部、正文里的
+   * Tabs / 剧透、图片灯箱，以及 Mermaid 图表。
+   *
+   * 这个 script 带 data-astro-rerun，视图切换后会整段重跑，所以有两条约定：
+   *
+   * 1) 整段包在函数作用域里。内联脚本共享全局作用域：顶层 let/const 重跑时
+   *    会因重复声明直接抛错（以前顶层的 let lightboxReady 就是这么把整个脚本
+   *    打成 SyntaxError 的），而且很容易和 toggle-theme.js 的变量撞名。
+   * 2) 每个初始化都要能重复执行：处理过的元素留标记，或先查有没有做过。
+   *    否则重跑会叠出第二条进度条、给每个标题挂两个 #。
+   *
+   * 需要跨实例共用的状态（渲染队列、document 级监听）挂在 window.__postDetails。
+   */
+  (() => {
+    const state = (window.__postDetails ||= {});
 
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
-    progressBar.id = "myBar";
+    /** 顶部的阅读进度条 */
+    function createProgressBar() {
+      // 视图切换会重跑脚本，已经插过就不再插第二条
+      if (document.getElementById("myBar")) return;
 
-    // Append the progress bar to the progress container
-    progressContainer.appendChild(progressBar);
+      const progressContainer = document.createElement("div");
+      progressContainer.className =
+        "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
 
-    // Append the progress container to the document body or any other desired parent element
-    document.body.appendChild(progressContainer);
-  }
-  createProgressBar();
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+      progressBar.id = "myBar";
 
-  /** Update the progress bar
-   *  when user scrolls */
-  function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
+      progressContainer.appendChild(progressBar);
+      document.body.appendChild(progressContainer);
+    }
+
+    /** 滚动时更新进度条 */
+    function updateScrollProgress() {
+      // 滚动监听挂在 document 上，重跑会一层层叠加，注册一次就够
+      if (state.scrollBound) return;
+      state.scrollBound = true;
+
+      document.addEventListener("scroll", () => {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
         const myBar = document.getElementById("myBar");
         if (myBar) {
           myBar.style.width = scrolled + "%";
         }
+      });
+    }
+
+    /** 给标题挂上可分享的锚点（#），方便直接引用小节 */
+    function addHeadingLinks() {
+      const headings = Array.from(
+        document.querySelectorAll("h2, h3, h4, h5, h6")
+      );
+      for (const heading of headings) {
+        // 重跑时不再往同一个标题上叠第二个 #
+        if (heading.querySelector(".heading-link")) continue;
+
+        heading.classList.add("group");
+        const link = document.createElement("a");
+        link.className = "heading-link";
+        link.href = "#" + heading.id;
+
+        const span = document.createElement("span");
+        span.ariaHidden = "true";
+        span.innerText = "#";
+        link.appendChild(span);
+        heading.appendChild(link);
       }
-    });
-  }
-  updateScrollProgress();
-
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
-    );
-    for (const heading of headings) {
-      heading.classList.add("group");
-      const link = document.createElement("a");
-      link.className = "heading-link";
-      link.href = "#" + heading.id;
-
-      const span = document.createElement("span");
-      span.ariaHidden = "true";
-      span.innerText = "#";
-      link.appendChild(span);
-      heading.appendChild(link);
-    }
-  }
-  addHeadingLinks();
-
-  /**
-   * 给 shiki 生成的代码块补上「语言标签 + 复制按钮」的头部。
-   * 语言直接读 Astro/shiki 写在 pre 上的 data-language，所以不需要
-   * shiki transformer，也不用新增依赖。样式见 base.css 的 .code-block 段。
-   */
-  function enhanceCodeBlocks() {
-    const copyIcon =
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path></svg>';
-    const checkIcon =
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg>';
-
-    const codeBlocks = Array.from(document.querySelectorAll("pre.astro-code"));
-
-    for (const codeBlock of codeBlocks) {
-      // 视图切换后脚本会重跑，处理过的代码块直接跳过
-      if (codeBlock.parentElement?.classList.contains("code-block")) continue;
-
-      const language = (codeBlock.dataset.language ?? "").trim();
-
-      const container = document.createElement("div");
-      container.className = "code-block";
-
-      const header = document.createElement("div");
-      header.className = "code-block-header";
-
-      const label = document.createElement("span");
-      label.className = "code-block-lang";
-      label.textContent = language === "plaintext" ? "text" : language;
-
-      const copyButton = document.createElement("button");
-      copyButton.type = "button";
-      copyButton.className = "code-block-copy";
-      copyButton.setAttribute("aria-label", "复制代码");
-      copyButton.innerHTML = copyIcon + "<span>复制</span>";
-
-      header.append(label, copyButton);
-      codeBlock.parentNode?.insertBefore(container, codeBlock);
-      container.append(header, codeBlock);
-
-      copyButton.addEventListener("click", async () => {
-        const code = codeBlock.querySelector("code");
-        try {
-          await navigator.clipboard.writeText(code?.innerText ?? "");
-        } catch {
-          return;
-        }
-
-        copyButton.innerHTML = checkIcon + "<span>已复制</span>";
-        copyButton.classList.add("is-copied");
-        setTimeout(() => {
-          copyButton.innerHTML = copyIcon + "<span>复制</span>";
-          copyButton.classList.remove("is-copied");
-        }, 1500);
-      });
-    }
-  }
-  enhanceCodeBlocks();
-
-  /**
-   * 文章里可嵌入的块：标签页（Tabs）与剧透（Spoiler）。
-   * 写法与样式见 README「文章里可嵌入的块」和 base.css。
-   * Steps 与 Collapse 分别用样式和原生 <details> 实现，不需要脚本。
-   */
-  function initContentBlocks() {
-    for (const group of document.querySelectorAll("[data-tabs]")) {
-      // 视图切换后脚本会重跑，处理过的不再重复生成标签栏
-      if (group.dataset.ready === "true") continue;
-
-      const panels = Array.from(group.querySelectorAll(":scope > [data-tab]"));
-      if (panels.length < 2) continue;
-      group.dataset.ready = "true";
-
-      const list = document.createElement("div");
-      list.className = "tabs-tablist";
-      list.setAttribute("role", "tablist");
-
-      panels.forEach((panel, index) => {
-        panel.setAttribute("role", "tabpanel");
-        panel.hidden = index !== 0;
-
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "tabs-tab";
-        button.setAttribute("role", "tab");
-        button.setAttribute("aria-selected", String(index === 0));
-        button.textContent = panel.dataset.tab ?? "";
-        button.addEventListener("click", () => {
-          panels.forEach((item, i) => {
-            item.hidden = i !== index;
-            list.children[i].setAttribute("aria-selected", String(i === index));
-          });
-        });
-        list.append(button);
-      });
-
-      group.prepend(list);
     }
 
-    for (const spoiler of document.querySelectorAll(".spoiler")) {
-      if (spoiler.dataset.bound === "true") continue;
-      spoiler.dataset.bound = "true";
-      spoiler.setAttribute("tabindex", "0");
-      const toggle = () => spoiler.classList.toggle("is-revealed");
-      spoiler.addEventListener("click", toggle);
-      spoiler.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          toggle();
-        }
-      });
-    }
-  }
-  initContentBlocks();
-  document.addEventListener("astro:after-swap", initContentBlocks);
+    /**
+     * 给 shiki 生成的代码块补上「语言标签 + 复制按钮」的头部。
+     * 语言直接读 Astro/shiki 写在 pre 上的 data-language，所以不需要
+     * shiki transformer，也不用新增依赖。样式见 base.css 的 .code-block 段。
+     */
+    function enhanceCodeBlocks() {
+      const copyIcon =
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path></svg>';
+      const checkIcon =
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"></path></svg>';
 
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
-  );
-
-  /** Image lightbox — click to expand, wheel to zoom, click/esc to close */
-  let lightboxReady = false;
-  function initLightbox() {
-    const article = document.getElementById("article");
-    if (!article || lightboxReady) return;
-    lightboxReady = true;
-    article.addEventListener("click", e => {
-      const img = e.target.closest("img");
-      if (!img) return;
-
-      const overlay = document.createElement("div");
-      overlay.className = "lightbox-overlay";
-      const clone = img.cloneNode(true);
-      clone.style.cursor = "grab";
-      clone.style.transition = "transform 0.1s ease-out";
-      const closeBtn = document.createElement("span");
-      closeBtn.className = "lightbox-close";
-      closeBtn.textContent = "×";
-      overlay.appendChild(closeBtn);
-      overlay.appendChild(clone);
-      document.body.appendChild(overlay);
-      document.body.style.overflow = "hidden";
-
-      let scale = 1;
-      const MIN = 0.5,
-        MAX = 6,
-        STEP = 0.15;
-
-      function applyZoom() {
-        clone.style.transform = `scale(${scale})`;
-      }
-
-      // Wheel zoom
-      overlay.addEventListener(
-        "wheel",
-        e => {
-          e.preventDefault();
-          scale += e.deltaY < 0 ? STEP : -STEP;
-          scale = Math.min(MAX, Math.max(MIN, scale));
-          applyZoom();
-        },
-        { passive: false }
+      const codeBlocks = Array.from(
+        document.querySelectorAll("pre.astro-code")
       );
 
-      // Double-click reset
-      overlay.addEventListener("dblclick", e => {
-        if (e.target === overlay || e.target === closeBtn) return;
-        scale = 1;
-        applyZoom();
-      });
+      for (const codeBlock of codeBlocks) {
+        // 视图切换后脚本会重跑，处理过的代码块直接跳过
+        if (codeBlock.parentElement?.classList.contains("code-block")) continue;
 
-      const close = () => {
-        overlay.remove();
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", escHandler);
-      };
-      overlay.addEventListener("click", e => {
-        if (e.target === overlay || e.target.closest(".lightbox-close"))
-          close();
-      });
-      document.addEventListener("keydown", escHandler);
-      function escHandler(e) {
-        if (e.key === "Escape") close();
+        const language = (codeBlock.dataset.language ?? "").trim();
+
+        const container = document.createElement("div");
+        container.className = "code-block";
+
+        const header = document.createElement("div");
+        header.className = "code-block-header";
+
+        const label = document.createElement("span");
+        label.className = "code-block-lang";
+        label.textContent = language === "plaintext" ? "text" : language;
+
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "code-block-copy";
+        copyButton.setAttribute("aria-label", "复制代码");
+        copyButton.innerHTML = copyIcon + "<span>复制</span>";
+
+        header.append(label, copyButton);
+        codeBlock.parentNode?.insertBefore(container, codeBlock);
+        container.append(header, codeBlock);
+
+        copyButton.addEventListener("click", async () => {
+          const code = codeBlock.querySelector("code");
+          try {
+            await navigator.clipboard.writeText(code?.innerText ?? "");
+          } catch {
+            return;
+          }
+
+          copyButton.innerHTML = checkIcon + "<span>已复制</span>";
+          copyButton.classList.add("is-copied");
+          setTimeout(() => {
+            copyButton.innerHTML = copyIcon + "<span>复制</span>";
+            copyButton.classList.remove("is-copied");
+          }, 1500);
+        });
       }
-    });
-  }
-  initLightbox();
-  document.addEventListener("astro:after-swap", () => {
-    lightboxReady = false;
+    }
+
+    /**
+     * 文章里可嵌入的块：标签页（Tabs）与剧透（Spoiler）。
+     * 写法与样式见 README「文章里可嵌入的块」和 base.css。
+     * Steps 与 Collapse 分别用样式和原生 <details> 实现，不需要脚本。
+     */
+    function initContentBlocks() {
+      for (const group of document.querySelectorAll("[data-tabs]")) {
+        // 视图切换后脚本会重跑，处理过的不再重复生成标签栏
+        if (group.dataset.ready === "true") continue;
+
+        const panels = Array.from(
+          group.querySelectorAll(":scope > [data-tab]")
+        );
+        if (panels.length < 2) continue;
+        group.dataset.ready = "true";
+
+        const list = document.createElement("div");
+        list.className = "tabs-tablist";
+        list.setAttribute("role", "tablist");
+
+        panels.forEach((panel, index) => {
+          panel.setAttribute("role", "tabpanel");
+          panel.hidden = index !== 0;
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "tabs-tab";
+          button.setAttribute("role", "tab");
+          button.setAttribute("aria-selected", String(index === 0));
+          button.textContent = panel.dataset.tab ?? "";
+          button.addEventListener("click", () => {
+            panels.forEach((item, i) => {
+              item.hidden = i !== index;
+              list.children[i].setAttribute(
+                "aria-selected",
+                String(i === index)
+              );
+            });
+          });
+          list.append(button);
+        });
+
+        group.prepend(list);
+      }
+
+      for (const spoiler of document.querySelectorAll(".spoiler")) {
+        if (spoiler.dataset.bound === "true") continue;
+        spoiler.dataset.bound = "true";
+        spoiler.setAttribute("tabindex", "0");
+        const toggle = () => spoiler.classList.toggle("is-revealed");
+        spoiler.addEventListener("click", toggle);
+        spoiler.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggle();
+          }
+        });
+      }
+    }
+
+    /** Image lightbox — click to expand, wheel to zoom, click/esc to close */
+    function initLightbox() {
+      const article = document.getElementById("article");
+      // 视图切换会换一篇文章元素，所以「绑过了」的标记打在元素上，
+      // 不能像以前那样用全局变量（重跑时标志位和元素都换了）
+      if (!article || article.dataset.lightbox === "true") return;
+      article.dataset.lightbox = "true";
+      article.addEventListener("click", e => {
+        const img = e.target.closest("img");
+        if (!img) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox-overlay";
+        const clone = img.cloneNode(true);
+        clone.style.cursor = "grab";
+        clone.style.transition = "transform 0.1s ease-out";
+        const closeBtn = document.createElement("span");
+        closeBtn.className = "lightbox-close";
+        closeBtn.textContent = "×";
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(clone);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
+
+        let scale = 1;
+        const MIN = 0.5,
+          MAX = 6,
+          STEP = 0.15;
+
+        function applyZoom() {
+          clone.style.transform = `scale(${scale})`;
+        }
+
+        // Wheel zoom
+        overlay.addEventListener(
+          "wheel",
+          e => {
+            e.preventDefault();
+            scale += e.deltaY < 0 ? STEP : -STEP;
+            scale = Math.min(MAX, Math.max(MIN, scale));
+            applyZoom();
+          },
+          { passive: false }
+        );
+
+        // Double-click reset
+        overlay.addEventListener("dblclick", e => {
+          if (e.target === overlay || e.target === closeBtn) return;
+          scale = 1;
+          applyZoom();
+        });
+
+        const close = () => {
+          overlay.remove();
+          document.body.style.overflow = "";
+          document.removeEventListener("keydown", escHandler);
+        };
+        overlay.addEventListener("click", e => {
+          if (e.target === overlay || e.target.closest(".lightbox-close"))
+            close();
+        });
+        document.addEventListener("keydown", escHandler);
+        function escHandler(e) {
+          if (e.key === "Escape") close();
+        }
+      });
+    }
+
+    /**
+     * Render Mermaid diagrams.
+     *
+     * 主题要跟着站点走：以前固定用 default（浅色）主题，暗色模式下图表还是浅色节点，
+     * 像深色文章里贴了张白纸。data-theme 由 toggle-theme.js 写入，首帧可能还没写，
+     * 取不到时回落到系统偏好 —— 判断口径与 toggle-theme.js 一致。
+     */
+    let mermaidModule;
+
+    const prefersTheme = () => {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "dark" || attr === "light") return attr;
+      return matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    };
+
+    async function renderMermaid() {
+      const diagrams = [...document.querySelectorAll(".mermaid")];
+      if (!diagrams.length) return;
+
+      const theme = prefersTheme();
+      // mermaid 会把容器内容换成 SVG，重绘前得留住原始定义
+      for (const el of diagrams)
+        if (!el.dataset.mermaidSource) el.dataset.mermaidSource = el.innerHTML;
+      const pending = diagrams.filter(el => el.dataset.mermaidTheme !== theme);
+      if (!pending.length) return;
+
+      mermaidModule ||=
+        import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+      const { default: mermaid } = await mermaidModule;
+      const isDark = theme === "dark";
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? "dark" : "default",
+        darkMode: isDark,
+      });
+
+      for (const el of pending) {
+        if (el.dataset.processed) {
+          el.removeAttribute("data-processed");
+          el.innerHTML = el.dataset.mermaidSource || "";
+        }
+      }
+
+      try {
+        await mermaid.run({ nodes: pending });
+        for (const el of pending) el.dataset.mermaidTheme = theme;
+      } catch (err) {
+        console.warn("Mermaid 图表渲染失败", err);
+      }
+    }
+
+    // 渲染队列放在 window 上：脚本重跑后会有新实例，旧实例的监听还在，
+    // 两条路径都可能触发重画，串成一条队列才不会打架
+    function queueRenderMermaid() {
+      state.mermaidQueue = (state.mermaidQueue || Promise.resolve())
+        .then(renderMermaid)
+        .catch(err => console.warn("Mermaid 图表渲染失败", err));
+    }
+
+    // 每次（重）跑都在当前 DOM 上初始化一遍，每个函数都是可重复执行的
+    createProgressBar();
+    updateScrollProgress();
+    addHeadingLinks();
+    enhanceCodeBlocks();
+    initContentBlocks();
     initLightbox();
-  });
+    queueRenderMermaid();
 
-  /** Render Mermaid diagrams */
-  async function renderMermaid() {
-    const mermaidDivs = document.querySelectorAll(".mermaid");
-    if (!mermaidDivs.length) return;
+    // document 级监听只注册一次：脚本每次重跑都注册的话，导航几次就叠几层
+    if (!state.listenersReady) {
+      state.listenersReady = true;
 
-    const { default: mermaid } =
-      await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
-    mermaid.initialize({ startOnLoad: false, theme: "default" });
-    await mermaid.run({ nodes: [...mermaidDivs] });
-  }
-  renderMermaid();
-  document.addEventListener("astro:after-swap", renderMermaid);
+      document.addEventListener("astro:after-swap", () => {
+        // 回到页首（Astro 的视图切换不会自动滚到顶）
+        window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+        initContentBlocks();
+        initLightbox();
+        queueRenderMermaid();
+      });
+
+      new MutationObserver(queueRenderMermaid).observe(
+        document.documentElement,
+        {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        }
+      );
+    }
+  })();
 </script>

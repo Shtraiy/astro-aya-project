@@ -668,6 +668,16 @@ html[data-theme="dark"] .chip--category:hover {
   }
 }
 
+/* ===== Mermaid 图表 =====
+   mermaid 生成的节点文字是 foreignObject 里的 HTML（<p> / <span>），正文的
+   prose 规则会接着命中它们 —— 其中 prose-p 带 !important，暗色模式下把节点文字
+   刷成近白色，落在 mermaid 自己的浅色节点上直接看不见。
+   这里只在图表内部把颜色交还给 mermaid 注入的样式，正文其余部分不受影响。 */
+.mermaid foreignObject,
+.mermaid foreignObject * {
+  color: inherit !important;
+}
+
 /* ===== Blog Post Image Styles ===== */
 .prose img {
   max-width: 100%;
