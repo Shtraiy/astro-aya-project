@@ -1,8 +1,10 @@
 import type { CollectionEntry } from "astro:content";
-import postFilter from "./postFilter";
+import postFilter from "./postVisibility";
+import normalizePostDatetimes from "./normalizePostDatetimes";
 
 const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
   return posts
+    .map(normalizePostDatetimes)
     .filter(postFilter)
     .sort(
       (a, b) =>

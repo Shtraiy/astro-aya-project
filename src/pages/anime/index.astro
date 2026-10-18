@@ -5,6 +5,7 @@ import StatsStrip from "@components/StatsStrip.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
+import { SITE_TIME_ZONE } from "@utils/siteDate";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -104,6 +105,7 @@ const formatDate = (iso: string) =>
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: SITE_TIME_ZONE,
   });
 
 /** 均分统一显示一位小数（Bangumi 自己也是 7.0 这种写法） */

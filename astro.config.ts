@@ -18,6 +18,7 @@ import {
 import { SITE } from "./src/config";
 import { RETIRED_TAG_NAMES } from "./src/data/retiredTags";
 import rehypeLazyImages from "./src/plugins/rehype-lazy-images.mjs";
+import remarkDemoteH1 from "./src/plugins/remark-demote-h1.mjs";
 
 /** 只做跳转、没有内容的页面：sitemap 不该收录 */
 const REDIRECT_PAGES = ["/archives/", "/categories/", "/music/", "/search/"];
@@ -56,6 +57,7 @@ export default defineConfig({
     // 插件列表也随之从 markdown.remarkPlugins 移到 unified() 的参数里。
     processor: unified({
       remarkPlugins: [
+        remarkDemoteH1,
         remarkToc,
         remarkAlert,
         [

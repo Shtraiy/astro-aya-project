@@ -45,7 +45,7 @@ const mailHref =
         </LinkButton>
       </div>
 
-      <section class="not-found-categories">
+      <div class="not-found-categories">
         <h2 class="not-found-section-title">或者按栏目逛逛</h2>
         <ul>
           {
@@ -59,7 +59,7 @@ const mailHref =
             ))
           }
         </ul>
-      </section>
+      </div>
 
       <p class="not-found-report">
         确定这是坏链？<a data-error-report href={mailHref}>告诉我一声</a
@@ -108,22 +108,22 @@ const mailHref =
     @apply mt-7 flex flex-wrap gap-3;
   }
   /* 主次分明：主按钮实心强调色，次按钮描边 */
-  .action {
+  .not-found-actions :global(.action) {
     @apply rounded-xl px-4 py-2 text-sm font-medium transition-colors;
     border: 1px solid transparent;
   }
-  .action-primary {
+  .not-found-actions :global(.action-primary) {
     color: rgb(var(--palette-fill));
     background-color: rgb(var(--palette-accent));
   }
-  .action-primary:hover {
+  .not-found-actions :global(.action-primary):hover {
     opacity: 0.88;
   }
-  .action-secondary {
+  .not-found-actions :global(.action-secondary) {
     border-color: rgb(var(--palette-border));
     color: rgb(var(--palette-text));
   }
-  .action-secondary:hover {
+  .not-found-actions :global(.action-secondary):hover {
     color: rgb(var(--palette-accent));
     border-color: color-mix(
       in srgb,

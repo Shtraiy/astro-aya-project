@@ -1,5 +1,6 @@
 import { LOCALE, SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
+import { SITE_TIME_ZONE } from "@utils/siteDate";
 
 interface DatetimesProps {
   pubDatetime: string | Date;
@@ -73,11 +74,13 @@ const FormattedDatetime = ({
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: SITE_TIME_ZONE,
   });
 
   const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: SITE_TIME_ZONE,
   });
 
   return (

@@ -4,7 +4,7 @@ category: 番剧游戏
 tags: 
   - 休闲
   - 下棋
-pubDatetime: 2021-07-12 18:15:03
+pubDatetime: "2021-07-12T18:15:03+08:00"
 description: "本文记述了研究KataGo围棋AI并配合Sabaki进行对弈的过程，附使用配置方法。"
 ---
 # 最近无聊到下棋

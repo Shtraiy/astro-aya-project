@@ -4,7 +4,7 @@ category: 技术
 tags: 
   - 网页
 description: "本文记录了将博客从Hexo框架迁移到Astro框架的过程。"
-pubDatetime: 2024-11-28 19:47:01
+pubDatetime: "2024-11-28T19:47:01+08:00"
 ---
 
 # Hexo是一个很好的博客框架

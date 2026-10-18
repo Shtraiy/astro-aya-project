@@ -7,7 +7,7 @@ import LinkButton from "@components/LinkButton.astro";
 import Card from "@components/Card";
 import BlogStats from "@components/BlogStats.astro";
 import Section from "@components/Section.astro";
-import getSortedPosts from "@utils/getSortedPosts";
+import getSortedPosts from "@utils/getVisibleSortedPosts";
 import { SITE } from "@config";
 
 const posts = await getCollection("blog");

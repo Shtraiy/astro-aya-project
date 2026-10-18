@@ -5,10 +5,15 @@ import type { APIRoute } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { generateOgImageForPost } from "@utils/generateOgImages";
 import { slugifyStr } from "@utils/slugify";
+import postFilter from "@utils/postVisibility";
+import normalizePostDatetimes from "@utils/normalizePostDatetimes";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog").then(p =>
-    p.filter(({ data }) => !data.draft && !data.ogImage)
+    p
+      .map(normalizePostDatetimes)
+      .filter(postFilter)
+      .filter(({ data }) => !data.ogImage)
   );
 
   return posts.map(post => ({

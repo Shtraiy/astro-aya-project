@@ -5,7 +5,7 @@ tags:
   - 折腾
   - AI
   - NAS
-pubDatetime: 2026-09-17 20:46:24
+pubDatetime: "2026-09-17T20:46:24+08:00"
 description: "把NAS上的一整套astrbot环境交给跑着Deepseek V4.1 flash打理"
 featured: false
 draft: false

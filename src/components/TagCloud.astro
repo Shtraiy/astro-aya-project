@@ -3,7 +3,8 @@ import { getCollection } from "astro:content";
 import Icon from "@components/Icon.astro";
 import { slugifyStr } from "@utils/slugify";
 import { tagHue } from "@utils/tagHue";
-import postFilter from "@utils/postFilter";
+import postFilter from "@utils/postVisibility";
+import normalizePostDatetimes from "@utils/normalizePostDatetimes";
 
 /**
  * 标签云：给列表页当右侧栏用。
@@ -23,7 +24,7 @@ const { currentTag, limit = 0, variant = "rail" } = Astro.props;
 const posts = await getCollection("blog");
 
 const counts = new Map<string, { tagName: string; count: number }>();
-for (const post of posts.filter(postFilter)) {
+for (const post of posts.map(normalizePostDatetimes).filter(postFilter)) {
   for (const tagName of post.data.tags) {
     const tag = slugifyStr(tagName);
     const entry = counts.get(tag);

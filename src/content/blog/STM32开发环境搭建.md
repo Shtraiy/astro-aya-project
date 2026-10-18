@@ -4,7 +4,7 @@ category: 技术
 tags: 
   - 单片机
   - STM32
-pubDatetime: 2025-1-11 8:27:44
+pubDatetime: "2025-01-11T08:27:44+08:00"
 description: "本文记录了基于Keil v5.33搭建STM32标准外设库开发环境的过程。"
 ---
 # STM32单片机的Keil开发环境搭建

@@ -5,6 +5,7 @@ import SectionBlock from "@components/SectionBlock.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { APPLY_RULES, FRIENDS, SITE_INFO } from "@data/links";
+import { SITE_TIME_ZONE } from "@utils/siteDate";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -39,6 +40,7 @@ const shortDate = (iso: string) =>
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: SITE_TIME_ZONE,
   });
 ---
 
@@ -49,7 +51,6 @@ const shortDate = (iso: string) =>
     pageTitle="友情链接"
     pageDesc="本站的朋友们 · 想交换友链可以先看看下面的须知"
     icon="link"
-    wide
     pagefindBody
   >
     <p class="links-note">
@@ -307,6 +308,17 @@ const shortDate = (iso: string) =>
     color: rgb(var(--palette-muted-text));
   }
 
+  @media (max-width: 39.999rem) {
+    .friend-posts a {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.125rem;
+    }
+    .friend-post-meta {
+      white-space: normal;
+    }
+  }
+
   /* ── 友链卡片 ── */
   .friend-grid {
     display: grid;
@@ -315,6 +327,9 @@ const shortDate = (iso: string) =>
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .friend-grid > li {
+    min-width: 0;
   }
   @media (min-width: 40rem) {
     .friend-grid {

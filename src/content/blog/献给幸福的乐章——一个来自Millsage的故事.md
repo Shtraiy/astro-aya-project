@@ -5,7 +5,7 @@ tags:
   - 邦邦
   - millsage
   - OurNotes
-pubDatetime: 2026-09-29 16:00:00
+pubDatetime: "2026-09-29T16:00:00+08:00"
 featured: false
 draft: false
 description: "看完《BanG Dream! Our Notes》里 millsage 全20话乐队剧情之后的感想。聊了聊这个以「死亡」起手的新团，六个人的互补色，凡人与天才的老命题"

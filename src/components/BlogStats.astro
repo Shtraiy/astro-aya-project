@@ -1,9 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import { countWords } from "@utils/getReadingTime";
-import getSortedPosts from "@utils/getSortedPosts";
-import postFilter from "@utils/postFilter";
+import getSortedPosts from "@utils/getVisibleSortedPosts";
+import postFilter from "@utils/postVisibility";
 import StatsStrip from "@components/StatsStrip.astro";
+import { SITE_TIME_ZONE } from "@utils/siteDate";
+import normalizePostDatetimes from "@utils/normalizePostDatetimes";
 
 /**
  * 首页统计卡：在线天数 / 最后更新 / 总字数 / 文章数。
@@ -16,7 +18,9 @@ interface Props {
 
 const { blogStartDate = new Date("2020-11-30") } = Astro.props;
 
-const posts = (await getCollection("blog")).filter(postFilter);
+const posts = (await getCollection("blog"))
+  .map(normalizePostDatetimes)
+  .filter(postFilter);
 const sortedPosts = getSortedPosts(posts);
 
 const daysOnline = Math.max(
@@ -45,6 +49,7 @@ const formatDate = (date: Date) =>
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: SITE_TIME_ZONE,
   });
 
 const stats = [

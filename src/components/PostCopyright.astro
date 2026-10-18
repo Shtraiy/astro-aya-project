@@ -1,5 +1,6 @@
 ---
 import Icon from "@components/Icon.astro";
+import { SITE_TIME_ZONE } from "@utils/siteDate";
 
 /**
  * 文章底部版权卡：标题 / 原文链接 / 作者 / 日期 / 许可协议，
@@ -33,6 +34,7 @@ const publishedAt = pubDatetime.toLocaleDateString("zh-CN", {
   year: "numeric",
   month: "long",
   day: "numeric",
+  timeZone: SITE_TIME_ZONE,
 });
 
 /*

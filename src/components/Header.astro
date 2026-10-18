@@ -191,13 +191,22 @@ const { activeNav } = Astro.props;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     transition:
       max-height 0.35s ease,
-      opacity 0.25s ease;
+      opacity 0.25s ease,
+      visibility 0s linear 0.35s;
   }
   .mobile-menu.open {
     max-height: 24rem;
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      max-height 0.35s ease,
+      opacity 0.25s ease,
+      visibility 0s;
   }
   @media (min-width: 640px) {
     .mobile-menu {
@@ -205,6 +214,8 @@ const { activeNav } = Astro.props;
       max-height: none;
       overflow: visible;
       opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
       width: auto;
       margin: 0;
       gap: 1.25rem;
@@ -238,7 +249,7 @@ const { activeNav } = Astro.props;
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",
-        menuExpanded ? "关闭菜单" : "打开菜单"
+        menuExpanded ? "打开菜单" : "关闭菜单"
       );
       menuItems?.classList.toggle("open");
     });
