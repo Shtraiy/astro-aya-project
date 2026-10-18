@@ -1,8 +1,4 @@
 ---
-/*
-  /music 已经下线（原来的音乐藏馆由 /collection 取代）。
-  这里留一个跳转页，避免旧链接和搜索引擎收录的地址变成 404。
-  静态输出下 Astro 会生成一个带 meta refresh 的极简页面。
-*/
-return Astro.redirect("/collection/", 301);
+/* 音乐收藏暂时下线，保留旧地址的兼容跳转。 */
+return Astro.redirect("/", 301);
 ---

@@ -33,7 +33,7 @@ export default function Card({
   // 标题参与列表 / 详情页之间的视图过渡，name 必须保持一致
   const titleStyle = { viewTransitionName: slugifyStr(title) };
   const titleClass =
-    "mt-1 text-lg font-medium transition-colors duration-200 group-hover/card:text-primary";
+    "mt-1 text-lg font-medium transition-colors duration-200 group-hover/card:text-primary group-focus-within/card:text-primary";
 
   return (
     <li
@@ -56,18 +56,18 @@ export default function Card({
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            className="stroke-muted-foreground group-hover/card:stroke-primary h-4 w-4 shrink-0 transition-colors"
+            className="stroke-muted-foreground group-hover/card:stroke-primary group-focus-within/card:stroke-primary h-4 w-4 shrink-0 transition-colors"
           >
             <line
               x1="5"
               y1="12"
               x2="19"
               y2="12"
-              className="translate-x-4 scale-x-0 transition-transform duration-300 ease-in-out group-hover/card:translate-x-1 group-hover/card:scale-x-100"
+              className="translate-x-4 scale-x-0 transition-transform duration-300 ease-in-out group-hover/card:translate-x-1 group-hover/card:scale-x-100 group-focus-within/card:translate-x-1 group-focus-within/card:scale-x-100"
             />
             <polyline
               points="12 5 19 12 12 19"
-              className="translate-x-0 transition-transform duration-300 ease-in-out group-hover/card:translate-x-1"
+              className="translate-x-0 transition-transform duration-300 ease-in-out group-hover/card:translate-x-1 group-focus-within/card:translate-x-1"
             />
           </svg>
         </div>

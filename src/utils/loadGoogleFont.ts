@@ -13,6 +13,17 @@ export type FontOptions = {
 
 // Local cache so fonts are downloaded only once
 const CACHE_DIR = path.join(process.cwd(), "node_modules", ".cache", "fonts");
+const LOCAL_IBM_FONT_DIR = path.join(
+  process.cwd(),
+  "node_modules",
+  "@fontsource",
+  "ibm-plex-mono",
+  "files"
+);
+const LOCAL_IBM_FONT_FILES = new Map<number, string>([
+  [400, path.join(LOCAL_IBM_FONT_DIR, "ibm-plex-mono-latin-400-normal.woff")],
+  [700, path.join(LOCAL_IBM_FONT_DIR, "ibm-plex-mono-latin-700-normal.woff")],
+]);
 
 // satori 底层用 opentype.js 解析字体，只认 ttf / otf（woff1 还得先解包）。
 // Google Fonts 对现代 UA 会返回 woff2，所以这里伪装旧 UA 尽量拿到 ttf/woff1；
@@ -91,6 +102,13 @@ function toArrayBuffer(buf: Buffer): ArrayBuffer {
 /** woff / woff2 -> sfnt(ttf/otf)；已经是 sfnt 就原样返回 */
 async function toSfnt(buf: Buffer): Promise<Buffer> {
   return detectFormat(buf) === "sfnt" ? buf : await convert(buf, "sfnt");
+}
+
+/** IBM Plex Mono 已经随站点依赖安装，直接读取本地文件，避免 OG 构建依赖 CDN。 */
+async function loadLocalFont(weight: FontWeight): Promise<ArrayBuffer> {
+  const file = LOCAL_IBM_FONT_FILES.get(Number(weight));
+  if (!file) throw new Error(`Missing local IBM Plex Mono weight ${weight}`);
+  return toArrayBuffer(await toSfnt(fs.readFileSync(file)));
 }
 
 async function fetchWithTimeout(
@@ -237,7 +255,10 @@ async function loadGoogleFonts(text: string): Promise<FontOptions[]> {
   for (const { name, font, weight, style, onlyIfCjk } of FONTS) {
     if (onlyIfCjk && !hasCjk) continue;
     try {
-      const data = await loadGoogleFont(font, text);
+      const data =
+        name === "IBM Plex Mono"
+          ? await loadLocalFont(weight)
+          : await loadGoogleFont(font, text);
       fonts.push({ name, data, weight, style });
     } catch (e) {
       console.warn(`[OG] Skipping font "${name}" wght=${weight}: ${e}`);

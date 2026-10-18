@@ -7,7 +7,7 @@
     "sign": "",
     "url": "https://bgm.tv/user/1023295"
   },
-  "syncedAt": "2026-09-27T15:31:55.137Z",
+  "syncedAt": "2026-10-18T03:57:16.040Z",
   "items": [
     {
       "id": 495291,
@@ -20,8 +20,8 @@
       "epStatus": 10,
       "volumeStatus": 0,
       "rate": null,
-      "score": 6.6,
-      "rank": 4292,
+      "score": 6.5,
+      "rank": 5517,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-27T23:17:42+08:00"
@@ -38,7 +38,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7.2,
-      "rank": 1875,
+      "rank": 1703,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-27T23:17:27+08:00"
@@ -55,7 +55,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7,
-      "rank": 2642,
+      "rank": 2595,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-27T23:16:34+08:00"
@@ -72,7 +72,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7.5,
-      "rank": 1035,
+      "rank": 854,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-27T23:16:22+08:00"
@@ -89,7 +89,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7,
-      "rank": 2729,
+      "rank": 2804,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-27T23:15:58+08:00"
@@ -106,7 +106,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 8,
-      "rank": 220,
+      "rank": 219,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-19T11:15:44+08:00"
@@ -123,7 +123,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7.3,
-      "rank": 1320,
+      "rank": 1328,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:35:41+08:00"
@@ -140,7 +140,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 6.1,
-      "rank": 7267,
+      "rank": 7344,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:35:18+08:00"
@@ -156,8 +156,8 @@
       "epStatus": 4,
       "volumeStatus": 0,
       "rate": null,
-      "score": 4.8,
-      "rank": 10054,
+      "score": 4.7,
+      "rank": 10164,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:35:06+08:00"
@@ -174,7 +174,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 6.2,
-      "rank": 6825,
+      "rank": 6923,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:34:37+08:00"
@@ -191,7 +191,7 @@
       "volumeStatus": 0,
       "rate": null,
       "score": 7.6,
-      "rank": 778,
+      "rank": 777,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:34:21+08:00"
@@ -220,15 +220,15 @@
       "nameCN": "FX战士久留美",
       "cover": "/images/bangumi/622288.jpg",
       "date": "2026-10-01",
-      "eps": 0,
-      "epStatus": 0,
+      "eps": 12,
+      "epStatus": 2,
       "volumeStatus": 0,
       "rate": null,
-      "score": 7.4,
-      "rank": null,
+      "score": 6.9,
+      "rank": 2978,
       "comment": null,
       "tags": [],
-      "updatedAt": "2026-09-27T23:31:07+08:00"
+      "updatedAt": "2026-10-18T11:21:00+08:00"
     },
     {
       "id": 325767,
@@ -238,18 +238,35 @@
       "cover": "/images/bangumi/325767.jpg",
       "date": "2026-07-07",
       "eps": 12,
-      "epStatus": 4,
+      "epStatus": 8,
       "volumeStatus": 0,
       "rate": null,
       "score": 7.4,
-      "rank": 1155,
+      "rank": 1103,
       "comment": null,
       "tags": [],
-      "updatedAt": "2026-09-23T22:54:26+08:00"
+      "updatedAt": "2026-10-18T11:21:36+08:00"
+    },
+    {
+      "id": 568244,
+      "status": 3,
+      "name": "薬屋のひとりごと 第3期",
+      "nameCN": "药屋少女的呢喃 第三季",
+      "cover": "/images/bangumi/568244.jpg",
+      "date": "2026-10-02",
+      "eps": 12,
+      "epStatus": 2,
+      "volumeStatus": 0,
+      "rate": null,
+      "score": 7.3,
+      "rank": 1406,
+      "comment": null,
+      "tags": [],
+      "updatedAt": "2026-10-18T11:22:06+08:00"
     },
     {
       "id": 571784,
-      "status": 3,
+      "status": 2,
       "name": "スーパーの裏でヤニ吸うふたり",
       "nameCN": "在超市后门吸烟的二人",
       "cover": "/images/bangumi/571784.jpg",
@@ -258,11 +275,11 @@
       "epStatus": 9,
       "volumeStatus": 0,
       "rate": null,
-      "score": 6.9,
-      "rank": 3033,
+      "score": 6.8,
+      "rank": 3476,
       "comment": null,
       "tags": [],
-      "updatedAt": "2026-09-15T09:33:34+08:00"
+      "updatedAt": "2026-10-18T11:21:21+08:00"
     },
     {
       "id": 541285,
@@ -275,8 +292,8 @@
       "epStatus": 5,
       "volumeStatus": 0,
       "rate": null,
-      "score": 6.9,
-      "rank": 2954,
+      "score": 6.6,
+      "rank": 4690,
       "comment": null,
       "tags": [],
       "updatedAt": "2026-09-15T09:32:48+08:00"

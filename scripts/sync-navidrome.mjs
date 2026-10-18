@@ -266,20 +266,11 @@ async function main() {
           : null,
       tracks: tracksByAlbum.get(album.id) ?? [],
     })),
-    /*
-      站内播放用的凭据。token 是 md5(密码 + salt)，而 Subsonic 接受任意 salt，
-      所以它等同于一份长期有效的凭据，会随本文件进仓库、进前端。
-      想避免这一点，就用反代在服务端注入凭据，前端只请求 /nd/rest/stream（README 有说明）。
-    */
-    stream: { user: userName, token, salt, client: "silentcage-blog" },
   };
 
   await writeFile(OUT_JSON, `${JSON.stringify(data, null, 2)}\n`);
   console.log(`✓ 写入 src/data/navidrome.json`);
-  console.warn(
-    "⚠ 该文件含 stream token（等同于读取整个音乐库的凭据）。" +
-      "站点公开的话，建议改用反代在服务端注入（README「站内播放」一节）。"
-  );
+  console.log("✓ 仅写入曲库快照，不把播放凭据写进前端数据");
   console.log("→ 下一步：npm run build");
 
   if (interactive) await offerToSaveEnv();

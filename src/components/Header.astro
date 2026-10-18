@@ -4,8 +4,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?:
-    "posts" | "tags" | "links" | "about" | "search" | "collection" | "anime";
+  activeNav?: "posts" | "tags" | "links" | "about" | "search" | "anime";
 }
 
 const { activeNav } = Astro.props;
@@ -64,14 +63,6 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/tags/" class={activeNav === "tags" ? "active" : ""}>
               标签
-            </a>
-          </li>
-          <li>
-            <a
-              href="/collection/"
-              class={activeNav === "collection" ? "active" : ""}
-            >
-              收藏
             </a>
           </li>
           <li>
@@ -247,7 +238,7 @@ const { activeNav } = Astro.props;
       menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
       menuBtn.setAttribute(
         "aria-label",
-        menuExpanded ? "Open Menu" : "Close Menu"
+        menuExpanded ? "关闭菜单" : "打开菜单"
       );
       menuItems?.classList.toggle("open");
     });

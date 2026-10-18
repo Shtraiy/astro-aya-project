@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://wynio.pw",
   author: "Resalia",
   profile: "https://wynio.pw/about",
-  desc: "无言的鸟笼 —— 记录随笔、技术笔记，以及音乐与番剧收藏。",
+  desc: "无言的鸟笼 —— 记录随笔、技术笔记，以及番剧收藏。",
   title: "SilentCage",
   ogImage: "og.png",
   lightAndDarkMode: true,

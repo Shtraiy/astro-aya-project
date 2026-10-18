@@ -12,7 +12,7 @@ import path from "node:path";
  * 追番：Bangumi 收藏快照。
  *
  * 数据由 `npm run sync:bangumi` 生成（src/data/bangumi.json），页面本身是纯静态的，
- * 运行时不请求 Bangumi，前端也不带任何凭据 —— 和音乐收藏页一个路子。
+ * 运行时不请求 Bangumi，前端也不带任何凭据。
  */
 interface Item {
   id: number;
@@ -156,7 +156,7 @@ const metaLine = (item: Item) => {
 <Layout title={`追番 | ${SITE.title}`}>
   <Header activeNav="anime" />
 
-  <Main pageTitle="追番" pageDesc={pageDesc} icon="tv" pagefindBody>
+  <Main pageTitle="追番" pageDesc={pageDesc} icon="tv" wide pagefindBody>
     {
       items.length === 0 ? (
         <section class="anime-empty">

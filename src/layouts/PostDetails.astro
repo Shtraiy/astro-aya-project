@@ -585,16 +585,26 @@ const nextPost =
 
         const overlay = document.createElement("div");
         overlay.className = "lightbox-overlay";
+        overlay.setAttribute("role", "dialog");
+        overlay.setAttribute("aria-modal", "true");
+        overlay.setAttribute("aria-label", "图片预览");
         const clone = img.cloneNode(true);
         clone.style.cursor = "grab";
         clone.style.transition = "transform 0.1s ease-out";
-        const closeBtn = document.createElement("span");
+        const previousFocus =
+          document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
+        const closeBtn = document.createElement("button");
+        closeBtn.type = "button";
         closeBtn.className = "lightbox-close";
+        closeBtn.setAttribute("aria-label", "关闭图片预览");
         closeBtn.textContent = "×";
         overlay.appendChild(closeBtn);
         overlay.appendChild(clone);
         document.body.appendChild(overlay);
         document.body.style.overflow = "hidden";
+        closeBtn.focus({ preventScroll: true });
 
         let scale = 1;
         const MIN = 0.5,
@@ -628,6 +638,7 @@ const nextPost =
           overlay.remove();
           document.body.style.overflow = "";
           document.removeEventListener("keydown", escHandler);
+          previousFocus?.focus({ preventScroll: true });
         };
         overlay.addEventListener("click", e => {
           if (e.target === overlay || e.target.closest(".lightbox-close"))

@@ -5216,11 +5216,5 @@
         }
       ]
     }
-  ],
-  "stream": {
-    "user": "guest",
-    "token": "fb39fa801731bd984c725e1f146628d1",
-    "salt": "wqsgy7stgn",
-    "client": "silentcage-blog"
-  }
+  ]
 }

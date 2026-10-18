@@ -1,6 +1,6 @@
 # SilentCage
 
-个人博客：技术笔记 + 随笔 + 游记 + 音乐 / 番剧 / 游戏收藏 + 友链圈。
+个人博客：技术笔记 + 随笔 + 游记 + 番剧 / 游戏收藏 + 友链圈。
 基于 [AstroPaper](https://github.com/satnaing/astro-paper) 改编，Astro 7 + Tailwind 4，
 **纯静态输出**；文章按**分类（栏目）**与**标签（关键词）**两套索引组织。
 
@@ -19,21 +19,19 @@
   都从 `content/blog/*.md` 的 frontmatter 生成，页面在 `pages/categories`、`pages/tags`，
   分工见下文「分类与标签怎么分工」。
 - **站内搜索**：Pagefind。构建后扫一遍 HTML 生成静态索引（同源，不依赖任何第三方），
-  只有标了 `data-pagefind-body` 的页面进索引：32 篇文章正文 + 关于 / 友链 / 收藏 / 追番。
+  只有标了 `data-pagefind-body` 的页面进索引：32 篇文章正文 + 关于 / 友链 / 追番。
   导航、栏目页、标签云这些"每页都差不多"的部分不进索引，否则搜一个词会被侧栏命中几十次。
-- **站内音乐播放器**：挂在 `Layout` 上常驻（`transition:persist`），站内翻页不断播；
-  浮空面板 + 右下角迷你条两态，队列跨专辑、支持 Media Session 与现场恢复，
-  外观与交互细节见[播放器精修说明](docs/superpowers/specs/2026-09-17-player-ui-polish-design.md)。
+- **音乐收藏页与常驻播放器暂时下线**：相关实现文件与同步脚本保留，等后续确定
+  反代方案后再恢复，当前构建不会发布曲库端点，也不会在前端暴露播放凭据。
 - **字体自托管**：中文用霞鹜文楷屏幕版（按 unicode-range 切成 97 片，浏览器只下当前页面
   真正用到的那几片），西文与代码用 Fontsource 的 Inter / IBM Plex Mono。字体随构建产物
   发布，运行时不请求 Google Fonts / jsdelivr。
-- **三条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
-  Navidrome → 音乐封面墙 / Bangumi → 追番 / 友链 RSS → 友链圈。
+- **两条数据管道**（构建时跑，详见 [docs/data-sync.md](docs/data-sync.md)）：
+  Bangumi → 追番 / 友链 RSS → 友链圈。Navidrome 同步脚本保留但暂不接入页面。
 - **正文图在仓库里**：`public/images/<分组>/`，统一 WebP（GIF 保留动画），构建时自动带上
   `width`/`height`。图片不再走自建图床，站点对家里的 NAS 没有运行时依赖。
-- **运行时只有两处外联**：播放器的音频直连 Navidrome，前端因此带一份只读凭据
-  （⚠️ 见 [docs/data-sync.md](docs/data-sync.md) 的「播放凭据」）；曲库本身走同源的
-  `/collection/data.json`（构建期生成的静态 JSON），点播放时才取。
+- **当前运行时不连接 Navidrome**：音乐页面与播放器暂时停用，站点不会再发布曲库 JSON
+  或播放凭据。
 - **部署**：Vercel。`vercel.json` 把构建命令设成 `npm run build:vercel`，
   会在构建前自动跑同步脚本。Node `>= 22.12`（`.nvmrc` 指定 24）。
 
@@ -51,7 +49,7 @@ src/
 │   ├── links.json         友链数据源（页面和同步脚本共用）
 │   ├── links.ts           给 links.json 补类型，外加本站信息/申请须知
 │   ├── categories.ts      文章分类（栏目）：名称 / 图标 / 色相 / 顺序，兼作 schema 枚举
-│   ├── navidrome.json     音乐快照（sync:navidrome 生成，⚠️ 含播放凭据）
+│   ├── navidrome.json     音乐快照（sync:navidrome 生成，暂供后续恢复使用）
 │   ├── bangumi.json       追番快照（sync:bangumi 生成）
 │   └── friends-posts.json 友链圈快照（sync:friend-circle 生成）
 ├── layouts/
@@ -64,8 +62,6 @@ src/
 │   ├── Section.astro      「左标签 · 右内容」版式（首页分区）
 │   ├── SectionBlock.astro 「图标块 + 标题 + 说明」分区（关于页/友链页）
 │   ├── StatsStrip.astro   分段统计条（首页/收藏/追番共用，容器查询自适应列数）
-│   ├── MusicPlayer.astro  站内音乐播放器：浮空面板 + 迷你条，挂在 Layout 上常驻，
-│   │                      站内跳转不断播（曲库走 /collection/data.json）
 │   ├── TOC.astro          文章右侧粘性目录：按「节」上色（每节色相 +60°），
 │   │                      左侧色条同时充当阅读进度
 │   ├── Comments.astro     评论区（Waline，默认关闭，未配置时整块不渲染）
@@ -74,12 +70,11 @@ src/
 │   ├── PagefindSearch.astro 搜索页本体（Pagefind UI + 中文文案 + 主题变量）
 │   └── Header / Footer / Icon / TagCloud / Pagination / CategoryList
 ├── pages/                 路由：posts（按年份分组）/ categories（分类）/ tags /
-│                          search / about / links / collection（音乐）/ anime
+│                          search / about / links / anime
 ├── styles/base.css        全局样式 + 主题令牌，改样式基本都在这里
 │                          music-player.css 是播放器的样式（曲目行由脚本生成，必须全局）
 ├── utils/                 纯函数与浏览器侧小工具：阅读时间、slug、标签色、chip 筛选、
-│                          collectionFilter（收藏页的药丸 + 搜索 + 排序）、
-│                          musicLibrary（曲库加载缓存，播放器与搜索共用）、
+│                          collectionFilter / musicLibrary（音乐功能暂时停用，后续恢复时使用）、
 │                          GitHub 活跃度、OG 图模板
 └── plugins/               markdown 管线插件（图片懒加载等）
 scripts/                   同步脚本；lib/http.mjs 是共用 HTTP 层（支持代理）；
@@ -124,9 +119,8 @@ docs/                      详细文档：content / data-sync / deploy
 2. **根字号 18px**：页面里的 `rem` 按 18px 算，媒体查询里的 `rem` 按 16px 算
    —— 涉及宽度阈值的写 `px`，别用 `rem` 猜。
 3. **Astro scoped style**：脚本用 `innerHTML` 生成的元素拿不到 scope 类，
-   这类样式得用 `<style is:global>` 或 `:global()` 选中 —— 收藏页「命中曲名」那个胶囊
-   （`pages/collection/index.astro` 的 `.album-hits :global(.album-hit)`）就是后者：
-   漏了 `:global()` 的话样式一条都不生效，字会以正文字号糊在卡片下面。
+   这类样式得用 `<style is:global>` 或 `:global()` 选中；音乐收藏页暂时下线后，
+   恢复相关交互时仍需留意这一点。
 4. **内联脚本**要加 `data-astro-rerun` 才会在站内软跳转后重跑；
    重复绑定用 `dataset.bound` 守卫（`utils/chipFilter.ts` 已内置这套）。
 5. **`.md` 里可以写 HTML**，但标签后要**空一行**内容才按 markdown 解析；
@@ -163,7 +157,7 @@ docs/                      详细文档：content / data-sync / deploy
 | `npm run preview`            | 预览构建结果                                      |
 | `npm run search:index`       | 构建后生成搜索索引（`build` 里已经带这一步）      |
 | `npm run search:index:dev`   | 把索引也写进 `public/`，让 dev 下能搜（先 build） |
-| `npm run sync:navidrome`     | 同步音乐收藏 → `src/data/navidrome.json` + 封面   |
+| `npm run sync:navidrome`     | 同步音乐快照（页面暂时停用，供后续恢复）          |
 | `npm run sync:bangumi`       | 同步追番 → `src/data/bangumi.json` + 封面         |
 | `npm run sync:friend-circle` | 抓友链 RSS → `src/data/friends-posts.json`        |
 | `npm run lint` / `format`    | ESLint / Prettier（`format:check` 是 CI 用的）    |
@@ -174,36 +168,35 @@ docs/                      详细文档：content / data-sync / deploy
 
 ## 改哪里
 
-| 想改的东西                  | 改哪里                                                                                    |
-| :-------------------------- | :---------------------------------------------------------------------------------------- |
-| 站点名 / 描述 / 社交链接    | `src/config.ts`                                                                           |
-| 导航菜单                    | `src/components/Header.astro`                                                             |
-| 页头（图标块 + 标题）       | `src/layouts/Main.astro`                                                                  |
-| 主题色 / 深浅色板           | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                             |
-| 文章分类（六个栏目）        | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                                  |
-| 404 错误页                  | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                                    |
-| 站内搜索                    | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body`              |
-| 音乐播放器（面板 / 迷你条） | `src/components/MusicPlayer.astro`（结构 + 行为）；外观全在 `src/styles/music-player.css` |
-| 文章右侧目录                | `src/components/TOC.astro`（配色常数 `HUE_START` / `HUE_STEP` 在文件顶部）                |
-| 字体（自托管）              | `src/layouts/Layout.astro` 顶部的一组 import；字体栈在 `styles/base.css` 的 `@theme`      |
-| 首页 hero 与分区            | `src/pages/index.astro` + `Section.astro`                                                 |
-| 关于页内容                  | `src/data/profile.ts`                                                                     |
-| 友链                        | `src/data/links.json`                                                                     |
-| 文章排版 / 正文块语法       | [docs/content.md](docs/content.md)                                                        |
-| 数据同步与环境变量          | [docs/data-sync.md](docs/data-sync.md)                                                    |
-| 部署 / 评论服务端           | [docs/deploy.md](docs/deploy.md)                                                          |
+| 想改的东西               | 改哪里                                                                               |
+| :----------------------- | :----------------------------------------------------------------------------------- |
+| 站点名 / 描述 / 社交链接 | `src/config.ts`                                                                      |
+| 导航菜单                 | `src/components/Header.astro`                                                        |
+| 页头（图标块 + 标题）    | `src/layouts/Main.astro`                                                             |
+| 主题色 / 深浅色板        | `src/styles/base.css` 的 `:root` 与 `html[data-theme="dark"]`                        |
+| 文章分类（六个栏目）     | `src/data/categories.ts` 的 `CATEGORIES`，加分类先改这里                             |
+| 404 错误页               | `src/pages/404.astro`（栏目 chips / 报告坏链都在这里）                               |
+| 站内搜索                 | `src/components/PagefindSearch.astro`；要进索引的页面标 `data-pagefind-body`         |
+| 文章右侧目录             | `src/components/TOC.astro`（配色常数 `HUE_START` / `HUE_STEP` 在文件顶部）           |
+| 字体（自托管）           | `src/layouts/Layout.astro` 顶部的一组 import；字体栈在 `styles/base.css` 的 `@theme` |
+| 首页 hero 与分区         | `src/pages/index.astro` + `Section.astro`                                            |
+| 关于页内容               | `src/data/profile.ts`                                                                |
+| 友链                     | `src/data/links.json`                                                                |
+| 文章排版 / 正文块语法    | [docs/content.md](docs/content.md)                                                   |
+| 数据同步与环境变量       | [docs/data-sync.md](docs/data-sync.md)                                               |
+| 部署 / 评论服务端        | [docs/deploy.md](docs/deploy.md)                                                     |
 
 ## 有意保留的遗留项
 
-- `src/pages/music/index.astro`：301 跳到 `/collection/`，让旧链接不 404。
+- `src/pages/music/index.astro`：音乐功能下线后，旧链接 301 跳回首页。
 - `src/pages/archives/index.astro`：301 跳到 `/posts/`（时间轴已并入文章页第一页），
   `vercel.json` 里另有同名 301 规则，静态托管下优先走那条。
 - OG 图生成仍在构建时去 Google Fonts 取 IBM Plex Mono + Noto Sans SC（带镜像回退与
   `node_modules/.cache/fonts` 缓存）：satori 需要单个完整字体文件，而中文 webfont 是按
   unicode-range 分片的，要彻底离线得先做字体子集化。运行时不受影响。
 - `src/components/Comments.astro` + `deploy/waline/`：评论默认关闭，随时可开。
-- `scripts/sync-navidrome.mjs` 会往快照里写一份只读凭据（前端播放需要），
-  风险与替代方案见 [docs/data-sync.md](docs/data-sync.md)。
+- `scripts/sync-navidrome.mjs` 目前只写入曲库元数据，不再把播放凭据写进快照；
+  以后恢复播放器时应通过 Lucky 反代注入凭据。
 
 ## License
 

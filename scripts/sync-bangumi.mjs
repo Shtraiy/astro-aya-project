@@ -238,17 +238,16 @@ async function main() {
   stdout.write("重新构建站点后即可在 /anime/ 看到。\n");
 }
 
-main().catch(error => {
+main().catch(async error => {
   stdout.write(`\n✗ ${error.message}\n`);
-  return hasExistingSnapshot().then(existing => {
-    if (existing) {
-      // 构建机偶尔抽风、或者 bgm 临时 502，都不该让整站部署失败
-      stdout.write(
-        "  ↳ 已有 src/data/bangumi.json，本次沿用上一次的快照继续构建。\n"
-      );
-      return;
-    }
-    stdout.write("  ↳ 本地没有可用的快照，这次同步没有产出数据。\n");
-    process.exitCode = 1;
-  });
+  const existing = await hasExistingSnapshot();
+  if (existing) {
+    // 构建机偶尔抽风、或者 bgm 临时 502，都不该让整站部署失败
+    stdout.write(
+      "  ↳ 已有 src/data/bangumi.json，本次沿用上一次的快照继续构建。\n"
+    );
+    return;
+  }
+  stdout.write("  ↳ 本地没有可用的快照，这次同步没有产出数据。\n");
+  process.exitCode = 1;
 });

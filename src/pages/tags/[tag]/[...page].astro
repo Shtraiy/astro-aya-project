@@ -15,7 +15,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   /*
     与栏目同义的旧标签：文章已经不打这些标签了（见 README「分类与标签怎么分工」），
     页面不会再由文章生成。旧链接和搜索引擎里的地址还在，这里补跳转页跳到对应栏目，
-    避免 404 —— 和 /music → /collection 的处理方式一致。
+    避免 404；/music 旧地址则统一跳回首页。
 
     注意：这段必须写在 getStaticPaths 内部。它会连同函数一起被抽出到独立模块里执行，
     引用不到 frontmatter 里的模块级常量。

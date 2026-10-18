@@ -9,33 +9,26 @@
 
 ---
 
-## 1. Navidrome 音乐收藏 → `/collection`
+## 1. Navidrome 音乐快照（页面暂时停用）
 
 ```bash
 npm run sync:navidrome        # 交互式问凭据；或先写好 .env 静默执行
 ```
 
-| 产出                       | 说明                                                   |
-| :------------------------- | :----------------------------------------------------- |
-| `src/data/navidrome.json`  | 专辑列表 + 每张专辑的曲目（含每首歌 id，站内播放要用） |
-| `public/images/navidrome/` | 封面，文件名是专辑 id                                  |
-| `/collection/data.json`    | 构建期把上面那份快照发布成静态 JSON，播放器按需取一份  |
+| 产出                       | 说明                                            |
+| :------------------------- | :---------------------------------------------- |
+| `src/data/navidrome.json`  | 专辑列表 + 每张专辑的曲目（供后续恢复页面使用） |
+| `public/images/navidrome/` | 封面，文件名是专辑 id                           |
 
 环境变量：`NAVIDROME_URL` / `NAVIDROME_USER` / `NAVIDROME_PASS`（建议单独建只读账号）；
 可选 `NAVIDROME_LIMIT`（默认 500）、`NAVIDROME_COVER_SIZE`（默认 300）、
 `NAVIDROME_SKIP_COVERS=1`、`NAVIDROME_PROXY`。
 
-### 播放凭据（⚠️ 重要的设计取舍）
+同步脚本仍可用于更新本地快照，但只写入专辑、曲目和封面元数据，
+不会把 `u / t / s` 播放凭据写入 JSON。音乐收藏页和常驻播放器当前不会参与构建。
 
-站内播放器直连 Navidrome 的 Subsonic `/rest/stream`（支持 Range，所以能拖进度），
-不经过本站服务器。这个接口要认证，所以同步脚本会把一份 `u / t / s` 凭据写进
-`navidrome.json`；这份凭据随后有两条出口 —— 收藏页构建期读它、播放器运行时从
-`/collection/data.json` 取它 —— **两条都在构建产物里，谁都能拿到**
-（`t = md5(密码 + salt)`，而 Subsonic 接受任意 salt，所以等同于长期有效凭据）。
-
-已有的缓解手段：Navidrome 里用**非管理员只读账号**、定期改密码后重新同步
-（旧 token 立刻失效）。真要收紧就得在服务端注入凭据（反代），
-播放地址只在 `src/components/MusicPlayer.astro` 的 `streamUrl()` 里拼一次，换方案是改一处。
+以后恢复播放器时，播放请求应通过 NAS 上的 Lucky 反向代理，
+由代理在服务端注入 Navidrome 凭据，避免把长期 token 发布到前端。
 
 ---
 

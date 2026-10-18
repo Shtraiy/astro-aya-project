@@ -19,17 +19,7 @@ const { headings, minItems = 2 } = Astro.props;
 const toc = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 const show = toc.length >= minItems;
 
-/*
-  目录配色：色相按「节」分配，每开一节色相往前推 60°（彩虹顺序循环）。
-
-  哪一级算"一节"：目录里最浅的那一级。文章用 ## 分节时，一个二级标题开一节，
-  它下面的三级标题沿用同一色相、只是去饱和压淡；有的文章通篇只有 ###（没有二级），
-  那每个三级标题自己就是一节，颜色照样一节一换，不会整列一个色。
-
-  于是侧栏里两件事都能一眼看出来：文章分成几节（颜色在换），
-  哪几项属于同一节（同色相 + 缩进）。
-  起手取主题蓝的色相（202），往下正好落在蓝 → 紫 → 品红 → 橙 → 黄绿 → 青这一圈上。
-*/
+/* 目录配色：按文章分节轮换色相；层级仍由缩进和明度区分。 */
 const HUE_START = 202;
 const HUE_STEP = 60;
 
@@ -50,7 +40,7 @@ const tocItems = toc.map(heading => {
 
 {
   show && (
-    <toc-nav class="toc">
+    <nav class="toc" aria-label="文章目录">
       <p class="toc-title">目录</p>
       <ul class="toc-list">
         {tocItems.map(heading => (
@@ -71,7 +61,7 @@ const tocItems = toc.map(heading => {
           </li>
         ))}
       </ul>
-    </toc-nav>
+    </nav>
   )
 }
 
@@ -101,12 +91,6 @@ const tocItems = toc.map(heading => {
     display: flex;
     align-items: stretch;
     gap: 0.5rem;
-    /*
-      每个目录项带一个色相（由组件按"节"写进 --toc-hue）：
-      节标题是本节主色，子项是同色相去饱和的次级色；
-      左侧色条与阅读进度用同一个色相。
-      颜色都用 hsl() 直接写，不用 color-mix —— 免得旧浏览器把整条声明判成无效值。
-    */
     --toc-color: hsl(var(--toc-hue) 62% 40%);
     --toc-color-sub: hsl(var(--toc-hue) 34% 46%);
     --toc-rail: hsl(var(--toc-hue) 55% 55% / 0.55);
@@ -249,7 +233,10 @@ const tocItems = toc.map(heading => {
       });
 
       items.forEach((item, index) => {
-        item.link.classList.toggle("is-active", index === activeIndex);
+        const active = index === activeIndex;
+        item.link.classList.toggle("is-active", active);
+        if (active) item.link.setAttribute("aria-current", "location");
+        else item.link.removeAttribute("aria-current");
       });
     };
 
@@ -285,7 +272,7 @@ const tocItems = toc.map(heading => {
   }
 
   function initTocs() {
-    document.querySelectorAll<HTMLElement>("toc-nav").forEach(setupToc);
+    document.querySelectorAll<HTMLElement>("nav.toc").forEach(setupToc);
   }
 
   initTocs();

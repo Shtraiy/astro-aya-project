@@ -12,6 +12,8 @@ interface Props {
   iconHue?: number;
   /** 这页的内容要不要进站内搜索索引（Pagefind 只收标了 data-pagefind-body 的页面） */
   pagefindBody?: boolean;
+  /** 浏览型页面使用更宽的画布（收藏、追番、友链等） */
+  wide?: boolean;
 }
 
 const {
@@ -20,10 +22,15 @@ const {
   icon,
   iconHue,
   pagefindBody = false,
+  wide = false,
 } = Astro.props;
 ---
 
-<main id="main-content" data-pagefind-body={pagefindBody ? "" : undefined}>
+<main
+  id="main-content"
+  class:list={[wide && "is-wide"]}
+  data-pagefind-body={pagefindBody ? "" : undefined}
+>
   <div class="page-head">
     {
       icon && (
@@ -48,8 +55,20 @@ const {
   #main-content {
     /* pt-12：以前这段留白是面包屑撑起来的，面包屑去掉后标题贴着页头分隔线了 */
     @apply mx-auto w-full max-w-3xl px-4 pt-12 pb-4;
+    --content-width: 48rem;
+    max-width: var(--content-width);
     /* 让页面内的组件能按「实际可用宽度」自适应（例如统计条排几列） */
     container-type: inline-size;
+  }
+  /* 浏览型页面需要容纳网格和多列信息，正文页仍保持窄栏阅读宽度。 */
+  #main-content.is-wide {
+    --content-width: 72rem;
+  }
+  /* base.css 对所有 section 的默认限宽不应再次压缩宽版页面的内容。 */
+  #main-content.is-wide > section {
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
   }
   /* 页面头：左侧圆角图标块 + 标题 + 说明 */
   .page-head {
