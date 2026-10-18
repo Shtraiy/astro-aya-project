@@ -56,3 +56,11 @@ test("new-tab links explicitly isolate the opener", () => {
     /target="_blank"[\s\S]*?rel="noopener noreferrer"/
   );
 });
+
+test("anime page keeps the stats strip inside the default content column", () => {
+  const source = read("src/pages/anime/index.astro");
+  assert.doesNotMatch(
+    source,
+    /<Main pageTitle="追番" pageDesc=\{pageDesc\} icon="tv" wide pagefindBody>/
+  );
+});
