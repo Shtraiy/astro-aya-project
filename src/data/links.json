@@ -8,11 +8,11 @@
       "feed": "https://jimmy0w0.me/rss.xml"
     },
     {
-      "name": "Subilan's Blog",
-      "intro": "Satellite yourself",
-      "link": "https://subilan.win",
-      "avatar": "https://subilan.win/avatar.jpg",
-      "theme": { "background": "#009688", "text": "rgb(235, 171, 87)" }
+      "name": "Haskell Works",
+      "intro": "stay awake and wonder if there's a dog",
+      "link": "https://hskl.me",
+      "avatar": "https://haskellworks.oss-cn-beijing.aliyuncs.com/public/avatar.jpg",
+      "theme": { "background": "#FFFFFF", "text": "#000000" }
     },
     {
       "name": "Seamain",
