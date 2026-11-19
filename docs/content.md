@@ -154,11 +154,10 @@ sudo pacman -S foo
 整句变成纯文本、图直接不显示（踩过一次）。需要空格就写 `%20`（`images:optimize` 会
 自动编码；`npm run check:assets` 也会拦住这种写法）。
 
-## 关于页 / 首页的个人信息
+## 关于页
 
-数据全在 `src/data/profile.ts`：`PROFILE`（头像、网名、副标题、一句话、坐标、
-自我介绍段落、首页用的 `shortIntro`）、`EDUCATION`（含校徽图片与品牌色）、
-`FAVORITES`、`ABOUT_SITE`。页面结构在 `src/pages/about.astro`，通常不用动。
+在 `src/data/profile.ts` 中维护名片和自我介绍（`PROFILE`）、喜欢的作品（`FAVORITES`）和博客资料（`ABOUT_SITE`）。
+页面结构在 `src/pages/about.astro`。
 
 名片上的社交标签来自 `src/config.ts` 的 `SOCIALS`，加一条链接就多一枚标签。
 
