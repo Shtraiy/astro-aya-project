@@ -173,14 +173,8 @@ const githubActivity = await fetchGitHubActivity(githubUser);
     display: flex;
     align-items: center;
     gap: 1.125rem;
-    padding: 1.125rem 1.25rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 1rem;
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted)) 40%,
-      transparent
-    );
+    max-width: none;
+    padding-inline: 0;
   }
   @media (max-width: 30rem) {
     .profile {
@@ -193,8 +187,7 @@ const githubActivity = await fetchGitHubActivity(githubUser);
     width: 5.5rem;
     height: 5.5rem;
     margin: 0;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 1rem;
+    border: 1px solid var(--pixel-line);
     object-fit: cover;
     /* 立绘构图是人像靠上，裁成方块时往上偏一点才不切掉脸 */
     object-position: 50% 12%;
@@ -212,7 +205,8 @@ const githubActivity = await fetchGitHubActivity(githubUser);
   }
   .profile-alias {
     margin: 0.125rem 0 0;
-    font-size: 0.8125rem;
+    font-family: var(--pixel-font);
+    font-size: 0.9375rem;
     color: rgb(var(--palette-muted-text));
   }
   .profile-tagline {
@@ -231,8 +225,17 @@ const githubActivity = await fetchGitHubActivity(githubUser);
     display: inline-flex;
     align-items: center;
     gap: 0.3125rem;
+    padding-inline: 0;
+    border-color: transparent;
+    background-color: transparent;
     font-size: 0.75rem;
     text-decoration: none;
+  }
+  a.profile-chip:hover {
+    background-color: transparent;
+    border-color: transparent;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .profile-chip svg {
     width: 0.875rem;
@@ -254,45 +257,34 @@ const githubActivity = await fetchGitHubActivity(githubUser);
 
   /* ── ③ 教育经历 ── */
   .edu-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.875rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
+  .edu-list > li + li {
+    border-top: 1px solid var(--pixel-line);
+  }
   .edu-card {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    padding: 1rem 1.125rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 0.875rem;
+    gap: 1rem;
+    padding-block: 0.75rem;
     color: inherit;
     text-decoration: none;
-    transition:
-      border-color 0.2s ease,
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
   }
-  .edu-card:hover {
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted-text)) 55%,
-      transparent
-    );
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgb(0 0 0 / 0.08);
+  .edu-card:hover .edu-school {
+    color: rgb(var(--palette-accent));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .edu-badge {
     display: grid;
     flex: none;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     place-items: center;
     overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.14);
-    border-radius: 0.75rem;
+    border-radius: 50%;
     /* 校徽是白版图形，垫一块学校自己的品牌色 */
     background-color: var(--badge-bg, rgb(var(--palette-muted)));
   }
@@ -329,17 +321,7 @@ const githubActivity = await fetchGitHubActivity(githubUser);
     font-size: 0.75rem;
     line-height: 1.4;
     color: rgb(var(--palette-muted-text));
-    opacity: 0.85;
   }
-  /* 夜间给卡片一点底色，边界才看得出来 */
-  :global(html[data-theme="dark"]) .edu-card {
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-card)) 22%,
-      transparent
-    );
-  }
-
   /* ── ④⑤ 两列表 ── */
   .fact-list {
     display: flex;

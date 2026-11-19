@@ -2,6 +2,15 @@
 
 @plugin "@tailwindcss/typography";
 
+/* Fusion Pixel 12px Proportional SC v2026.11.10 的界面用字和数字子集。 */
+@font-face {
+  font-family: "SilentCage UI";
+  src: url("/fonts/silentcage-ui.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 /*
   深色模式：对应原 tailwind.config.cjs 的
   darkMode: ["selector", "[data-theme='dark']"]。
@@ -71,15 +80,57 @@
   @apply hidden;
 }
 
+@utility pixel-button {
+  --pixel-button-ink: rgb(var(--palette-text));
+  --pixel-button-fill: var(--pixel-surface);
+  --pixel-button-line: var(--pixel-line);
+  border: 1px solid var(--pixel-button-line);
+  border-radius: 0;
+  background-color: var(--pixel-button-fill);
+  color: var(--pixel-button-ink);
+  box-shadow: 3px 3px 0 var(--pixel-shadow);
+
+  &:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--pixel-button-fill) 95%,
+      var(--pixel-button-ink)
+    );
+    color: var(--pixel-button-ink);
+  }
+
+  &:active {
+    box-shadow: 1px 1px 0 var(--pixel-shadow);
+    translate: 2px 2px;
+  }
+}
+
+@utility pixel-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+
+  &::before {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    background-color: rgb(var(--palette-accent));
+    box-shadow: 3px 3px 0 var(--pixel-shadow);
+    content: "";
+  }
+}
+
+@utility pixel-ui-text {
+  font-family: "SilentCage UI", "Pixelify Sans", var(--font-display);
+  font-weight: 500;
+  font-synthesis: none;
+}
+
 @utility focus-outline {
-  @apply outline-skin-accent outline-2 outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed;
-  /*
-    Tailwind v4 给 outline-<宽度> 附带了 outline-style: var(--tw-outline-style)，
-    而该变量注册的初始值是 solid，于是这些元素平时就会画出一圈实线轮廓。
-    v3 里 outline-2 只设宽度、样式仍是 initial 的 none，所以这里显式还原：
-    平时不出轮廓，只有键盘 focus-visible 时才出现虚线（见下面的 :focus-visible 规则）。
-  */
-  outline-style: none;
+  &:focus-visible {
+    outline: 2px solid rgb(var(--palette-accent));
+    outline-offset: 3px;
+  }
 }
 
 @layer base {
@@ -88,35 +139,59 @@
     overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-color: rgb(var(--palette-card)) rgb(var(--palette-fill));
+    --pixel-font:
+      "SilentCage UI", "Pixelify Sans", "IBM Plex Mono", "LXGW WenKai Screen",
+      monospace;
+    --content-width: 48rem;
+    --font-title:
+      "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --pixel-line: color-mix(
+      in srgb,
+      rgb(var(--palette-text)) 21%,
+      rgb(var(--palette-fill))
+    );
+    --pixel-surface: color-mix(
+      in srgb,
+      rgb(var(--palette-muted)) 55%,
+      rgb(var(--palette-fill))
+    );
+    --pixel-shadow: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 18%,
+      rgb(var(--palette-fill))
+    );
+    --pixel-selected: color-mix(
+      in srgb,
+      rgb(var(--palette-accent)) 9%,
+      rgb(var(--palette-fill))
+    );
   }
   :root,
   html[data-theme="light"] {
-    --palette-fill: 251, 254, 251;
-    --palette-text: 40, 39, 40;
-    --palette-accent: 0, 108, 172;
-    /* 强调色的色相（与 --palette-accent 对应）。页面头图标块按色相取色，
-       所以浅色/深色的明度、饱和度可以分开调，色相只写一处 */
-    --accent-hue: 202;
-    --palette-card: 230, 230, 230;
-    --palette-card-muted: 205, 205, 205;
-    /* 原来是 236,233,233 —— 和浅色底几乎同色，导致日间模式下 `---` 分隔线
-       和卡片边框都看不清，这里加深一档 */
-    --palette-border: 223, 226, 231;
-    /* 次级文字（日期、阅读时长、目录等元信息），比正文浅一档 */
-    --palette-muted-text: 98, 106, 118;
-    /* 次级表面（卡片 hover、代码块表头等），只比底色深一点点 */
-    --palette-muted: 236, 239, 242;
+    color-scheme: light;
+    --site-width: 62rem;
+    --font-display: "LXGW WenKai Screen", "Songti SC", SimSun, serif;
+    --palette-fill: 247, 248, 252;
+    --palette-text: 45, 52, 68;
+    --palette-accent: 74, 99, 144;
+    --accent-hue: 219;
+    --palette-card: 226, 232, 244;
+    --palette-card-muted: 204, 214, 232;
+    --palette-border: 210, 218, 232;
+    --palette-muted-text: 93, 103, 122;
+    --palette-muted: 231, 235, 244;
   }
   html[data-theme="dark"] {
-    --palette-fill: 33, 39, 55;
-    --palette-text: 234, 237, 243;
-    --palette-accent: 255, 107, 1;
-    --accent-hue: 25;
-    --palette-card: 52, 63, 96;
-    --palette-card-muted: 138, 51, 2;
-    --palette-border: 171, 75, 8;
-    --palette-muted-text: 156, 166, 182;
-    --palette-muted: 44, 52, 72;
+    color-scheme: dark;
+    --palette-fill: 38, 43, 58;
+    --palette-text: 230, 232, 239;
+    --palette-accent: 229, 181, 156;
+    --accent-hue: 21;
+    --palette-card: 59, 65, 85;
+    --palette-card-muted: 77, 79, 96;
+    --palette-border: 74, 80, 101;
+    --palette-muted-text: 172, 181, 200;
+    --palette-muted: 52, 58, 76;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -127,7 +202,7 @@
     display: block;
   }
   body {
-    @apply bg-skin-fill text-skin-base selection:bg-skin-accent/70 selection:text-skin-inverted flex min-h-svh flex-col font-sans leading-relaxed;
+    @apply bg-skin-fill text-skin-base selection:bg-skin-accent selection:text-skin-inverted flex min-h-svh flex-col font-sans leading-relaxed;
   }
   code,
   pre,
@@ -139,10 +214,8 @@
   footer {
     @apply mx-auto max-w-3xl px-4;
   }
-  a {
-    @apply outline-skin-accent outline-2 outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed;
-    /* 同上：v4 下 outline-2 会带出实线轮廓，这里还原 v3 的「仅聚焦时显示」 */
-    outline-style: none;
+  :where(a, button, input, select, textarea, summary) {
+    @apply focus-outline;
   }
   svg {
     @apply fill-skin-base group-hover:fill-skin-accent inline-block;
@@ -382,17 +455,16 @@
   }
 }
 
-/* ===== 药丸标签（标签云 / 收藏页侧栏共用） =====
+/* ===== 标签（标签云 / 收藏页侧栏共用） =====
    放在 @layer 之外，方便组件里直接套用而不用各自复制一份。 */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
   padding: 0.125rem 0.5rem;
-  /* border 令牌在浅色下太淡，药丸会"消失"成纯文字，这里用次级文字色做半透明边 */
   border: 1px solid
     color-mix(in srgb, rgb(var(--palette-muted-text)) 32%, transparent);
-  border-radius: 999px;
+  border-radius: 0;
   background-color: color-mix(
     in srgb,
     rgb(var(--palette-muted-text)) 7%,
@@ -425,42 +497,36 @@
 .chip.is-current {
   color: rgb(var(--palette-accent));
   border-color: color-mix(in srgb, rgb(var(--palette-accent)) 55%, transparent);
-  background-color: color-mix(
-    in srgb,
-    rgb(var(--palette-accent)) 12%,
-    transparent
-  );
+  background-color: var(--pixel-selected);
+  box-shadow: inset 0 -2px 0 rgb(var(--palette-accent));
 }
 .chip-count {
   font-size: 0.6875rem;
-  opacity: 0.6;
 }
 
-/* 标签专用：按标签名取一个稳定色相，做成彩虹药丸；艺术家筛选仍用上面的中性样式 */
+/* 标签专用：按标签名取一个稳定色相；艺术家筛选沿用中性样式。 */
 .chip--tag {
-  border-color: hsl(var(--tag-hue, 220) 58% 78%);
-  background-color: hsl(var(--tag-hue, 220) 72% 95%);
-  color: hsl(var(--tag-hue, 220) 52% 32%);
+  border-color: hsl(var(--tag-hue, 220) 42% 82%);
+  background-color: hsl(var(--tag-hue, 220) 43% 94%);
+  color: hsl(var(--tag-hue, 220) 37% 29%);
 }
 .chip--tag:hover {
-  border-color: hsl(var(--tag-hue, 220) 62% 66%);
-  background-color: hsl(var(--tag-hue, 220) 78% 90%);
-  color: hsl(var(--tag-hue, 220) 60% 26%);
+  border-color: hsl(var(--tag-hue, 220) 42% 71%);
+  background-color: hsl(var(--tag-hue, 220) 48% 89%);
+  color: hsl(var(--tag-hue, 220) 42% 26%);
 }
 html[data-theme="dark"] .chip--tag {
-  border-color: hsl(var(--tag-hue, 220) 40% 34%);
-  background-color: hsl(var(--tag-hue, 220) 45% 18%);
-  color: hsl(var(--tag-hue, 220) 70% 76%);
+  border-color: hsl(var(--tag-hue, 220) 28% 38%);
+  background-color: hsl(var(--tag-hue, 220) 25% 26%);
+  color: hsl(var(--tag-hue, 220) 42% 79%);
 }
 html[data-theme="dark"] .chip--tag:hover {
-  border-color: hsl(var(--tag-hue, 220) 45% 46%);
-  background-color: hsl(var(--tag-hue, 220) 45% 24%);
-  color: hsl(var(--tag-hue, 220) 75% 84%);
+  border-color: hsl(var(--tag-hue, 220) 36% 51%);
+  background-color: hsl(var(--tag-hue, 220) 34% 30%);
+  color: hsl(var(--tag-hue, 220) 50% 85%);
 }
 
-/* 栏目 chip：中性底色 + 左侧一枚栏目色圆点。
-   和彩色的标签药丸刻意拉开观感 —— 栏目是"一篇只属一个"的归属，
-   标签是"一篇可以有多个"的关键词，长得一样会让人分不清。 */
+/* 栏目通过左侧的色点表示，文章标签使用彩色底。 */
 .chip--category {
   gap: 0.375rem;
   border-color: color-mix(
@@ -475,7 +541,6 @@ html[data-theme="dark"] .chip--tag:hover {
   content: "";
   width: 0.4rem;
   height: 0.4rem;
-  border-radius: 999px;
   background-color: hsl(var(--cat-hue, 220) 62% 41%);
 }
 .chip--category:hover {
@@ -488,6 +553,16 @@ html[data-theme="dark"] .chip--category::before {
 html[data-theme="dark"] .chip--category:hover {
   border-color: hsl(var(--cat-hue, 220) 45% 46%);
   color: hsl(var(--cat-hue, 220) 70% 80%);
+}
+
+.post-labels a.chip:is(.chip--category, .chip--tag) {
+  border-width: 0;
+  background-color: transparent;
+}
+
+.post-labels .chip:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 /* ===== 文章元信息行（日期 / 阅读时长 / 标签） =====
@@ -546,14 +621,9 @@ html[data-theme="dark"] .chip--category:hover {
 .code-block {
   position: relative;
   margin-block: 1.25rem;
-  border: 1px solid rgb(var(--palette-border));
-  border-radius: 0.5rem;
   overflow: hidden;
-  background-color: color-mix(
-    in srgb,
-    rgb(var(--palette-card)) 35%,
-    transparent
-  );
+  border-inline-start: 2px solid var(--pixel-line);
+  background-color: var(--pixel-surface);
 }
 /* 外框交给 .code-block，pre 自己不再画边框和圆角 */
 .code-block > pre.astro-code,
@@ -568,7 +638,7 @@ html[data-theme="dark"] .chip--category:hover {
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.25rem 0.375rem 0.25rem 0.875rem;
-  border-bottom: 1px solid rgb(var(--palette-border));
+  border-bottom: 1px solid var(--pixel-line);
   font-size: 0.75rem;
   line-height: 1.5;
 }
@@ -584,7 +654,6 @@ html[data-theme="dark"] .chip--category:hover {
   align-items: center;
   gap: 0.3125rem;
   padding: 0.1875rem 0.5rem;
-  border-radius: 0.375rem;
   color: rgb(var(--palette-muted-text));
   font-size: 0.75rem;
   line-height: 1.4;
@@ -637,7 +706,6 @@ html[data-theme="dark"] .chip--category:hover {
   width: auto;
   height: auto;
   object-fit: contain;
-  border-radius: 8px;
   margin: 1.25rem auto;
   display: block;
   cursor: zoom-in;
@@ -647,27 +715,15 @@ html[data-theme="dark"] .chip--category:hover {
     rgb(var(--palette-muted)) 70%,
     transparent
   );
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  box-shadow: 3px 3px 0 var(--pixel-shadow);
 }
 .prose img:hover {
-  transform: scale(1.015);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-}
-/* Dark mode shadow */
-html[data-theme="dark"] .prose img {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-}
-html[data-theme="dark"] .prose img:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 3px 3px 0 rgb(var(--palette-accent));
 }
 /* Small screens: slightly tighter max-height */
 @media (max-width: 640px) {
   .prose img {
     max-height: 55vh;
-    border-radius: 6px;
     margin: 1rem auto;
   }
 }
@@ -692,8 +748,7 @@ html[data-theme="dark"] .prose img:hover {
   max-width: 92vw;
   max-height: 92vh;
   object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 4px 4px 0 var(--pixel-shadow);
   animation: lightbox-zoom-in 0.25s ease;
 }
 .lightbox-overlay .lightbox-close {

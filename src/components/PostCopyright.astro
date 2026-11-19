@@ -65,8 +65,6 @@ const shares = [
 ---
 
 <aside class="post-copyright" data-copyright data-url={url}>
-  <Icon name="copyright" size={76} class="post-copyright-mark" />
-
   <div class="post-copyright-head">
     <span class="post-copyright-title">{title}</span>
     <span class="post-copyright-url">{displayUrl}</span>
@@ -187,28 +185,15 @@ const shares = [
   @reference "../styles/base.css";
 
   .post-copyright {
-    position: relative;
     margin-top: 2.5rem;
-    overflow: hidden;
-    padding: 1rem 1.125rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 1rem;
-  }
-  /* 右上角一枚放大的版权符号水印 */
-  .post-copyright-mark {
-    position: absolute;
-    top: 0.75rem;
-    inset-inline-end: 1rem;
-    opacity: 0.08;
-    pointer-events: none;
+    padding-block: 1rem;
+    border-top: 1px solid var(--pixel-line);
   }
   .post-copyright-head {
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
     margin-bottom: 0.875rem;
-    /* 给水印留出位置，标题太长也不会压上去 */
-    padding-inline-end: 4rem;
   }
   .post-copyright-title {
     font-size: 0.9375rem;
@@ -260,35 +245,20 @@ const shares = [
   .post-copyright-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.5rem 1rem;
   }
   .copyright-action {
+    @apply focus-outline text-primary underline-offset-4 hover:underline;
     position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.3125rem 0.75rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 999px;
-    background: none;
+    min-height: 2rem;
     font-family: inherit;
     font-size: 0.8125rem;
     line-height: 1.4;
-    color: rgb(var(--palette-muted-text));
     text-decoration: none;
     cursor: pointer;
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease,
-      background-color 0.2s ease;
-  }
-  .copyright-action:hover {
-    color: rgb(var(--palette-accent));
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 45%,
-      transparent
-    );
   }
   .copyright-action svg {
     width: 1rem;
@@ -298,15 +268,14 @@ const shares = [
   /* 「已复制」小标：复制成功后从按钮里浮出来 */
   .copyright-flag {
     position: absolute;
-    inset-inline-start: 50%;
+    inset-inline-start: 0;
     bottom: calc(100% + 0.375rem);
     padding: 0.125rem 0.4375rem;
-    border-radius: 0.375rem;
     font-size: 0.6875rem;
     color: rgb(var(--palette-fill));
     background-color: rgb(var(--palette-accent));
     opacity: 0;
-    transform: translateX(-50%) translateY(0.25rem);
+    transform: translateY(0.25rem);
     transition:
       opacity 0.2s ease,
       transform 0.2s ease;
@@ -314,7 +283,7 @@ const shares = [
   }
   .copyright-action.is-copied .copyright-flag {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 
   .post-qrcode {
@@ -337,7 +306,6 @@ const shares = [
     width: 9.25rem;
     min-height: 9.25rem;
     padding: 0.5rem;
-    border-radius: 0.75rem;
     background-color: #fff;
     overflow-wrap: anywhere;
     font-size: 0.6875rem;

@@ -24,6 +24,8 @@ import "@pagefind/default-ui/css/ui.css";
 </div>
 
 <style is:global>
+  @reference "../styles/base.css";
+
   /*
     Pagefind 的类名不带 Astro 作用域，主题变量只能写在全局样式里。
     这里把它的调色板接到站点令牌上，深浅色自动跟随。
@@ -33,24 +35,21 @@ import "@pagefind/default-ui/css/ui.css";
     --pagefind-ui-primary: rgb(var(--palette-accent));
     --pagefind-ui-text: rgb(var(--palette-text));
     --pagefind-ui-background: rgb(var(--palette-fill));
-    --pagefind-ui-border: rgb(var(--palette-border));
+    --pagefind-ui-border: var(--pixel-line);
     --pagefind-ui-tag: rgb(var(--palette-muted));
     --pagefind-ui-border-width: 1px;
-    --pagefind-ui-border-radius: 0.75rem;
+    --pagefind-ui-border-radius: 0;
     --pagefind-ui-font: var(--font-sans);
   }
   /* 输入框：跟站点输入框一致的描边与内边距 */
   .search-shell .pagefind-ui__search-input {
-    border-color: rgb(var(--palette-border));
-    background-color: rgb(var(--palette-fill));
+    @apply focus-outline;
+    border-color: var(--pixel-line);
+    background-color: var(--pixel-surface);
     color: rgb(var(--palette-text));
   }
-  .search-shell .pagefind-ui__search-input:focus {
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 55%,
-      transparent
-    );
+  .search-shell .pagefind-ui__search-input:focus-visible {
+    border-color: rgb(var(--palette-accent));
   }
   /* 结果标题用强调色，正文摘要次级处理 */
   .search-shell .pagefind-ui__result-link {
@@ -92,7 +91,6 @@ import "@pagefind/default-ui/css/ui.css";
     padding: 0.5rem 0.75rem 0.625rem;
     border-top: 0;
     border-bottom: 0;
-    border-radius: 0.75rem;
     transition: background-color 0.15s ease;
   }
   .search-shell .pagefind-ui .pagefind-ui__results .pagefind-ui__result:hover {
@@ -197,11 +195,10 @@ import "@pagefind/default-ui/css/ui.css";
     font-weight: 600;
     color: rgb(var(--palette-text));
   }
-  /* 「加载更多结果」跟着站内的胶囊按钮走 */
   .search-shell .pagefind-ui .pagefind-ui__button {
+    @apply pixel-button;
     height: 2.5rem;
     margin-top: 1rem;
-    border-radius: 999px;
     font-size: 0.875rem;
     font-weight: 500;
   }
@@ -223,7 +220,6 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search-note code {
     padding: 0.1rem 0.35rem;
-    border-radius: 0.375rem;
     background-color: color-mix(
       in srgb,
       rgb(var(--palette-muted)) 75%,

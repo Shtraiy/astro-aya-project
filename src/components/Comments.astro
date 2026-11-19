@@ -127,10 +127,10 @@ const CDN = "https://cdn.jsdelivr.net/npm/@waline/client@3.8.0/dist";
 
   .comments {
     @apply mt-12 border-t pt-8;
-    border-color: rgb(var(--palette-border));
+    border-color: var(--pixel-line);
   }
   .comments-title {
-    @apply mb-5 text-lg font-semibold tracking-wider;
+    @apply pixel-heading mb-5 text-lg font-semibold;
     color: rgb(var(--palette-text));
   }
   .comments-fallback {
@@ -156,7 +156,7 @@ const CDN = "https://cdn.jsdelivr.net/npm/@waline/client@3.8.0/dist";
     --waline-bg-color: rgb(var(--palette-fill));
     --waline-bg-color-light: rgb(var(--palette-muted));
     --waline-bg-color-hover: rgb(var(--palette-muted));
-    --waline-border-color: rgb(var(--palette-border));
+    --waline-border-color: var(--pixel-line);
     --waline-disable-bg-color: rgb(var(--palette-muted));
     --waline-disable-color: rgb(var(--palette-muted-text));
     --waline-info-bg-color: rgb(var(--palette-muted));
@@ -165,7 +165,7 @@ const CDN = "https://cdn.jsdelivr.net/npm/@waline/client@3.8.0/dist";
     --waline-badge-font-size: 0.75em;
     --waline-avatar-size: 2.75rem;
     --waline-border: 1px solid var(--waline-border-color);
-    --waline-avatar-radius: 50%;
+    --waline-avatar-radius: 0;
     --waline-box-shadow: none;
   }
 </style>

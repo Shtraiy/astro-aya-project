@@ -11,11 +11,7 @@ import { sortedCategories } from "@data/categories";
 import type { CollectionEntry } from "astro:content";
 
 /**
- * 文章页版式：按年份分组的卡片流。
- *
- * 以前是「卡片 / 时间轴」两个视图来回切，但两者内容高度重叠，读者每次还得先选一次；
- * 现在合成一个：年份当分组标题（延续原来那枚巨大的年份水印），组内直接排卡片，
- * 页头的年份条负责"按年速查"这件时间轴唯一独有的好事。
+ * 文章页按年份分组，页头提供年份跳转。
  *
  * 栏目也并到这一页：页头一条栏目筛选条就地过滤（无 JS 时它是指向栏目页的链接），
  * 于是"文章 / 分类"不再是两个并列入口，而是同一页上的两个维度（栏目 + 年份）。
@@ -56,57 +52,55 @@ const years = Object.entries(
     icon="book"
   >
     <div class="posts-filter" data-posts-filter>
-      <nav class="category-strip" aria-label="按栏目筛选">
-        <a
-          class="category-chip is-active"
-          href="/posts/"
-          data-category-filter=""
-          aria-current="true"
-        >
-          <span>全部</span>
-          <span class="filter-count">{posts.length}</span>
-        </a>
-        {
-          /* 只列有文章的栏目：配置里留了空栏目时，不该在筛选条上摆一个点了没结果的死芯片 */
-          categories
-            .filter(category => (categoryCounts.get(category.name) ?? 0) > 0)
-            .map(category => (
-              <a
-                class="category-chip"
-                href={`/categories/${category.name}/`}
-                data-category-filter={category.name}
-                style={`--cat-hue:${category.hue}`}
-              >
-                <span>{category.name}</span>
-                <span class="filter-count">
-                  {categoryCounts.get(category.name) ?? 0}
+      <div class="archive-controls">
+        <nav class="category-strip" aria-label="按栏目筛选">
+          <a
+            class="category-chip is-active"
+            href="/posts/"
+            data-category-filter=""
+            aria-current="true"
+          >
+            <span>全部</span>
+            <span class="filter-count">{posts.length}</span>
+          </a>
+          {
+            /* 只列有文章的栏目：配置里留了空栏目时，不该在筛选条上摆一个点了没结果的死芯片 */
+            categories
+              .filter(category => (categoryCounts.get(category.name) ?? 0) > 0)
+              .map(category => (
+                <a
+                  class="category-chip"
+                  href={`/categories/${category.name}/`}
+                  data-category-filter={category.name}
+                  style={`--cat-hue:${category.hue}`}
+                >
+                  <span>{category.name}</span>
+                  <span class="filter-count">
+                    {categoryCounts.get(category.name) ?? 0}
+                  </span>
+                </a>
+              ))
+          }
+        </nav>
+
+        <nav class="year-strip" aria-label="按年份跳转">
+          {
+            years.map(({ year, count }) => (
+              <a class="year-chip" href={`#year-${year}`} data-year-chip={year}>
+                <span class="year-chip-year">{year}</span>
+                <span class="year-chip-count" data-year-chip-count>
+                  {count}
                 </span>
               </a>
             ))
-        }
-      </nav>
-
-      <nav class="year-strip" aria-label="按年份跳转">
-        {
-          years.map(({ year, count }) => (
-            <a class="year-chip" href={`#year-${year}`} data-year-chip={year}>
-              <span class="year-chip-year">{year}</span>
-              <span class="year-chip-count" data-year-chip-count>
-                {count}
-              </span>
-            </a>
-          ))
-        }
-      </nav>
+          }
+        </nav>
+      </div>
 
       {
         years.map(({ year, count, posts: yearPosts }) => (
           <div class="year-group" id={`year-${year}`} data-year-group={year}>
             <h2 class="year-head">
-              {/* 装饰用的巨大年份水印，压在标题下面 */}
-              <span class="year-ghost" aria-hidden="true">
-                {year}
-              </span>
               <span class="year-label">{year}</span>
               <span class="year-count" data-year-count>
                 {count} 篇
@@ -118,6 +112,7 @@ const years = Object.entries(
                   href={`/posts/${post.id}/`}
                   frontmatter={post.data}
                   readingTime={getReadingTime(post.body ?? "")}
+                  secHeading={false}
                 />
               ))}
             </ul>
@@ -133,32 +128,31 @@ const years = Object.entries(
 <style>
   @reference "../styles/base.css";
 
+  .archive-controls {
+    @apply mb-8;
+  }
+
   /* ===== 栏目筛选条（就地过滤，无 JS 时是通往栏目页的链接）===== */
   .category-strip {
     @apply mb-3 flex flex-wrap gap-2;
   }
   .category-chip {
     --cat-color: hsl(var(--cat-hue, 220) 62% 41%);
-    @apply inline-flex items-center gap-1.5 rounded-xl border px-3 py-1 text-sm no-underline transition-colors;
-    border-color: rgb(var(--palette-border));
+    @apply inline-flex items-center gap-1.5 border-b-2 border-transparent px-2 py-1.5 text-sm no-underline;
     color: rgb(var(--palette-text));
   }
   .category-chip::before {
     content: "";
     width: 0.4rem;
     height: 0.4rem;
-    border-radius: 999px;
     background-color: var(--cat-color);
   }
   .category-chip:hover {
-    color: var(--cat-color);
-    border-color: color-mix(in srgb, var(--cat-color) 45%, transparent);
+    border-color: var(--pixel-line);
   }
   .category-chip.is-active {
     font-weight: 600;
-    color: var(--cat-color);
-    border-color: color-mix(in srgb, var(--cat-color) 55%, transparent);
-    background-color: color-mix(in srgb, var(--cat-color) 12%, transparent);
+    border-color: var(--cat-color);
   }
   .filter-count {
     @apply text-xs tabular-nums opacity-70;
@@ -174,23 +168,15 @@ const years = Object.entries(
 
   /* ===== 年份快捷条（替代原时间轴视图的速查作用）===== */
   .year-strip {
-    @apply mb-8 flex flex-wrap gap-2;
+    @apply flex flex-wrap gap-2 border-t pt-3;
+    border-color: var(--pixel-line);
   }
   .year-chip {
-    @apply inline-flex items-center gap-1.5 rounded-xl border px-3 py-1 text-sm no-underline transition-colors;
-    border-color: rgb(var(--palette-border));
-    color: rgb(var(--palette-text));
-  }
-  .year-chip:hover {
-    color: rgb(var(--palette-accent));
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 45%,
-      transparent
-    );
+    @apply text-primary inline-flex items-center gap-1.5 px-2 py-1 text-sm underline-offset-4 hover:underline;
   }
   .year-chip-year {
-    @apply font-mono;
+    font-family: var(--pixel-font);
+    font-weight: 500;
   }
   .year-chip-count {
     @apply text-xs;
@@ -203,33 +189,17 @@ const years = Object.entries(
     /* 从年份条跳过来时，给标题留一点上边距 */
     scroll-margin-top: 1.5rem;
   }
-  /*
-    年份水印：给标题单独留出一条高带，让放大的年份整个待在带内，
-    这样它只和年份标题叠在一起，不会糊到下面的卡片上。
-  */
   .year-head {
-    position: relative;
-    padding-top: 2.75rem;
-    @apply mb-2 flex items-baseline gap-3;
-  }
-  .year-ghost {
-    position: absolute;
-    top: 0;
-    left: -0.05em;
-    font-size: 4.5rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: rgb(var(--palette-text));
-    opacity: 0.06;
-    pointer-events: none;
-    user-select: none;
+    @apply pixel-heading border-b pb-2;
+    border-color: var(--pixel-line);
   }
   .year-label {
-    @apply relative z-10 text-2xl font-bold;
+    @apply text-2xl;
+    font-family: var(--pixel-font);
+    font-weight: 500;
   }
   .year-count {
-    @apply relative z-10 text-sm;
+    @apply text-sm;
     color: rgb(var(--palette-muted-text));
   }
 </style>

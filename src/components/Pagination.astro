@@ -29,7 +29,7 @@ const { page } = Astro.props;
         >
           <path d="M12.707 17.293 8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z" />
         </svg>
-        上一篇
+        上一页
       </LinkButton>
       {page.currentPage} / {page.lastPage}
       <LinkButton
@@ -38,7 +38,7 @@ const { page } = Astro.props;
         className={`mx-4 inline-flex items-center gap-1 select-none ${page.url.next ? "" : "disabled"}`}
         ariaLabel="下一页"
       >
-        下一篇
+        下一页
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -57,7 +57,12 @@ const { page } = Astro.props;
 <style>
   @reference "../styles/base.css";
   .pagination-wrapper {
-    @apply mt-auto mb-8 flex justify-center;
+    @apply mt-auto mb-8 flex items-center justify-center;
+    font-family: var(--pixel-font);
+    font-weight: 500;
+  }
+  .pagination-wrapper :global(a) {
+    @apply pixel-button px-1.5 py-1 text-sm;
   }
   .pagination-wrapper :global(.disabled) {
     @apply hover:text-skin-base group-hover:fill-skin-base pointer-events-none opacity-50 select-none;

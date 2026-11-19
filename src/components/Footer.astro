@@ -1,6 +1,4 @@
 ---
-import Hr from "./Hr.astro";
-
 const currentYear = new Date().getFullYear();
 
 export interface Props {
@@ -11,7 +9,6 @@ const { noMarginTop = false } = Astro.props;
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
-  <Hr noPadding />
   <div class="footer-wrapper">
     <div class="footer-info">
       <span>Copyright &#169; Resalia 2020-{currentYear}</span>
@@ -40,12 +37,17 @@ const { noMarginTop = false } = Astro.props;
   @reference "../styles/base.css";
   footer {
     @apply w-full;
+    max-width: var(--site-width);
   }
   .footer-wrapper {
-    @apply flex flex-col items-center gap-1 py-6 sm:py-4;
+    @apply flex flex-col items-center gap-1 border-t-2 py-6 sm:py-4;
+    border-color: var(--pixel-line);
   }
   .footer-info {
-    @apply flex items-center gap-2 text-sm opacity-60;
+    @apply text-muted-foreground flex flex-wrap items-center justify-center gap-x-2 text-xs;
+  }
+  .footer-info a:hover {
+    @apply text-primary underline;
   }
   .footer-sep {
     @apply opacity-30;

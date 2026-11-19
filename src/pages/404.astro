@@ -81,7 +81,9 @@ const mailHref =
     @apply my-16 flex flex-col items-start;
   }
   .not-found-code {
-    @apply mb-3 font-mono text-6xl leading-none font-bold;
+    @apply mb-3 text-6xl leading-none;
+    font-family: var(--pixel-font);
+    font-weight: 500;
     color: rgb(var(--palette-accent));
   }
   .not-found-title {
@@ -92,7 +94,7 @@ const mailHref =
   }
   /* 出错路径可能很长，允许在任意位置断行 */
   .not-found-lead code {
-    @apply rounded-md px-1.5 py-0.5 text-sm;
+    @apply px-1.5 py-0.5 text-sm;
     background-color: color-mix(
       in srgb,
       rgb(var(--palette-muted)) 75%,
@@ -107,29 +109,13 @@ const mailHref =
   .not-found-actions {
     @apply mt-7 flex flex-wrap gap-3;
   }
-  /* 主次分明：主按钮实心强调色，次按钮描边 */
   .not-found-actions :global(.action) {
-    @apply rounded-xl px-4 py-2 text-sm font-medium transition-colors;
-    border: 1px solid transparent;
+    @apply pixel-button px-4 py-2 text-sm font-medium;
   }
   .not-found-actions :global(.action-primary) {
-    color: rgb(var(--palette-fill));
-    background-color: rgb(var(--palette-accent));
-  }
-  .not-found-actions :global(.action-primary):hover {
-    opacity: 0.88;
-  }
-  .not-found-actions :global(.action-secondary) {
-    border-color: rgb(var(--palette-border));
-    color: rgb(var(--palette-text));
-  }
-  .not-found-actions :global(.action-secondary):hover {
-    color: rgb(var(--palette-accent));
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 45%,
-      transparent
-    );
+    --pixel-button-ink: rgb(var(--palette-fill));
+    --pixel-button-fill: rgb(var(--palette-accent));
+    --pixel-button-line: rgb(var(--palette-accent));
   }
   .not-found-categories {
     @apply mt-10;

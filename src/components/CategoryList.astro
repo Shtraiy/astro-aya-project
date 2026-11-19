@@ -64,9 +64,9 @@ const items = sortedCategories().map(category => ({
     @apply text-muted-foreground mb-3 text-xs tracking-widest uppercase;
   }
   .category-rail-item {
-    /* 每个分类固定一个色相，圆点和选中态都跟随它 */
+    /* 每个分类的方形标记使用固定色相。 */
     --cat-color: hsl(var(--cat-hue) 62% 41%);
-    @apply flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm no-underline transition-colors;
+    @apply flex items-center gap-2 px-2.5 py-1.5 text-sm no-underline transition-colors;
     color: rgb(var(--palette-muted-text));
   }
   .category-rail-item:hover {
@@ -79,14 +79,10 @@ const items = sortedCategories().map(category => ({
   }
   .category-rail-item.is-current {
     color: rgb(var(--palette-accent));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 10%,
-      transparent
-    );
+    background-color: var(--pixel-selected);
   }
   .category-rail-dot {
-    @apply size-1.5 flex-none rounded-full;
+    @apply size-1.5 flex-none;
     background-color: var(--cat-color);
   }
   :global(html[data-theme="dark"]) .category-rail-item {
@@ -96,6 +92,6 @@ const items = sortedCategories().map(category => ({
     @apply flex-1 truncate;
   }
   .category-rail-count {
-    @apply flex-none text-xs tabular-nums opacity-70;
+    @apply flex-none text-xs tabular-nums;
   }
 </style>

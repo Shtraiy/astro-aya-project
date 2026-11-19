@@ -3,7 +3,7 @@ import Icon from "@components/Icon.astro";
 import type { IconName } from "@components/Icon.astro";
 
 /**
- * 带标题的分区：左边一枚图标块，右边标题 + 一句说明，下面放内容。
+ * 带标题的分区：图标和标题标出分区，说明可选。
  * 关于页、友链页都用它，保证同一套排版节奏。
  *
  * 注意这里用 <section> 但把 base.css 里 `section { max-w-3xl px-4 mx-auto }`
@@ -49,25 +49,19 @@ const { title, desc, icon, class: className = "" } = Astro.props;
   }
   .block-head {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    align-items: flex-start;
+    gap: 0.625rem;
     margin-bottom: 1rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--pixel-line);
   }
   .block-icon {
     display: grid;
     flex: none;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 1.25rem;
+    height: 1.5rem;
     place-items: center;
-    border-radius: 0.75rem;
     color: rgb(var(--palette-accent));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 12%,
-      transparent
-    );
-    border: 1px solid
-      color-mix(in srgb, rgb(var(--palette-accent)) 26%, transparent);
   }
   .block-text {
     display: flex;
@@ -75,10 +69,10 @@ const { title, desc, icon, class: className = "" } = Astro.props;
     min-width: 0;
   }
   .block-title {
+    @apply pixel-ui-text;
     margin: 0;
-    font-size: 1.125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: 1.25rem;
+    line-height: 1.25;
     color: rgb(var(--palette-text));
   }
   .block-desc {

@@ -3,62 +3,65 @@ import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
 import Card from "@components/Card";
 import BlogStats from "@components/BlogStats.astro";
 import Section from "@components/Section.astro";
 import getSortedPosts from "@utils/getVisibleSortedPosts";
 import { SITE } from "@config";
 
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const posts = getSortedPosts(await getCollection("blog"));
+const featuredPosts = posts.filter(({ data }) => data.featured);
+const recentPosts = posts
+  .filter(({ data }) => !data.featured)
+  .slice(0, SITE.postPerIndex);
 ---
 
 <Layout>
   <Header />
-  <main id="main-content">
-    <section id="hero">
-      {
-        /* 小字站点名 + 订阅按钮占一行，标题单独一行，右上角不再挂一个孤零零的图标 */
-      }
-      <div class="hero-top">
-        <p class="hero-kicker">SilentCage</p>
+  <main id="main-content" class="home">
+    <section class="home-intro" aria-labelledby="home-title">
+      <h1 id="home-title">无言的鸟笼</h1>
+      <p>
+        这里没有固定的主题，像一片随意生长的花园。平时写些随笔、技术笔记和游记。
+      </p>
+      <div class="home-actions">
+        <a class="browse-link" href="/posts/">浏览文章</a>
         <a
+          class="rss-link"
+          href="/rss.xml"
           target="_blank"
           rel="noopener noreferrer"
-          href="/rss.xml"
-          class="hero-rss"
-          aria-label="RSS 订阅"
-          title="RSS 订阅"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             aria-hidden="true"
-            ><path
-              d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
-            ></path><path
-              d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
-            ></path><circle cx="6" cy="18" r="2"></circle>
+          >
+            <path d="M19 20C19 11.7 12.3 5 4 5v2c7.2 0 13 5.8 13 13h2z"></path>
+            <path d="M12 20h2c0-5.5-4.5-10-10-10v2c4.4 0 8 3.6 8 8z"></path>
+            <circle cx="6" cy="18" r="2"></circle>
           </svg>
-          <span>RSS</span>
+          RSS 订阅
         </a>
       </div>
-
-      <h1>无言的鸟笼</h1>
-
-      <p class="hero-desc">
-        欢迎来到无言的鸟笼，这个站点没有固定的主题，更像是一片随意生长的花园，记录了一些随笔以及一些技术相关的内容
-      </p>
     </section>
 
-    {/* 下面几块统一走「左标签 · 右内容」版式，分区更清楚 */}
-    <Section title="统计">
-      <BlogStats blogStartDate={new Date("2020-11-30")} />
-    </Section>
+    {
+      recentPosts.length > 0 && (
+        <Section title="最近文章">
+          <ul>
+            {recentPosts.map(post => (
+              <Card
+                href={`/posts/${post.id}/`}
+                frontmatter={post.data}
+                body={post.body}
+                secHeading={false}
+              />
+            ))}
+          </ul>
+        </Section>
+      )
+    }
 
     {
       featuredPosts.length > 0 && (
@@ -77,102 +80,84 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       )
     }
 
-    {
-      recentPosts.length > 0 && (
-        <Section title="最近文章">
-          <ul>
-            {recentPosts.map(
-              (post, index) =>
-                index < SITE.postPerIndex && (
-                  <Card
-                    href={`/posts/${post.id}/`}
-                    frontmatter={post.data}
-                    body={post.body}
-                    secHeading={false}
-                  />
-                )
-            )}
-          </ul>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton
-              href="/posts/"
-              className="inline-flex items-center gap-1"
-            >
-              全部文章
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                class="h-5 w-5"
-              >
-                <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-              </svg>
-            </LinkButton>
-          </div>
-        </Section>
-      )
-    }
+    <Section title="站点统计">
+      <BlogStats />
+    </Section>
   </main>
-
   <Footer />
 </Layout>
 
 <style>
   @reference "../styles/base.css";
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pt-10 pb-8;
-  }
-  /* 站点名做成小字眉标，订阅按钮靠右，和标题错开一层 */
-  .hero-top {
-    @apply flex items-center justify-between gap-4;
-  }
-  .hero-kicker {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgb(var(--palette-muted-text));
-  }
-  .hero-rss {
-    @apply inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1;
-    border: 1px solid rgb(var(--palette-border));
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    color: rgb(var(--palette-muted-text));
-    text-decoration: none;
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease;
-  }
-  .hero-rss:hover {
-    color: rgb(var(--palette-accent));
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 45%,
-      transparent
-    );
-  }
-  .hero-rss svg {
-    width: 0.875rem;
-    height: 0.875rem;
-    fill: currentColor;
-  }
-  #hero h1 {
-    @apply mt-4 mb-3 text-3xl font-bold sm:mt-5 sm:text-4xl;
-    letter-spacing: 0.01em;
-    color: rgb(var(--palette-text));
-  }
-  .hero-desc {
-    @apply m-0 max-w-xl text-base;
-    line-height: 1.85;
-    color: rgb(var(--palette-muted-text));
+
+  @font-face {
+    font-family: "SilentCage Title";
+    src: url("/fonts/silentcage-title.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    unicode-range: U+65E0, U+7684, U+7B3C, U+8A00, U+9E1F;
   }
 
-  /* ===== 分区（左标签 · 右内容，见 Section.astro） ===== */
-  .all-posts-btn-wrapper {
-    @apply mt-6 flex justify-end;
+  .home {
+    @apply mx-auto w-full px-4;
+    max-width: var(--content-width);
+    padding-bottom: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .home-intro {
+    max-width: none;
+    padding-block: clamp(2rem, 6vw, 4rem) clamp(2rem, 5vw, 3.25rem);
+    padding-inline: 0;
+  }
+
+  .home-intro h1 {
+    font-family: "SilentCage Title", var(--pixel-font);
+    /* The 12px source grid scales evenly at 36px and 48px. */
+    font-size: 48px;
+    font-weight: 400;
+    font-synthesis: none;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-shadow: 2px 2px 0 var(--pixel-shadow);
+  }
+
+  .home-intro p {
+    margin-block-start: 0.85rem;
+    line-height: 1.85;
+    text-wrap: balance;
+    @apply text-muted-foreground;
+  }
+
+  .home-actions {
+    @apply pixel-ui-text mt-6 flex flex-wrap items-center gap-x-5 gap-y-2;
+  }
+
+  @media (max-width: 38rem) {
+    .home-intro h1 {
+      font-size: 36px;
+    }
+  }
+
+  .browse-link,
+  .rss-link {
+    @apply inline-flex min-h-11 items-center gap-1.5 text-primary underline-offset-4;
+  }
+
+  .browse-link {
+    @apply underline decoration-1;
+    text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  .browse-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .rss-link {
+    @apply hover:underline;
+  }
+
+  .rss-link svg {
+    @apply size-4 fill-current;
   }
 </style>

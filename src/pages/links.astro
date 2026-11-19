@@ -84,11 +84,6 @@ const shortDate = (iso: string) =>
                     : undefined
                 }
               >
-                <span
-                  class="friend-cover"
-                  style={`background-image:url("${friend.avatar}")`}
-                  aria-hidden="true"
-                />
                 <span class="friend-avatar">
                   <img
                     src={friend.avatar}
@@ -253,8 +248,6 @@ const shortDate = (iso: string) =>
     color: rgb(var(--palette-muted-text));
   }
 
-  /* 分区标题（图标块 + 标题 + 说明）走 <SectionBlock>，样式在组件里 */
-
   /* ── 友链圈：朋友们最近写的文章 ── */
   .friend-posts {
     display: flex;
@@ -281,7 +274,6 @@ const shortDate = (iso: string) =>
       rgb(var(--palette-muted)) 55%,
       transparent
     );
-    border-radius: 0.5rem;
   }
   .friend-post-title {
     flex: 1;
@@ -319,17 +311,18 @@ const shortDate = (iso: string) =>
     }
   }
 
-  /* ── 友链卡片 ── */
+  /* ── 友链目录 ── */
   .friend-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 0 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
   .friend-grid > li {
     min-width: 0;
+    border-bottom: 1px solid var(--pixel-line);
   }
   @media (min-width: 40rem) {
     .friend-grid {
@@ -343,53 +336,20 @@ const shortDate = (iso: string) =>
   }
 
   .friend-card {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     height: 100%;
-    overflow: hidden;
-    padding: 0.75rem 0.875rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 1rem;
-    /* 单卡配色：卡片上带 --friend-bg / --friend-text 就用对方的主题色 */
-    background-color: var(--friend-bg, transparent);
-    color: var(--friend-text, inherit);
+    padding-block: 0.75rem;
     text-decoration: none;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease;
   }
-  .friend-card:hover {
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted-text)) 55%,
-      transparent
-    );
-    /* 有自定义底色的卡片保持自己的颜色，只让描边亮一点 */
-    background-color: var(--friend-bg, rgb(var(--palette-muted)));
-  }
-  /* 头像放大后做背景，带一层由左到右的渐隐遮罩 */
-  .friend-cover {
-    position: absolute;
-    top: 0;
-    inset-inline-start: -0.5rem;
-    z-index: 0;
-    width: 66%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.14;
-    pointer-events: none;
-    mask-image: linear-gradient(
-      to left,
-      rgb(0 0 0 / 0) 0%,
-      rgb(0 0 0 / 1) 100%
-    );
+  .friend-card:hover .friend-name {
+    color: rgb(var(--palette-accent));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .friend-avatar {
     position: relative;
-    z-index: 1;
     display: block;
     flex: none;
     width: 3rem;
@@ -400,8 +360,7 @@ const shortDate = (iso: string) =>
     width: 100%;
     height: 100%;
     margin: 0;
-    border-radius: 999px;
-    background-color: rgb(var(--palette-fill));
+    background-color: var(--friend-bg, rgb(var(--palette-fill)));
     object-fit: cover;
   }
   /* 悬停时头像上浮出一层箭头遮罩 */
@@ -410,13 +369,8 @@ const shortDate = (iso: string) =>
     inset: 0;
     display: grid;
     place-items: center;
-    border-radius: 999px;
-    color: rgb(var(--palette-fill));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-text)) 55%,
-      transparent
-    );
+    color: var(--friend-text, rgb(var(--palette-fill)));
+    background-color: var(--friend-bg, rgb(var(--palette-text)));
     opacity: 0;
     transition: opacity 0.25s ease;
   }
@@ -430,8 +384,6 @@ const shortDate = (iso: string) =>
     opacity: 1;
   }
   .friend-text {
-    position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
@@ -441,7 +393,7 @@ const shortDate = (iso: string) =>
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.4;
-    color: var(--friend-text, rgb(var(--palette-text)));
+    color: rgb(var(--palette-text));
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -449,9 +401,7 @@ const shortDate = (iso: string) =>
   .friend-intro {
     font-size: 0.75rem;
     line-height: 1.4;
-    color: var(--friend-text, rgb(var(--palette-muted-text)));
-    /* 介绍比站名淡一档，和原来友链页的写法一致 */
-    opacity: 0.75;
+    color: rgb(var(--palette-muted-text));
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -484,7 +434,6 @@ const shortDate = (iso: string) =>
     width: 1.125rem;
     height: 1.125rem;
     place-items: center;
-    border-radius: 999px;
     font-size: 0.6875rem;
     font-weight: 600;
     color: rgb(var(--palette-accent));
@@ -512,14 +461,8 @@ const shortDate = (iso: string) =>
 
   /* ── 本站信息（点击复制） ── */
   .copy-card {
-    padding: 1rem 1.125rem;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 1rem;
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted)) 45%,
-      transparent
-    );
+    padding-block: 0.75rem;
+    border-top: 1px solid var(--pixel-line);
   }
   .copy-card-title {
     display: flex;
@@ -535,14 +478,8 @@ const shortDate = (iso: string) =>
     width: 1.125rem;
     height: 1.125rem;
     place-items: center;
-    border-radius: 999px;
     font-size: 0.6875rem;
     font-style: normal;
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 18%,
-      transparent
-    );
     color: rgb(var(--palette-accent));
   }
   .copy-list {
@@ -567,38 +504,31 @@ const shortDate = (iso: string) =>
     min-width: 0;
   }
   .copy-value {
+    @apply focus-outline;
     position: relative;
     display: block;
     width: 100%;
     padding: 0.25rem 0.5rem;
     border: none;
-    border-radius: 0.5rem;
     font-family: "IBM Plex Mono", Consolas, monospace;
     font-size: 0.8125rem;
     text-align: left;
-    color: rgb(var(--palette-text));
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-fill)) 70%,
-      transparent
-    );
+    color: rgb(var(--palette-accent));
+    background-color: transparent;
     cursor: pointer;
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .copy-value:hover {
-    background-color: rgb(var(--palette-muted));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .copy-flag {
     position: absolute;
     inset-inline-end: 0.5rem;
     top: 50%;
     padding: 0 0.375rem;
-    border-radius: 0.375rem;
     font-size: 0.6875rem;
     line-height: 1.5;
     color: rgb(var(--palette-fill));

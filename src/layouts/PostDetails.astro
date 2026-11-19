@@ -32,6 +32,8 @@ const {
   editPost,
 } = post.data;
 
+// 保留标点，让标题在窄屏上优先沿分句换行。
+const titlePhrases = title.split(/(?<=——|[，：；！？])/u);
 const { Content, headings } = await render(post);
 const readingTime = getReadingTime(post.body ?? "");
 
@@ -120,9 +122,9 @@ const nextPost =
 <Layout {...layoutProps}>
   <Header />
 
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+  <div class="post-back">
     <button
-      class="focus-outline mt-8 mb-2 flex items-center hover:opacity-75"
+      class="focus-outline text-muted-foreground hover:text-primary flex min-h-11 items-center text-sm"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
       <svg
@@ -137,49 +139,51 @@ const nextPost =
     </button>
   </div>
   <main id="main-content">
-    <h1
-      transition:name={slugifyStr(title)}
-      class="post-title"
-      data-pagefind-meta="title"
-    >
-      {title}
-    </h1>
+    <div class="post-heading">
+      <h1
+        transition:name={slugifyStr(title)}
+        class="post-title"
+        data-pagefind-meta="title"
+      >
+        {titlePhrases.map(phrase => <span>{phrase}</span>)}
+      </h1>
 
-    {/* 文章元信息：日期 / 阅读时长 / 标签，统一走图标行 */}
-    <div class="post-meta">
-      <Datetime
-        pubDatetime={pubDatetime}
-        modDatetime={modDatetime}
-        size="sm"
-        className=""
-        editPost={editPost}
-        postId={post.id}
-      />
-      <span class="post-meta-item">
-        <Icon name="clock" />
-        <span>阅读约 {readingTime}</span>
-      </span>
-      <span class="post-meta-item">
-        <Icon name="folder" />
-        <a href={`/categories/${category}/`}>{category}</a>
-      </span>
-      {
-        tags.length > 0 && (
-          <span class="post-meta-item">
-            <Icon name="hashtag" />
-            <span>
-              {tags.map((tag, index) => (
-                <>
-                  <a href={`/tags/${slugifyStr(tag)}/`}>{tag}</a>
-                  {index < tags.length - 1 && (
-                    <span class="post-meta-sep">/</span>
-                  )}
-                </>
-              ))}
+      {/* 文章元信息：日期 / 阅读时长 / 标签，统一走图标行 */}
+      <div class="post-meta">
+        <Datetime
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          size="sm"
+          className=""
+          editPost={editPost}
+          postId={post.id}
+        />
+        <span class="post-meta-item">
+          <Icon name="clock" />
+          <span>阅读约 {readingTime}</span>
+        </span>
+        <span class="post-meta-item">
+          <Icon name="folder" />
+          <a href={`/categories/${category}/`}>{category}</a>
+        </span>
+        {
+          tags.length > 0 && (
+            <span class="post-meta-item">
+              <Icon name="hashtag" />
+              <span>
+                {tags.map((tag, index) => (
+                  <>
+                    <a href={`/tags/${slugifyStr(tag)}/`}>{tag}</a>
+                    {index < tags.length - 1 && (
+                      <span class="post-meta-sep">/</span>
+                    )}
+                  </>
+                ))}
+              </span>
             </span>
-          </span>
-        )
-      }
+          )
+        }
+      </div>
     </div>
 
     {
@@ -192,7 +196,7 @@ const nextPost =
     }
     <article
       id="article"
-      class="prose mt-8 max-w-3xl text-lg"
+      class="prose mt-8 max-w-none text-base sm:text-lg"
       data-pagefind-body
     >
       {
@@ -315,11 +319,34 @@ const nextPost =
 
 <style>
   @reference "../styles/base.css";
+  main,
+  .post-back {
+    @apply mx-auto w-full max-w-3xl px-4;
+  }
   main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply pb-12;
+  }
+  .post-back {
+    @apply mt-5 mb-2 flex justify-start;
+  }
+  .post-heading {
+    @apply border-b-2 pb-5;
+    border-color: var(--pixel-line);
   }
   .post-title {
-    @apply text-skin-accent text-2xl font-semibold;
+    margin-block-end: 0.75rem;
+    font-family: var(--font-title);
+    font-size: clamp(1.2rem, 0.8rem + 1.7vw, 2rem);
+    font-weight: 500;
+    line-height: 1.4;
+    text-wrap: balance;
+    line-break: strict;
+    overflow-wrap: anywhere;
+  }
+  .post-title > span {
+    display: inline-block;
+    max-inline-size: 100%;
+    vertical-align: top;
   }
   /*
     上下篇导航：
@@ -330,19 +357,18 @@ const nextPost =
   .post-nav {
     display: grid;
     gap: 0.75rem;
+    padding-block-start: 0.625rem;
+    border-top: 1px solid var(--pixel-line);
   }
   .post-nav-item {
-    @apply flex items-center gap-2 rounded-2xl border px-4 py-3 no-underline transition-colors;
-    border-color: rgb(var(--palette-border));
+    @apply flex items-center gap-2 py-2 no-underline;
     color: rgb(var(--palette-text));
   }
   .post-nav-item:hover {
     color: rgb(var(--palette-accent));
-    border-color: color-mix(
-      in srgb,
-      rgb(var(--palette-accent)) 45%,
-      transparent
-    );
+  }
+  .post-nav-item:hover .post-nav-title {
+    @apply underline underline-offset-4;
   }
   .post-nav-icon {
     @apply size-5 flex-none;

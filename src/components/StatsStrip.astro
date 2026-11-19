@@ -34,15 +34,11 @@ const { items, class: className = "" } = Astro.props;
     margin: 0;
     padding: 0;
     list-style: none;
-    border: 1px solid rgb(var(--palette-border));
-    border-radius: 0.875rem;
-    overflow: hidden;
+    border-bottom: 1px solid var(--pixel-line);
   }
   /*
-    用容器查询而不是媒体查询：这条统计条既可能铺满 48rem 的正文栏（收藏 / 追番页），
-    也可能被塞进「左标签 · 右内容」的窄栏里（首页）。按视口宽度判断会在首页把
-    「2026年9月13日」挤成两行，按容器宽度判断才准。
-    容器由 Main.astro 的 #main-content 和 Section.astro 的 .section-row-body 提供。
+    按统计条所在容器的宽度排两列或四列，为日期留出空间。
+    容器由 Main.astro 和首页的 Section.astro 提供。
   */
   @container (min-width: 760px) {
     .stats-strip {
@@ -54,34 +50,27 @@ const { items, class: className = "" } = Astro.props;
     flex-direction: column;
     gap: 0.125rem;
     padding: 0.75rem 0.875rem;
-    transition: background-color 0.2s ease;
   }
   /* 窄屏两列：右列竖分隔线、第二行横分隔线；宽屏四列只留竖线 */
   .stats-strip-item:nth-child(even) {
-    border-left: 1px solid rgb(var(--palette-border));
+    border-left: 1px solid var(--pixel-line);
   }
   .stats-strip-item:nth-child(n + 3) {
-    border-top: 1px solid rgb(var(--palette-border));
+    border-top: 1px solid var(--pixel-line);
   }
   @container (min-width: 760px) {
     .stats-strip-item:nth-child(n + 3) {
       border-top: none;
     }
     .stats-strip-item:nth-child(odd):not(:first-child) {
-      border-left: 1px solid rgb(var(--palette-border));
+      border-left: 1px solid var(--pixel-line);
     }
-  }
-  .stats-strip-item:hover {
-    background-color: color-mix(
-      in srgb,
-      rgb(var(--palette-muted-text)) 7%,
-      transparent
-    );
   }
   .stats-strip-value {
     @apply text-foreground;
-    font-size: 1.0625rem;
-    font-weight: 600;
+    font-family: var(--pixel-font);
+    font-size: 1.125rem;
+    font-weight: 500;
     line-height: 1.3;
   }
   .stats-strip-label {

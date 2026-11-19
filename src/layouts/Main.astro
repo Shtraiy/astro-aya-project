@@ -6,9 +6,9 @@ interface Props {
   /** 页面标题 */
   pageTitle: string;
   pageDesc?: string;
-  /** 标题左侧图标块里的线性图标；不传则不显示图标块 */
+  /** 标题旁的线性图标 */
   icon?: IconName;
-  /** 图标块的色相 0-359（标签页用它对应的标签色）；不传则跟随站点强调色 */
+  /** 图标色相 0-359，默认跟随站点强调色 */
   iconHue?: number;
   /** 这页的内容要不要进站内搜索索引（Pagefind 只收标了 data-pagefind-body 的页面） */
   pagefindBody?: boolean;
@@ -54,8 +54,7 @@ const {
   @reference "../styles/base.css";
   #main-content {
     /* pt-12：以前这段留白是面包屑撑起来的，面包屑去掉后标题贴着页头分隔线了 */
-    @apply mx-auto w-full max-w-3xl px-4 pt-12 pb-4;
-    --content-width: 48rem;
+    @apply mx-auto w-full px-4 pt-9 pb-10;
     max-width: var(--content-width);
     /* 让页面内的组件能按「实际可用宽度」自适应（例如统计条排几列） */
     container-type: inline-size;
@@ -70,44 +69,27 @@ const {
     margin-inline: 0;
     padding-inline: 0;
   }
-  /* 页面头：左侧圆角图标块 + 标题 + 说明 */
   .page-head {
-    @apply mb-9 flex items-center gap-4;
+    @apply mb-7 flex items-start gap-3 border-b pb-4 sm:mb-9;
+    border-color: var(--pixel-line);
   }
   .page-head-icon {
-    /*
-      图标和底色走同一个色相（--page-hue）：默认取站点强调色，
-      标签页会用内联样式覆盖成该标签的颜色。线稿图标只继承 currentColor，
-      所以底色 / 描边 / 图标三者的色相一致，不会出现
-      彩色 emoji 落在另一种颜色底上的割裂感。
-    */
     --page-hue: var(--accent-hue);
-    --page-icon-color: hsl(var(--page-hue) 62% 41%);
-    @apply grid size-12 flex-none place-items-center rounded-2xl;
-    color: var(--page-icon-color);
-    background-color: color-mix(
-      in srgb,
-      var(--page-icon-color) 13%,
-      transparent
-    );
-    border: 1px solid
-      color-mix(in srgb, var(--page-icon-color) 32%, transparent);
+    @apply mt-1.5 grid size-6 flex-none place-items-center;
+    color: hsl(var(--page-hue) 46% 41%);
   }
   /* 夜间底色深，浅色相才看得清 */
   :global(html[data-theme="dark"]) .page-head-icon {
-    --page-icon-color: hsl(var(--page-hue) 78% 72%);
-    background-color: color-mix(
-      in srgb,
-      var(--page-icon-color) 16%,
-      transparent
-    );
-    border-color: color-mix(in srgb, var(--page-icon-color) 34%, transparent);
+    color: hsl(var(--page-hue) 52% 74%);
   }
   .page-head-text {
     @apply min-w-0;
   }
   .page-head-text h1 {
-    @apply text-2xl font-semibold tracking-wider sm:text-3xl;
+    font-family: var(--font-display);
+    font-size: clamp(1.85rem, 4vw, 2.6rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
   }
   /* 说明文字不再用斜体：长句斜体在中文里很别扭 */
   .page-head-text p {
